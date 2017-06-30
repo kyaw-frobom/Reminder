@@ -1,14 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.widget.LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.widget.RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.frobom.reminder.alarm">
+    tools:context="com.frobom.reminder.alarm"
+    android:background="@drawable/background"
+    android:paddingLeft="25dp"
+    android:paddingRight="25dp">
 
-    <ImageView
+    <TextView
+        android:id="@+id/title"
+        android:text="Title here"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/background"
-        tools:ignore="ContentDescription" />
+        android:layout_height="wrap_content"
+        android:textColor="#ffffff"
+        android:textSize="30dp"
+        android:paddingTop="40dp"
+        tools:ignore="HardcodedText,SpUsage" />
 
-</android.widget.LinearLayout>
+    <TextView
+        android:id="@+id/clock"
+        android:text="1:00AM"
+        android:textSize="20dp"
+        android:textColor="#ffffff"
+        android:layout_below="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:ignore="HardcodedText,SpUsage" />
+
+    <TextView
+        android:id="@+id/date"
+        android:text="30日12月2017年"
+        android:textSize="15dp"
+        android:textColor="#ffffff"
+        android:layout_below="@+id/clock"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:ignore="HardcodedText,SpUsage" />
+
+    <TextView
+        android:id="@+id/content"
+        android:text="You have to go to meeting with your friends tonight. And need to call a phone to your grand mom. Also need to buy a present for your wife when get to home."
+        android:paddingTop="50dp"
+        android:textAlignment="center"
+        android:textColor="#ffffff"
+        android:layout_below="@+id/date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:ignore="HardcodedText" />
+
+    <Button
+        android:id="@+id/buttonOk"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="50dp"
+        android:background="#d12727"
+        android:text="GOT IT 「 ! 」"
+        android:textAlignment="center"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        tools:ignore="HardcodedText,UnusedAttribute" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/buttonOk"
+        android:text="If you noticed, press here!"
+        android:textAlignment="center"
+        android:textColor="#ffffff"
+        android:textSize="10sp"
+        android:paddingBottom="5dp"
+        tools:ignore="HardcodedText,SmallSp" />
+
+</android.widget.RelativeLayout>
