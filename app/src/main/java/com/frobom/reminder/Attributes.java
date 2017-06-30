@@ -10,7 +10,7 @@ public class Attributes {
     private String description;
     private String time;
     private String date;
-    private String remindUri;
+    private String alarm_path;
 
     public Attributes(){
 
@@ -37,19 +37,19 @@ public class Attributes {
         return time;
     }
     public void setTime(String time){
-        this.time=time;
+        this.time = time;
     }
     public String getDate(){
         return  date;
     }
     public void setDate(String date){
-        this.date=date;
+        this.date = date;
     }
-    public String getRemindUri(){
-        return  remindUri;
+    public String getAlarm_path(){
+        return  alarm_path;
     }
-    public void setRemindUri(String remindUri){
-        this.remindUri=remindUri;
+    public void setRemindUri(String alarm_path){
+        this.alarm_path = alarm_path;
     }
     // Will be used by the ArrayAdapter in the ListView
     @Override

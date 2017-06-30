@@ -20,9 +20,9 @@ public class DatabaseAccessAdapter {
         // Database fields
         private SQLiteDatabase database;
         private MySQLiteHelper dbHelper;
-        private String[] allColumns = { MySQLiteHelper.COLUMN_ID,
-                MySQLiteHelper.REMIND_TITLE, MySQLiteHelper.REMIND_CONTENT, MySQLiteHelper.DATE,
-                MySQLiteHelper.TIME, MySQLiteHelper.REMIND_URI};
+        private String[] allColumns = { MySQLiteHelper.id,
+                MySQLiteHelper.title, MySQLiteHelper.description, MySQLiteHelper.date,
+                MySQLiteHelper.time, MySQLiteHelper.alarm_path};
 
         public DatabaseAccessAdapter(Context context) {
             dbHelper = new MySQLiteHelper(context);
@@ -38,20 +38,18 @@ public class DatabaseAccessAdapter {
 
         public Attributes createAttributes(Attributes att) {
             ContentValues values = new ContentValues();
-            values.put(MySQLiteHelper.REMIND_TITLE, att.getTitle());
-            values.put(MySQLiteHelper.REMIND_CONTENT, att.getDescription());
-            values.put(MySQLiteHelper.DATE,att.getTitle());
-            values.put(MySQLiteHelper.TIME,att.getTime());
-            values.put(MySQLiteHelper.REMIND_URI,att.getRemindUri());
-            long insertId = database.insert(MySQLiteHelper.TABLE_NAME, null,
-                    values);
+            values.put(MySQLiteHelper.title, att.getTitle());
+            values.put(MySQLiteHelper.description, att.getDescription());
+            values.put(MySQLiteHelper.date, att.getTitle());
+            values.put(MySQLiteHelper.time, att.getTime());
+            values.put(MySQLiteHelper.alarm_path, att.getAlarm_path());
+            long insertId = database.insert( MySQLiteHelper.TABLE_NAME, null, values);
             Log.e("TEst","Successfully added");
 
             Cursor cursor = database.query(MySQLiteHelper.TABLE_NAME,
-                    allColumns, MySQLiteHelper.COLUMN_ID + " = " + insertId, null,
+                    allColumns, MySQLiteHelper.id + " = " + insertId, null,
                     null, null, null);
             Log.e("TEst","Successfully query");
-
 
             cursor.moveToFirst();
             Attributes newComment = cursorToComment(cursor);
@@ -62,7 +60,7 @@ public class DatabaseAccessAdapter {
         public void deleteAttributes(Attributes comment) {
             long id = comment.getId();
             System.out.println("Comment deleted with id: " + id);
-            database.delete(MySQLiteHelper.TABLE_NAME, MySQLiteHelper.COLUMN_ID
+            database.delete(MySQLiteHelper.TABLE_NAME, MySQLiteHelper.id
                     + " = " + id, null);
         }
 

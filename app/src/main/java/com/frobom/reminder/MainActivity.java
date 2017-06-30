@@ -25,7 +25,7 @@ import java.util.Random;
 
 public class MainActivity extends AppCompatActivity{
     public DatabaseAccessAdapter datasource;
-    private   ListView listView;
+    private ListView listView;
     private Attributes att;
     private Attributes returnValue;
     private ArrayAdapter<Attributes> adapter;
@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ListView listView=(ListView)findViewById(R.id.list);
+        listView = (ListView) findViewById(R.id.list);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity{
                         .setAction("Action", null).show();
             }
         });
+
         datasource = new DatabaseAccessAdapter(this);
         datasource.open();
 
