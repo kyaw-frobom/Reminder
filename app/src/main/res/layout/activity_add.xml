@@ -22,7 +22,6 @@
         android:layout_width="348dp"
         android:layout_height="130dp"
         android:ems="10"
-        android:textColorHighlight=""
         android:inputType="textMultiLine"
         tools:layout_editor_absoluteX="7dp"
         tools:layout_editor_absoluteY="59dp" />
