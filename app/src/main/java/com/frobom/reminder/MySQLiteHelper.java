@@ -35,7 +35,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
             + time + " text not null, "
             + date + " text not null, "
             + alarm_path + " text not null, "
-            + is_delete + " bool not null );";
+            + is_delete + " text not null );";
 
     public MySQLiteHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);

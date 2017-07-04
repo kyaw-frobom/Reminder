@@ -1,30 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:padding="10dp"
+    android:weightSum="1"
+    app:layout_behavior="@string/prompt_title"
     tools:context="com.frobom.reminder.AddActivity">
 
-    <EditText
-        android:id="@+id/editText"
-        android:layout_width="348dp"
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <AutoCompleteTextView
+            android:id="@+id/btnName"
+            android:layout_width="match_parent"
+            android:layout_height="63dp"
+            android:hint="@string/prompt_title"
+            android:inputType="text"
+            android:maxLines="1" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <AutoCompleteTextView
+            android:gravity="top"
+            android:id="@+id/edtDetail"
+            android:layout_width="match_parent"
+            android:layout_height="175dp"
+            android:hint="Remind here"
+            android:inputType="textMultiLine"
+            android:maxLines="3" />
+    </android.support.design.widget.TextInputLayout>
+
+
+    <ListView
+        android:id="@+id/listview"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/btnSave"
+        android:layout_width="157dp"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Name"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="6dp" />
+        android:layout_gravity="center"
 
-    <EditText
-        android:id="@+id/editText2"
-        android:layout_width="348dp"
-        android:layout_height="130dp"
-        android:ems="10"
-        android:textColorHighlight=""
-        android:inputType="textMultiLine"
-        tools:layout_editor_absoluteX="7dp"
-        tools:layout_editor_absoluteY="59dp" />
+        android:text="Save" />
 
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>
