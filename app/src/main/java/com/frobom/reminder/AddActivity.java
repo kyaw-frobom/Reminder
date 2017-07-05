@@ -51,9 +51,9 @@ public class AddActivity extends AppCompatActivity implements DatePickerDialog.O
         setContentView(R.layout.activity_add);
 
         //initialize itemList1 to update data
-        itemList1.add(0,new Item("Time",""));
-        itemList1.add(1,new Item("Date",""));
-        itemList1.add(2,new Item("Alarm",""));
+        itemList1.add(0, new Item("Time", ""));
+        itemList1.add(1, new Item("Date", ""));
+        itemList1.add(2, new Item("Alarm", ""));
 
         edtTitle=(TextView) findViewById(R.id.txtTitle);
         edtDescription=(TextView) findViewById(R.id.txtDescription);
@@ -115,10 +115,10 @@ public class AddActivity extends AppCompatActivity implements DatePickerDialog.O
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                title=edtTitle.getText().toString();
-                description=edtDescription.getText().toString();
+                title = edtTitle.getText().toString();
+                description = edtDescription.getText().toString();
 
-                attToDB=new Attributes();
+                attToDB = new Attributes();
                 attToDB.setTitle(title);
                 attToDB.setDescription(description);
                 attToDB.setAlarmTime(time);
@@ -126,12 +126,11 @@ public class AddActivity extends AppCompatActivity implements DatePickerDialog.O
                 attToDB.setAlarmPath(PathHolder);
                 attToDB.setEnabled("true");
 
-                if(title==null||description==null||time==null||date==null||PathHolder==null) {
+                if( title == null || description == null || time == null || date == null || PathHolder == null ) {
                     Toast.makeText(AddActivity.this, "You must add all of data field!", Toast.LENGTH_SHORT).show();
-
                 }
                 else{
-                    attReturn=datasource.createAttributes(attToDB);
+                    attReturn = datasource.createAttributes(attToDB);
                     Toast.makeText(getApplicationContext(), "Data Added", Toast.LENGTH_LONG).show();
                     // Refresh main activity upon close of dialog box
                     Intent refresh = new Intent(AddActivity.this, MainActivity.class);
@@ -147,23 +146,25 @@ public class AddActivity extends AppCompatActivity implements DatePickerDialog.O
         if(hourOfDay < 12) {
             AM_PM = "AM";
         } else {
-            hourOfDay-=12;
+            hourOfDay -= 12;
             AM_PM = "PM";
         }
 
-        time=hourOfDay + " : " + minute + " " + AM_PM ;
+        time = hourOfDay + " : " + minute + " " + AM_PM ;
         itemList1.set(0,new Item("Time",time));
         itemsListView.setAdapter(new CustomListAdapter(this,itemList1));
     }
+
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
 
-        date =""+ dayOfMonth+"/"+(monthOfYear+1)+"/"+year;
+        date = "" + dayOfMonth + "/" + (monthOfYear + 1) + "/" + year;
 
-        itemList1.set(1,new Item("Date",date));
+        itemList1.set(1, new Item("Date", date));
         itemsListView.setAdapter(new CustomListAdapter(this,itemList1));
 
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // TODO Auto-generated method stub
@@ -172,14 +173,14 @@ public class AddActivity extends AppCompatActivity implements DatePickerDialog.O
 
             case 7:
 
-                if(resultCode==RESULT_OK){
+                if(resultCode == RESULT_OK){
 
                     PathHolder = data.getData().getPath();
-                    String[] filePath=PathHolder.split("/");
-                    String fileName=filePath[filePath.length-1];
+                    String[] filePath = PathHolder.split("/");
+                    String fileName = filePath[filePath.length-1];
                     Toast.makeText(AddActivity.this, PathHolder , Toast.LENGTH_LONG).show();
                     //update itemList1 at the field of Alarm
-                    itemList1.set(2,new Item("Alarm",fileName));
+                    itemList1.set(2, new Item("Alarm",fileName));
                     itemsListView.setAdapter(new CustomListAdapter(AddActivity.this,itemList1));
                 }
                 break;
@@ -188,12 +189,12 @@ public class AddActivity extends AppCompatActivity implements DatePickerDialog.O
     }
     public ArrayList<Item> generateItemsList(){
         //setup data of add page
-        String title="Time";
-        String description="";
+        String title = "Time";
+        String description = "";
 
-        Item it1=new Item(title,description);
-        Item it2=new Item("Date","");
-        Item it3=new Item("Alarm","");
+        Item it1 = new Item(title,description);
+        Item it2 = new Item("Date","");
+        Item it3 = new Item("Alarm","");
         itemList.add(it1);
         itemList.add(it2);
         itemList.add(it3);
