@@ -2,6 +2,7 @@ package com.frobom.reminder;
 
 import android.app.Activity;
 import android.app.ListActivity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -37,34 +38,31 @@ public class MainActivity extends AppCompatActivity{
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
         datasource = new DatabaseAccessAdapter(this);
         datasource.open();
 
         List<Attributes> values = datasource.getAllAttributes();
-
         // use the SimpleCursorAdapter to show the
         // elements in a ListView
         adapter = new ArrayAdapter<Attributes>(this,
                 android.R.layout.simple_list_item_1, values);
+
         listView.setAdapter(adapter);
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //  Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                Intent intent=new Intent(MainActivity.this,AddActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     // Will be called via the onClick attribute
     // of the buttons in main.xml
-    public void onClick(View view) {
-      //  @SuppressWarnings("unchecked")
-        //ArrayAdapter<String> adapter1=new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,null);
-       //List<String> adapter =new ArrayList<String>();
-       // Attributes att1 = null;
+  /*  public void onClick(View view) {
 
         switch (view.getId()) {
 
@@ -72,24 +70,25 @@ public class MainActivity extends AppCompatActivity{
                 att=new Attributes();
                 att.setTitle("To go out");
                 att.setDescription("To meet friends at the front Tower in 4pm!!Excited");
-                att.setTime("2:30PM");
-                att.setDate("3:30PM");
-                att.setRemindUri("sdcard/songs/party.mp3");
+                att.setAlarmTime("2:30PM");
+                att.setAlarmDate("4/7/2017");
+                att.setAlarmPath("sdcard/songs/party.mp3");
+                att.setEnabled("true");
                 // save the new attribute to the database
                 returnValue = datasource.createAttributes(att);
                 Toast.makeText(getApplicationContext(),"Data Added",Toast.LENGTH_LONG).show();
                 break;
-            case R.id.delete:
+            //case R.id.delete:
              //   if (listView.getCount() > 0) {
                 // att1 = (Attributes) listView.getItemAtPosition(0);
-                    datasource.deleteAttributes(returnValue);
-                Toast.makeText(getApplicationContext(),"Data Deleted",Toast.LENGTH_LONG).show();
+                //datasource.deleteAttributes(returnValue);
+                //Toast.makeText(getApplicationContext(),"Data Deleted",Toast.LENGTH_LONG).show();
                   // adapter.remove(att1);
                // }
-                break;
+                //break;
         }
         adapter.notifyDataSetChanged();
-    }
+    }*/
 
     @Override
     protected void onResume() {

@@ -8,52 +8,78 @@ public class Attributes {
     private int id;
     private String title;
     private String description;
-    private String time;
-    private String date;
-    private String alarm_path;
+    private String alarmTime;
+    private String alarmDate;
+    private String alarmPath;
+    private String enabled;
 
-    public Attributes(){
-
-    }
-    public int getId(){
+    public int getId() {
         return id;
     }
-    public void setId(int id){
-        this.id=id;
+
+    public void setId(int id) {
+        this.id = id;
     }
-    public String getTitle(){
+
+    public String getTitle() {
         return title;
     }
-    public void setTitle(String title){
-        this.title=title;
+
+    public void setTitle(String title) {
+        this.title = title;
     }
-    public String getDescription(){
+
+    public String getDescription() {
         return description;
     }
-    public void setDescription(String description){
-        this.description=description;
+
+    public void setDescription(String description) {
+        this.description = description;
     }
-    public String getTime(){
-        return time;
+
+    public String getAlarmTime() {
+        return alarmTime;
     }
-    public void setTime(String time){
-        this.time = time;
+
+    public void setAlarmTime(String alarmTime) {
+        this.alarmTime = alarmTime;
     }
-    public String getDate(){
-        return  date;
+
+    public String getAlarmDate() {
+        return alarmDate;
     }
-    public void setDate(String date){
-        this.date = date;
+
+    public void setAlarmDate(String alarmDate) {
+        this.alarmDate = alarmDate;
     }
-    public String getAlarm_path(){
-        return  alarm_path;
+
+    public String getAlarmPath() {
+        return alarmPath;
     }
-    public void setRemindUri(String alarm_path){
-        this.alarm_path = alarm_path;
+
+    public void setAlarmPath(String alarmPath) {
+        this.alarmPath = alarmPath;
     }
+
+    public String isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(String enabled) {
+        this.enabled = enabled;
+    }
+
     // Will be used by the ArrayAdapter in the ListView
     @Override
     public String toString() {
-        return title;
+        return "Attributes{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", alarmTime='" + alarmTime + '\'' +
+                ", alarmDate='" + alarmDate + '\'' +
+                ", alarmPath='" + alarmPath + '\'' +
+                ", enabled=" + enabled +
+                '}';
     }
 }

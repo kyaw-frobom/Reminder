@@ -10,27 +10,7 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.frobom.reminder.MainActivity"
     tools:showIn="@layout/activity_main">
-    <LinearLayout
-        android:id="@+id/group"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
 
-        <Button
-            android:id="@+id/add"
-            android:padding="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Add New"
-            android:onClick="onClick"/>
-
-        <Button
-            android:id="@+id/delete"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Delete First"
-            android:onClick="onClick"/>
-
-    </LinearLayout>
 
 <ListView
     android:id="@+id/list"
