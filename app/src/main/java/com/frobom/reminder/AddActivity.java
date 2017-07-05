@@ -2,6 +2,7 @@ package com.frobom.reminder;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.location.Address;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -86,7 +87,10 @@ public class AddActivity extends AppCompatActivity implements DatePickerDialog.O
                                 now.get(Calendar.MINUTE),
                                 now.get(Calendar.SECOND), false
                         );
+                        tpd.setAccentColor(getResources().getColor(R.color.mdtp_accent_color));
+                        tpd.setThemeDark(true);
                         tpd.show(getFragmentManager(), "Timepickerdialog");
+                        tpd.setVersion(TimePickerDialog.Version.VERSION_1);
                         break;
                     case 1:
                         DatePickerDialog dpd = DatePickerDialog.newInstance(
@@ -95,7 +99,10 @@ public class AddActivity extends AppCompatActivity implements DatePickerDialog.O
                                 now.get(Calendar.MONTH),
                                 now.get(Calendar.DAY_OF_MONTH)
                         );
+                        dpd.setThemeDark(true);
+                        dpd.setAccentColor(getResources().getColor(R.color.mdtp_accent_color));
                         dpd.show(getFragmentManager(), "Datepickerdialog");
+                        dpd.setVersion(DatePickerDialog.Version.VERSION_1);
                         break;
                     case 2:
                         // Create the ACTION_GET_CONTENT INTENT to open file explorer
@@ -126,7 +133,7 @@ public class AddActivity extends AppCompatActivity implements DatePickerDialog.O
                 attToDB.setAlarmPath(PathHolder);
                 attToDB.setEnabled("true");
 
-                if( title == null || description == null || time == null || date == null || PathHolder == null ) {
+                if(title.matches("")||time==null||date==null||PathHolder==null) {
                     Toast.makeText(AddActivity.this, "You must add all of data field!", Toast.LENGTH_SHORT).show();
                 }
                 else{
