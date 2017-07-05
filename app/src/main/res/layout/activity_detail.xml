@@ -19,6 +19,7 @@
             android:layout_height="63dp"
             android:hint="title"
             android:inputType="text"
+            android:enabled="false"
             android:maxLines="1" />
     </android.support.design.widget.TextInputLayout>
 
@@ -34,6 +35,7 @@
             android:gravity="top"
             android:hint="Remind here...."
             android:inputType="textMultiLine"
+            android:enabled="false"
             android:maxLines="4" />
     </android.support.design.widget.TextInputLayout>
 
@@ -46,6 +48,7 @@
             android:layout_height="63dp"
             android:hint="Time"
             android:inputType="text"
+            android:enabled="false"
             android:maxLines="1" />
     </android.support.design.widget.TextInputLayout>
 
@@ -58,6 +61,7 @@
             android:layout_height="63dp"
             android:hint="Date"
             android:inputType="text"
+            android:enabled="false"
             android:maxLines="1" />
     </android.support.design.widget.TextInputLayout>
 
@@ -70,15 +74,8 @@
             android:layout_height="63dp"
             android:hint="Path"
             android:inputType="text"
+            android:enabled="false"
             android:maxLines="1" />
     </android.support.design.widget.TextInputLayout>
-
-    <Button
-        android:id="@+id/btnSave"
-        android:layout_width="157dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-
-        android:text="Save" />
 
 </LinearLayout>

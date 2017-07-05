@@ -3,6 +3,7 @@ package com.frobom.reminder;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.w3c.dom.Text;
@@ -23,11 +24,18 @@ public class DetailActivity extends AppCompatActivity {
 
         Intent i = getIntent();
 
-//        ((Text) findViewById(R.id.txtTitle)).setTextContent( i.getStringExtra("title"));
-//        ((Text) findViewById(R.id.txtDescription)).setTextContent( i.getStringExtra("description"));
-//        ((Text) findViewById(R.id.txtDate)).setTextContent( i.getStringExtra("date"));
-//        ((Text) findViewById(R.id.txtTime)).setTextContent( i.getStringExtra("time"));
-//        ((Text) findViewById(R.id.txtPath)).setTextContent( i.getStringExtra("path"));
+        ((TextView) findViewById(R.id.txtTitle)).setText(i.getStringExtra("title"));
+        ((TextView) findViewById(R.id.txtDescription)).setText( i.getStringExtra("description"));
+        ((TextView) findViewById(R.id.txtDate)).setText( i.getStringExtra("date"));
+        ((TextView) findViewById(R.id.txtTime)).setText( i.getStringExtra("time"));
+        ((TextView) findViewById(R.id.txtPath)).setText( i.getStringExtra("path"));
+
+
+//        ((TextView) findViewById(R.id.txtTitle)).setTextContent( i.getStringExtra("title"));
+//        ((TextView) findViewById(R.id.txtDescription)).setTextContent( i.getStringExtra("description"));
+//        ((TextView) findViewById(R.id.txtDate)).setTextContent( i.getStringExtra("date"));
+//        ((TextView) findViewById(R.id.txtTime)).setTextContent( i.getStringExtra("time"));
+//        ((TextView) findViewById(R.id.txtPath)).setTextContent( i.getStringExtra("path"));
 
     }
 

@@ -29,9 +29,9 @@ public class CustomListAdapter extends BaseAdapter {
     TextView titleDescription;
 
     //public constructor
-    public CustomListAdapter(Context context,ArrayList<Item>  items) {
-      this.context=context;
-        this.items=items;
+    public CustomListAdapter(Context context, ArrayList<Item>  items) {
+        this.context = context;
+        this.items = items;
     }
 
     @Override
@@ -61,10 +61,8 @@ public class CustomListAdapter extends BaseAdapter {
         Item currentItem = (Item) getItem(position);
 
         // get the TextView for item name and item description
-         titleName = (TextView)
-                convertView.findViewById(R.id.txtTitle);
-         titleDescription = (TextView)
-                convertView.findViewById(R.id.txtData);
+         titleName = (TextView) convertView.findViewById(R.id.txtTitle);
+         titleDescription = (TextView) convertView.findViewById(R.id.txtData);
 
         //sets the text for item name and item description from the current item object
         titleName.setText(currentItem.getTitle());
