@@ -17,14 +17,14 @@
             android:id="@+id/txtTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:text="TextView"
+            android:textColor="@color/colorPrimary"/>
 
         <TextView
             android:id="@+id/txtData"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Data"
-            android:textColor="@android:color/holo_orange_dark"
             android:textSize="16sp"
             android:textStyle="bold"
             android:clickable="true"
