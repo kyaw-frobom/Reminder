@@ -31,7 +31,6 @@ public class DatabaseAccessAdapter {
         };
 
         public DatabaseAccessAdapter(Context context) {
-            //context.deleteDatabase(dbHelper.DATABASE_NAME);
             dbHelper = new MySQLiteHelper(context);
         }
 
