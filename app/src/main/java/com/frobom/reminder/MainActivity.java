@@ -2,7 +2,9 @@ package com.frobom.reminder;
 
 import android.app.Activity;
 import android.app.ListActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ListAdapter;
@@ -18,6 +21,7 @@ import android.widget.Toast;
 
 import org.xml.sax.helpers.AttributesImpl;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +33,7 @@ public class MainActivity extends AppCompatActivity{
     private Attributes att;
     private Attributes returnValue;
     private ArrayAdapter<Attributes> adapter;
+    public final static String ID_EXTRA = "com.frobom.reminder_ID";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,8 +46,11 @@ public class MainActivity extends AppCompatActivity{
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent myIntent = new Intent(MainActivity.this, AddActivity.class);
+                startActivity(myIntent);
+                //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        //.setAction("Action", null).show();
+
             }
         });
 
@@ -55,42 +63,30 @@ public class MainActivity extends AppCompatActivity{
         adapter = new ArrayAdapter<Attributes>(this,
                 android.R.layout.simple_list_item_1, values);
 
-        listView.setAdapter(adapter);
-    }
-
-    // Will be called via the onClick attribute
-    // of the buttons in main.xml
-    public void onClick(View view) {
-
-        switch (view.getId()) {
-
-            case R.id.add:
-                att=new Attributes();
-                att.setTitle("To go out");
-                att.setDescription("To meet friends at the front Tower in 4pm!!Excited");
-                att.setAlarmTime("2:30PM");
-                att.setAlarmDate("4/7/2017");
-                att.setAlarmPath("sdcard/songs/party.mp3");
-                att.setEnabled("true");
-                // save the new attribute to the database
-                returnValue = datasource.createAttributes(att);
-                Toast.makeText(getApplicationContext(),"Data Added",Toast.LENGTH_LONG).show();
-                break;
-            //case R.id.delete:
-             //   if (listView.getCount() > 0) {
-                // att1 = (Attributes) listView.getItemAtPosition(0);
-                //datasource.deleteAttributes(returnValue);
-                //Toast.makeText(getApplicationContext(),"Data Deleted",Toast.LENGTH_LONG).show();
-                  // adapter.remove(att1);
-               // }
-                //break;
-        }
         adapter.notifyDataSetChanged();
+
+        listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                att = (Attributes) listView.getItemAtPosition(position);
+                Intent i = new Intent(MainActivity.this, DetailActivity.class );
+                i.putExtra( "title" , att.getTitle());
+                i.putExtra( "description" , att.getDescription());
+                i.putExtra( "date" , att.getAlarmDate());
+                i.putExtra( "time" , att.getAlarmTime());
+                i.putExtra( "path" , att.getAlarmPath());
+                startActivity(i);
+            }
+        });
     }
 
     @Override
     protected void onResume() {
         datasource.open();
+        adapter.notifyDataSetChanged();
         super.onResume();
     }
 
@@ -118,6 +114,7 @@ public class MainActivity extends AppCompatActivity{
         if (id == R.id.action_settings) {
             return true;
         }
+
 
         return super.onOptionsItemSelected(item);
     }

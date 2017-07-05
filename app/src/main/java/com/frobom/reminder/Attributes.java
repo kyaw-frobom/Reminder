@@ -72,14 +72,6 @@ public class Attributes {
     // Will be used by the ArrayAdapter in the ListView
     @Override
     public String toString() {
-        return "Attributes{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", alarmTime='" + alarmTime + '\'' +
-                ", alarmDate='" + alarmDate + '\'' +
-                ", alarmPath='" + alarmPath + '\'' +
-                ", enabled=" + enabled +
-                '}';
+        return title ;
     }
 }
