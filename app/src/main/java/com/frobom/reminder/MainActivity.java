@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ListAdapter;
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity{
     private Attributes att;
     private Attributes returnValue;
     private ArrayAdapter<Attributes> adapter;
+    public final static String ID_EXTRA = "com.frobom.reminder_ID";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +39,18 @@ public class MainActivity extends AppCompatActivity{
         listView = (ListView) findViewById(R.id.list);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent myIntent = new Intent(MainActivity.this, AddActivity.class);
+                startActivity(myIntent);
+                //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        //.setAction("Action", null).show();
+
+            }
+        });
 
         datasource = new DatabaseAccessAdapter(this);
         datasource.open();
@@ -47,52 +61,30 @@ public class MainActivity extends AppCompatActivity{
         adapter = new ArrayAdapter<Attributes>(this,
                 android.R.layout.simple_list_item_1, values);
 
-        listView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
             @Override
-            public void onClick(View view) {
-                //  Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                Intent intent=new Intent(MainActivity.this,AddActivity.class);
-                startActivity(intent);
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                att = (Attributes) listView.getItemAtPosition(position);
+                Intent i = new Intent(MainActivity.this, DetailActivity.class );
+                i.putExtra( "title" , att.getTitle());
+                i.putExtra( "description" , att.getDescription());
+                i.putExtra( "date" , att.getAlarmDate());
+                i.putExtra( "time" , att.getAlarmTime());
+                i.putExtra( "path" , att.getAlarmPath());
+                startActivity(i);
             }
         });
     }
 
-    // Will be called via the onClick attribute
-    // of the buttons in main.xml
-  /*  public void onClick(View view) {
-
-        switch (view.getId()) {
-
-            case R.id.add:
-                att=new Attributes();
-                att.setTitle("To go out");
-                att.setDescription("To meet friends at the front Tower in 4pm!!Excited");
-                att.setAlarmTime("2:30PM");
-                att.setAlarmDate("4/7/2017");
-                att.setAlarmPath("sdcard/songs/party.mp3");
-                att.setEnabled("true");
-                // save the new attribute to the database
-                returnValue = datasource.createAttributes(att);
-                Toast.makeText(getApplicationContext(),"Data Added",Toast.LENGTH_LONG).show();
-                break;
-            //case R.id.delete:
-             //   if (listView.getCount() > 0) {
-                // att1 = (Attributes) listView.getItemAtPosition(0);
-                //datasource.deleteAttributes(returnValue);
-                //Toast.makeText(getApplicationContext(),"Data Deleted",Toast.LENGTH_LONG).show();
-                  // adapter.remove(att1);
-               // }
-                //break;
-        }
-        adapter.notifyDataSetChanged();
-    }*/
-
     @Override
     protected void onResume() {
         datasource.open();
+        adapter.notifyDataSetChanged();
         super.onResume();
     }
 
