@@ -3,6 +3,8 @@ package com.frobom.reminder;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,14 +31,32 @@ public class DetailActivity extends AppCompatActivity {
         ((TextView) findViewById(R.id.txtDate)).setText( i.getStringExtra("date"));
         ((TextView) findViewById(R.id.txtTime)).setText( i.getStringExtra("time"));
         ((TextView) findViewById(R.id.txtPath)).setText( i.getStringExtra("path"));
-
-
-//        ((TextView) findViewById(R.id.txtTitle)).setTextContent( i.getStringExtra("title"));
-//        ((TextView) findViewById(R.id.txtDescription)).setTextContent( i.getStringExtra("description"));
-//        ((TextView) findViewById(R.id.txtDate)).setTextContent( i.getStringExtra("date"));
-//        ((TextView) findViewById(R.id.txtTime)).setTextContent( i.getStringExtra("time"));
-//        ((TextView) findViewById(R.id.txtPath)).setTextContent( i.getStringExtra("path"));
-
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_detail, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        switch (item.getItemId()){
+            case R.id.btn_edit:
+                return true;
+
+            case R.id.btn_delete:
+                return true;
+        }
+
+        //noinspection SimplifiableIfStatement
+
+        return super.onOptionsItemSelected(item);
+    }
+
 
 }

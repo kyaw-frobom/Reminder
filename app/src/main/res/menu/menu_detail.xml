@@ -1,0 +1,16 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.frobom.reminder.DetailActivity">
+
+    <item android:id="@+id/btn_edit"
+        android:icon="@drawable/pencil"
+        android:title="@string/Edit"
+        app:showAsAction="always" />
+
+    <item android:id="@+id/btn_delete"
+        android:icon="@drawable/recycle"
+        android:title="@string/Delete"
+        app:showAsAction="always" />
+
+</menu>
