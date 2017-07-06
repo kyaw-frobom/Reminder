@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -25,10 +27,12 @@ import java.util.List;
 
 import java.util.Random;
 
-public class MainActivity extends AppCompatActivity{
+import static java.lang.System.out;
+
+public class MainActivity extends AppCompatActivity {
     public DatabaseAccessAdapter datasource;
     private ListView listView;
-    private Attributes att;
+    public Attributes att;
     private Attributes returnValue;
     private ArrayAdapter<Attributes> adapter;
     public final static String ID_EXTRA = "com.frobom.reminder_ID";
@@ -46,9 +50,6 @@ public class MainActivity extends AppCompatActivity{
             public void onClick(View view) {
                 Intent myIntent = new Intent(MainActivity.this, AddActivity.class);
                 startActivity(myIntent);
-                //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        //.setAction("Action", null).show();
-
             }
         });
 
@@ -71,11 +72,7 @@ public class MainActivity extends AppCompatActivity{
                                     int position, long id) {
                 att = (Attributes) listView.getItemAtPosition(position);
                 Intent i = new Intent(MainActivity.this, DetailActivity.class );
-                i.putExtra( "title" , att.getTitle());
-                i.putExtra( "description" , att.getDescription());
-                i.putExtra( "date" , att.getAlarmDate());
-                i.putExtra( "time" , att.getAlarmTime());
-                i.putExtra( "path" , att.getAlarmPath());
+                i.putExtra("attributeObject", att);
                 startActivity(i);
             }
         });
@@ -115,4 +112,5 @@ public class MainActivity extends AppCompatActivity{
 
         return super.onOptionsItemSelected(item);
     }
+
 }
