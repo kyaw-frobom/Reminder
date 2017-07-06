@@ -1,5 +1,7 @@
 package com.frobom.reminder;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -8,30 +10,64 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
-
-import java.io.Console;
-
-import static com.frobom.reminder.R.drawable.b;
-
 /**
  * Created by KyawMinHtwe on 7/4/2017.
  */
 
 public class DetailActivity extends AppCompatActivity {
+
+    private DatabaseAccessAdapter adapter;
+    public Attributes att;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
-        Intent i = getIntent();
+        adapter = new DatabaseAccessAdapter(this);
+        adapter.open();
 
-        ((TextView) findViewById(R.id.txtTitle)).setText(i.getStringExtra("title"));
-        ((TextView) findViewById(R.id.txtDescription)).setText( i.getStringExtra("description"));
-        ((TextView) findViewById(R.id.txtDate)).setText( i.getStringExtra("date"));
-        ((TextView) findViewById(R.id.txtTime)).setText( i.getStringExtra("time"));
-        ((TextView) findViewById(R.id.txtPath)).setText( i.getStringExtra("path"));
+        Bundle data = getIntent().getExtras();
+        att = (Attributes) data.getParcelable("attributeObject");
+
+        ((TextView) findViewById(R.id.txtTitle)).setText( att.getTitle());
+        ((TextView) findViewById(R.id.txtDescription)).setText( att.getDescription());
+        ((TextView) findViewById(R.id.txtDate)).setText( att.getAlarmDate());
+        ((TextView) findViewById(R.id.txtTime)).setText( att.getAlarmTime());
+        ((TextView) findViewById(R.id.txtPath)).setText( att.getAlarmPath());
+
+        //for back button
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
+
+
+    private AlertDialog AskOption()
+    {
+        AlertDialog myQuittingDialogBox =new AlertDialog.Builder(this)
+                //set message, title, and icon
+                .setTitle("Warning")
+                .setMessage("Are you sure to delete?")
+                .setIcon(R.drawable.ic_action_warning)
+                .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        //your deleting code
+                        adapter.deleteAttributes(att);
+                        dialog.dismiss();
+                        Toast.makeText( DetailActivity.this, "Successfully Deleted!", Toast.LENGTH_SHORT).show();
+                        Intent i = new Intent(DetailActivity.this, MainActivity.class );
+                        startActivity(i);
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .create();
+
+        return myQuittingDialogBox;
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -50,6 +86,8 @@ public class DetailActivity extends AppCompatActivity {
                 return true;
 
             case R.id.btn_delete:
+                AlertDialog dialog = AskOption();
+                dialog.show();
                 return true;
         }
 

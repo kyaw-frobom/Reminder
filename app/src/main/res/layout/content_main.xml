@@ -9,13 +9,14 @@
     android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.frobom.reminder.MainActivity"
-    tools:showIn="@layout/activity_main">
+    tools:showIn="@layout/activity_main"
+    android:weightSum="1">
 
 
 <ListView
     android:id="@+id/list"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="536dp"
     tools:layout_editor_absoluteY="0dp"
     tools:layout_editor_absoluteX="8dp">
 </ListView>

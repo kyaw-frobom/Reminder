@@ -20,10 +20,11 @@
             android:background="@color/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
-</android.support.design.widget.AppBarLayout>
+    </android.support.design.widget.AppBarLayout>
 
     <include layout="@layout/content_main"
-        android:layout_height="434dp" />
+        android:layout_height="259dp"
+        android:layout_width="match_parent" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
@@ -33,5 +34,6 @@
         android:layout_margin="@dimen/fab_margin"
         app:backgroundTint="?android:attr/colorPrimary"
         app:srcCompat="@drawable/plus" />
+
 
 </android.support.design.widget.CoordinatorLayout>

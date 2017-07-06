@@ -8,4 +8,5 @@
     <string name="prompt_Alarm">Alarm</string>
     <string name="Edit">Edit</string>
     <string name="Delete">Delete</string>
+    <string name="title_activity_detail"> Detail </string>
 </resources>
