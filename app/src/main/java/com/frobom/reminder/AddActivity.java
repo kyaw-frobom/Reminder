@@ -50,15 +50,18 @@ public class AddActivity extends AppCompatActivity implements DatePickerDialog.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
+        //for back button
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //initialize itemList1 to update data
-        itemList1.add(0, new Item("Time", ""));
-        itemList1.add(1, new Item("Date", ""));
+        itemList1.add(0, new Item("Date", ""));
+        itemList1.add(1, new Item("Time", ""));
         itemList1.add(2, new Item("Alarm", ""));
 
-        edtTitle=(TextView) findViewById(R.id.txtTitle);
-        edtDescription=(TextView) findViewById(R.id.txtDescription);
-        Button btnSave=(Button)findViewById(R.id.btnSave);
+        edtTitle = (TextView) findViewById(R.id.txtTitle);
+        edtDescription = (TextView) findViewById(R.id.txtDescription);
+        Button btnSave = (Button) findViewById(R.id.btnSave);
+        Button btnCancel = (Button) findViewById(R.id.btnCancel);
 
         datasource = new DatabaseAccessAdapter(this);
         datasource.open();
@@ -133,7 +136,7 @@ public class AddActivity extends AppCompatActivity implements DatePickerDialog.O
                 attToDB.setAlarmPath(PathHolder);
                 attToDB.setEnabled("true");
 
-                if(title.matches("")||time==null||date==null||PathHolder==null) {
+                if(title.matches("")||time == null||date == null||PathHolder == null) {
                     Toast.makeText(AddActivity.this, "You must add all of data field!", Toast.LENGTH_SHORT).show();
                 }
                 else{
@@ -144,6 +147,14 @@ public class AddActivity extends AppCompatActivity implements DatePickerDialog.O
                     startActivity(refresh);
                     finish();
                 }
+            }
+        });
+
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(AddActivity.this, MainActivity.class );
+                startActivity(i);
             }
         });
     }
