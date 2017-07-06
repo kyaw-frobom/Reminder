@@ -21,7 +21,7 @@ public class DetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail);
+        setContentView(R.layout.activity_add);
 
         adapter = new DatabaseAccessAdapter(this);
         adapter.open();
@@ -29,11 +29,11 @@ public class DetailActivity extends AppCompatActivity {
         Bundle data = getIntent().getExtras();
         att = (Attributes) data.getParcelable("attributeObject");
 
-        ((TextView) findViewById(R.id.txtTitle)).setText( att.getTitle());
+      /* ((TextView) findViewById(R.id.txtTitle)).setText( att.getTitle());
         ((TextView) findViewById(R.id.txtDescription)).setText( att.getDescription());
         ((TextView) findViewById(R.id.txtDate)).setText( att.getAlarmDate());
         ((TextView) findViewById(R.id.txtTime)).setText( att.getAlarmTime());
-        ((TextView) findViewById(R.id.txtPath)).setText( att.getAlarmPath());
+        ((TextView) findViewById(R.id.txtPath)).setText( att.getAlarmPath());*/
 
         //for back button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

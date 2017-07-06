@@ -16,7 +16,7 @@
 <ListView
     android:id="@+id/list"
     android:layout_width="match_parent"
-    android:layout_height="536dp"
+    android:layout_height="432dp"
     tools:layout_editor_absoluteY="0dp"
     tools:layout_editor_absoluteX="8dp">
 </ListView>
