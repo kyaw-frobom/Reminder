@@ -3,6 +3,8 @@
     <color name="colorPrimary">#009688</color>
     <color name="colorPrimaryDark">#303f9f</color>
     <color name="colorAccent">#ff4081</color>
+
+    <color name="black_overlay">#66000000</color>
     <color name="mdtp_accent_color">#009688</color>
     <color name="mdtp_accent_color_dark">#00796b</color>
 </resources>

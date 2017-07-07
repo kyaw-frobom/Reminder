@@ -30,6 +30,7 @@ import java.util.Random;
 import static java.lang.System.out;
 
 public class MainActivity extends AppCompatActivity {
+
     public DatabaseAccessAdapter datasource;
     private ListView listView;
     public Attributes att;

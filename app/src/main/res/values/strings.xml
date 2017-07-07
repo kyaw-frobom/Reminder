@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">Reminder</string>
     <string name="action_settings">Settings</string>
+
+    <string name="title_activity_testpage">testpage</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="button_gotit">GOT IT 「 ! 」</string>
     <string name="prompt_title">Title</string>
     <string name="prompt_Description">Description</string>
     <string name="prompt_Date">Date</string>
