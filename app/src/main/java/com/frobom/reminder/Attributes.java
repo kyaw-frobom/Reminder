@@ -66,20 +66,20 @@ public class Attributes implements Parcelable{
         this.description = description;
     }
 
-    public String getAlarmTime() {
-        return alarmTime;
-    }
-
-    public void setAlarmTime(String alarmTime) {
-        this.alarmTime = alarmTime;
-    }
-
     public String getAlarmDate() {
         return alarmDate;
     }
 
     public void setAlarmDate(String alarmDate) {
         this.alarmDate = alarmDate;
+    }
+
+    public String getAlarmTime() {
+        return alarmTime;
+    }
+
+    public void setAlarmTime(String alarmTime) {
+        this.alarmTime = alarmTime;
     }
 
     public String getAlarmPath() {
@@ -115,8 +115,8 @@ public class Attributes implements Parcelable{
         parcel.writeInt(id);
         parcel.writeString(title);
         parcel.writeString(description);
-        parcel.writeString(alarmTime);
         parcel.writeString(alarmDate);
+        parcel.writeString(alarmTime);
         parcel.writeString(alarmPath);
         parcel.writeString(enabled);
     }

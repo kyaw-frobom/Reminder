@@ -9,5 +9,6 @@
     <string name="Edit">Edit</string>
     <string name="Delete">Delete</string>
     <string name="title_activity_detail"> Detail </string>
+    <string name="title_activity_edit"> Detail </string>
     <string name="title_activity_add"> New </string>
 </resources>

@@ -28,15 +28,13 @@
                 android:value="com.frobom.reminder.MainActivity"/>
         </activity>
 
-        <activity
-            android:name=".DetailActivity"
-            android:label="@string/title_activity_detail"
+        <activity android:name=".EditActivity"
+            android:label="@string/title_activity_edit"
             android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.frobom.reminder.MainActivity"/>
         </activity>
-        <activity android:name=".EditActivity"></activity>
     </application>
 
 </manifest>

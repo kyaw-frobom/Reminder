@@ -15,6 +15,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import android.widget.Toast;
 
+import org.w3c.dom.Attr;
+
 public class DatabaseAccessAdapter {
         private Activity activity;
         // Database fields
@@ -52,6 +54,7 @@ public class DatabaseAccessAdapter {
             values.put(MySQLiteHelper.enabled, att.isEnabled());
 
             long insertId = database.insert( MySQLiteHelper.TABLE_NAME, null, values);
+            Log.e("insertId ",""+insertId);
             if(insertId < -1 )
                 Log.e("Test","Not added");
             else
@@ -68,8 +71,8 @@ public class DatabaseAccessAdapter {
             return newAtti;
         }
 
-        public void deleteAttributes(Attributes comment) {
-            long id = comment.getId();
+        public void deleteAttributes(Attributes att) {
+            long id = att.getId();
             System.out.println("Comment deleted with id: " + id);
             database.delete(MySQLiteHelper.TABLE_NAME, MySQLiteHelper.id
                     + " = " + id, null);
@@ -87,9 +90,44 @@ public class DatabaseAccessAdapter {
                 attributeList.add(atti);
                 cursor.moveToNext();
             }
+
             // make sure to close the cursor
             cursor.close();
             return attributeList;
+        }
+
+        public Attributes updateAttributes(Attributes att,int id){
+            ContentValues values = new ContentValues();
+            values.put(MySQLiteHelper.title, att.getTitle());
+            values.put(MySQLiteHelper.description, att.getDescription());
+            values.put(MySQLiteHelper.alarmTime, att.getAlarmTime());
+            values.put(MySQLiteHelper.alarmDate, att.getAlarmDate());
+            values.put(MySQLiteHelper.alarmPath, att.getAlarmPath());
+            values.put(MySQLiteHelper.enabled, att.isEnabled());
+
+            Log.e("att.getTitle()  ",""+ id +"  "+att.getTitle()+"  "+att.getAlarmTime());
+            long insertId= database.update( MySQLiteHelper.TABLE_NAME,
+                    values,
+                    MySQLiteHelper.id + " = " + id,
+                    null);
+
+            Log.e("insertId"," "+insertId);
+            Log.e("Test","Successfully Updated!");
+            if(insertId < -1 )
+                Log.e("Test","Not added");
+            else
+                Log.e("Test","Successfully updated!");
+
+            Cursor cursor = database.query( MySQLiteHelper.TABLE_NAME,
+                    allColumns, MySQLiteHelper.id + " = " + id, null,
+                    null, null, null);
+            Log.e("Test","Successfully query");
+            Log.e("Cusor size",""+cursor.getCount());
+
+            cursor.moveToFirst();
+            Attributes newAtti = cursorToAttribute(cursor);
+            cursor.close();
+            return newAtti;
         }
 
         private Attributes cursorToAttribute(Cursor cursor) {

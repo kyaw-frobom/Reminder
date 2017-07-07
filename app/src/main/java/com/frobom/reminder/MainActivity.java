@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
                 att = (Attributes) listView.getItemAtPosition(position);
-                Intent i = new Intent(MainActivity.this, DetailActivity.class );
+                Intent i = new Intent(MainActivity.this, EditActivity.class );
                 i.putExtra("attributeObject", att);
                 startActivity(i);
             }
