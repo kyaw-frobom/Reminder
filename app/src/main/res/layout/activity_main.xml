@@ -26,7 +26,7 @@
     <include
         layout="@layout/content_main"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="442dp" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
@@ -34,7 +34,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        app:backgroundTint="?android:attr/colorPrimary"
+        app:backgroundTint="@color/colorPrimary"
         app:srcCompat="@drawable/plus" />
 
 
