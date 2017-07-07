@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.frobom.reminder">
 
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/b"
@@ -20,6 +24,17 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".alarm">
+
+        </activity>
+
+        <service
+            android:name=".AlarmService"
+            android:enabled="true">
+
+        </service>
+
+
         <activity android:name=".AddActivity"
             android:label="@string/title_activity_add"
             android:parentActivityName=".MainActivity">
@@ -28,15 +43,13 @@
                 android:value="com.frobom.reminder.MainActivity"/>
         </activity>
 
-        <activity
-            android:name=".DetailActivity"
-            android:label="@string/title_activity_detail"
+        <activity android:name=".EditActivity"
+            android:label="@string/title_activity_edit"
             android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.frobom.reminder.MainActivity"/>
         </activity>
-
     </application>
 
 </manifest>
