@@ -42,7 +42,7 @@ public class EditActivity extends AppCompatActivity implements DatePickerDialog.
     private String time;
     private String date;
     private String PathHolder;
-    private String AlarmName;
+    private String fileName;
 
     public Attributes att;
     private Attributes updateReturn;
@@ -152,7 +152,6 @@ public class EditActivity extends AppCompatActivity implements DatePickerDialog.
                 title = edtTitle.getText().toString();
                 description = edtDescription.getText().toString();
 
-
                 attToDB = new Attributes();
                 attToDB.setTitle(title);
                 attToDB.setDescription(description);
@@ -161,20 +160,24 @@ public class EditActivity extends AppCompatActivity implements DatePickerDialog.
                 attToDB.setAlarmPath(PathHolder);
                 attToDB.setEnabled("true");
 
-                //Log.e("att.getId()",String.valueOf(att.getId()));
-                //Log.e("Titile",title);
-               // Log.e("Description",description);
-                //Log.e("time",time);
-               // Log.e("Date",date);
-               Log.e("attdb",""+attToDB.getDescription()+"   "+attToDB.getAlarmTime());
-
-
-                    updateReturn = datasource.updateAttributes(attToDB,att.getId());
+                if(title.matches("")||time == null||date == null||PathHolder == null) {
+                    Toast.makeText(EditActivity.this, "You must add all of data field!", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    updateReturn = datasource.updateAttributes(attToDB, att.getId());
                     Toast.makeText(getApplicationContext(), "Data Updated!", Toast.LENGTH_LONG).show();
                     // Refresh main activity upon close of dialog box
-                    Intent refresh = new Intent(EditActivity.this, MainActivity.class);
-                    startActivity(refresh);
-                    finish();
+                    //edtDescription.setEnabled(false);
+                    edtDescription.setFocusableInTouchMode(false);
+                   // edtTitle.setEnabled(false);
+                    edtTitle.setFocusable(false);
+                    edtDescription.setFocusable(false);
+                    edtTitle.setFocusableInTouchMode(false);
+                    btnCancel.setVisibility(View.GONE);
+                    btnSave.setVisibility(View.GONE);
+                    itemsListView.setEnabled(false);
+                    setTitle("Detail");
+                }
 
             }
         });
@@ -226,18 +229,19 @@ public class EditActivity extends AppCompatActivity implements DatePickerDialog.
 
                 if(resultCode == RESULT_OK){
 
-                    PathHolder = data.getData().getPath();
+                    String PathHolder1 = data.getData().getPath();
                     //String[] filePath = PathHolder.split("/");
                    // String fileName = filePath[filePath.length-1];
-                    File file=new File(PathHolder);
-                    String fileName=file.getName();
-                    String extension = fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length());
+                    File file = new File(PathHolder1);
+                    String fileName1 = file.getName();
+                    String extension = fileName1.substring(fileName1.lastIndexOf(".") + 1, fileName1.length());
                     Log.e("Extension", extension);
-
                     if(extension.equals("mp3")||extension.equals("m4a")||extension.equals("m4b")||
                             extension.equals("ogg")||extension.equals("3gp")||extension.equals("wma")||
                             extension.equals("msv")){
 
+                        PathHolder = PathHolder1;
+                        fileName = fileName1;
                         //update itemList1 at the field of Alarm
                         itemList.set(2, new Item("Alarm", fileName));
                         itemsListView.setAdapter(new CustomListAdapter(EditActivity.this, itemList));

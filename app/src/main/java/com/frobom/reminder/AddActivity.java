@@ -2,7 +2,6 @@ package com.frobom.reminder;
 
 
 import android.content.Intent;
-
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -126,6 +125,8 @@ public class AddActivity extends AppCompatActivity implements DatePickerDialog.O
                 attToDB.setAlarmDate(date);
                 attToDB.setAlarmPath(PathHolder);
                 attToDB.setEnabled("true");
+               // Log.e("PathHolder ", PathHolder);
+               // Toast.makeText(getApplicationContext(), PathHolder,Toast.LENGTH_LONG).show();
 
                 if(title.matches("")||time == null||date == null||PathHolder == null) {
                     Toast.makeText(AddActivity.this, "You must add all of data field!", Toast.LENGTH_SHORT).show();
@@ -187,20 +188,23 @@ public class AddActivity extends AppCompatActivity implements DatePickerDialog.O
 
                 if(resultCode == RESULT_OK){
 
-                    PathHolder = data.getData().getPath();
-                    String[] filePath = PathHolder.split("/");
+                    String PathHolder1 = data.getData().getPath();
+                    String[] filePath = PathHolder1.split("/");
                     String fileName = filePath[filePath.length-1];
                     String extension = fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length());
                     Log.e("Extension ",extension);
+
                     if(extension.equals("mp3")||extension.equals("m4a")||extension.equals("m4b")||
                             extension.equals("ogg")||extension.equals("3gp")||extension.equals("wma")||
                             extension.equals("msv")){
                         Toast.makeText(AddActivity.this, PathHolder, Toast.LENGTH_LONG).show();
+
+                        PathHolder = PathHolder1;
                         //update itemList1 at the field of Alarm
                         itemList.set(2, new Item("Alarm", fileName));
                         itemsListView.setAdapter(new CustomListAdapter(AddActivity.this, itemList));
-
                     }
+
                     else {
                         Toast.makeText(this, "You file extension must be audio file!", Toast.LENGTH_SHORT).show();
                     }
