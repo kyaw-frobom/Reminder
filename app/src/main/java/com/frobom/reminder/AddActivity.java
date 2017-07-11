@@ -2,8 +2,6 @@ package com.frobom.reminder;
 
 
 import android.content.Intent;
-
-import android.graphics.Path;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;

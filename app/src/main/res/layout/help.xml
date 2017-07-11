@@ -57,9 +57,8 @@
                     android:text="@string/help_title_section1" />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="276dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:padding="8dip"
                     android:text="@string/help_text_section1" />
             </LinearLayout>
@@ -99,7 +98,7 @@
                     android:layout_width="180dip"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:drawableTop="@drawable/light_bulb_default"
+                    android:drawableTop="@drawable/ic_action_delete"
                     android:text="@string/help_title_section3" />
 
                 <TextView
@@ -119,13 +118,13 @@
                 <Button
                     android:id="@+id/help_button4"
                     style="@style/HelpButton.Dark"
-                    android:layout_width="92dp"
-                    android:layout_height="122dp"
-                    android:drawableTop="@drawable/evo_revo_incr_default"
-                    android:text="@string/help_title_section3" />
+                    android:layout_width="80dp"
+                    android:layout_height="118dp"
+                    android:drawableTop="@drawable/light_bulb_default"
+                    android:text="@string/help_title_section4" />
 
                 <TextView
-                    android:layout_width="278dp"
+                    android:layout_width="280dp"
                     android:layout_height="wrap_content"
                     android:padding="8dip"
                     android:text="@string/help_text_section4" />

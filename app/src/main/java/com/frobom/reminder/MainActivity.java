@@ -2,6 +2,7 @@ package com.frobom.reminder;
 
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import android.support.design.widget.FloatingActionButton;
@@ -11,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.ImageSpan;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -30,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     public Attributes att;
     private Attributes returnValue;
     private ArrayAdapter<Attributes> adapter;
-    public final static String ID_EXTRA = "com.frobom.reminder_ID";
+    private String TO = "eiyadanr70@gmial.com";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -124,13 +127,26 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_help) {
-            return true;
+            Intent intent = new Intent(MainActivity.this, HelpActivity.class);
+            startActivity(intent);
         }
 
         if (id == R.id.action_feedback) {
-            return true;
-        }
+            Intent intent = new Intent(Intent.ACTION_SENDTO);
+            intent.setData(Uri.parse("mailto:" + "eiyadanar70@gmail.com"));
+            intent.putExtra(Intent.EXTRA_SUBJECT, "Your subject");
+            intent.putExtra(Intent.EXTRA_TEXT, "Email message goes here");
 
+            try {
+                startActivity(Intent.createChooser(intent, "Send mail..."));
+
+                Log.i("Finished sending email!", "");
+            } catch (android.content.ActivityNotFoundException ex) {
+                Toast.makeText(MainActivity.this,
+                        "There is no email client installed.", Toast.LENGTH_SHORT).show();
+            }
+
+        }
         return super.onOptionsItemSelected(item);
     }
 
