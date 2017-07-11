@@ -9,7 +9,7 @@ android:layout_height="match_parent"
         android:paddingRight="25dp">
 
         <TextView
-            android:id="@+id/title"
+            android:id="@+id/titleAlarm"
             android:text="Title here"
     android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -19,32 +19,32 @@ android:layout_height="match_parent"
             tools:ignore="HardcodedText,SpUsage" />
 
         <TextView
-            android:id="@+id/clock"
+            android:id="@+id/clockAlarm"
             android:text="1:00AM"
             android:textSize="20dp"
             android:textColor="#ffffff"
-            android:layout_below="@+id/title"
+            android:layout_below="@+id/titleAlarm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:ignore="HardcodedText,SpUsage" />
 
         <TextView
-            android:id="@+id/date"
+            android:id="@+id/dateAlarm"
             android:text="30日12月2017年"
             android:textSize="15dp"
             android:textColor="#ffffff"
-            android:layout_below="@+id/clock"
+            android:layout_below="@+id/clockAlarm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:ignore="HardcodedText,SpUsage" />
 
         <TextView
-            android:id="@+id/content"
+            android:id="@+id/contentAlarm"
             android:text="You have to go to meeting with your friends tonight. And need to call a phone to your grand mom. Also need to buy a present for your wife when get to home."
             android:paddingTop="50dp"
             android:textAlignment="center"
             android:textColor="#ffffff"
-            android:layout_below="@+id/date"
+            android:layout_below="@+id/dateAlarm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:ignore="HardcodedText" />

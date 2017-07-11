@@ -44,6 +44,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //Start Alarm Manager
+        startService(new Intent(this, ReminderAlarmManger.class));
+
         listView = (ListView) findViewById(R.id.list);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -91,6 +95,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
+        //Start Alarm Manager
+        //stopService(new Intent(this, ReminderAlarmManger.class));
+        //startService(new Intent(this, ReminderAlarmManger.class));
         datasource.open();
         adapter.notifyDataSetChanged();
         super.onResume();
@@ -98,7 +105,10 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
-        datasource.close();
+        //Start Alarm Manager
+        //stopService(new Intent(this, ReminderAlarmManger.class));
+        //startService(new Intent(this, ReminderAlarmManger.class));
+        //datasource.close();
         super.onPause();
     }
 

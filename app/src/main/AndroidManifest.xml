@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 
     <application
         android:allowBackup="true"
@@ -23,33 +24,46 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".alarm">
-
-        </activity>
+        <activity android:name=".alarm"></activity>
 
         <service
             android:name=".AlarmService"
-            android:enabled="true">
+            android:enabled="true"></service>
 
-        </service>
-
-
-        <activity android:name=".AddActivity"
+        <activity
+            android:name=".AddActivity"
             android:label="@string/title_activity_add"
             android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.frobom.reminder.MainActivity"/>
+                android:value="com.frobom.reminder.MainActivity" />
         </activity>
-
-        <activity android:name=".EditActivity"
+        <activity
+            android:name=".EditActivity"
             android:label="@string/title_activity_edit"
             android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.frobom.reminder.MainActivity"/>
+                android:value="com.frobom.reminder.MainActivity" />
         </activity>
+
+        <service
+            android:name=".ReminderAlarmManger"
+            android:enabled="true"
+            android:exported="true"></service>
+
+        <receiver android:name=".BootReceiver"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"></action>
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".AlarmReceiver"
+            android:enabled="true">
+
+        </receiver>
+
     </application>
 
 </manifest>
