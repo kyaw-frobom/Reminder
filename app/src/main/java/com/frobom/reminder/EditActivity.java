@@ -20,6 +20,7 @@ import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -41,7 +42,7 @@ public class EditActivity extends AppCompatActivity implements DatePickerDialog.
     private String time;
     private String date;
     private String PathHolder;
-    private String AlarmName;
+    private String fileName;
 
     public Attributes att;
     private Attributes updateReturn;
@@ -151,7 +152,6 @@ public class EditActivity extends AppCompatActivity implements DatePickerDialog.
                 title = edtTitle.getText().toString();
                 description = edtDescription.getText().toString();
 
-
                 attToDB = new Attributes();
                 attToDB.setTitle(title);
                 attToDB.setDescription(description);
@@ -160,20 +160,24 @@ public class EditActivity extends AppCompatActivity implements DatePickerDialog.
                 attToDB.setAlarmPath(PathHolder);
                 attToDB.setEnabled("true");
 
-                //Log.e("att.getId()",String.valueOf(att.getId()));
-                //Log.e("Titile",title);
-               // Log.e("Description",description);
-                //Log.e("time",time);
-               // Log.e("Date",date);
-               Log.e("attdb",""+attToDB.getDescription()+"   "+attToDB.getAlarmTime());
-
-
-                    updateReturn = datasource.updateAttributes(attToDB,att.getId());
+                if(title.matches("")||time == null||date == null||PathHolder == null) {
+                    Toast.makeText(EditActivity.this, "You must add all of data field!", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    updateReturn = datasource.updateAttributes(attToDB, att.getId());
                     Toast.makeText(getApplicationContext(), "Data Updated!", Toast.LENGTH_LONG).show();
                     // Refresh main activity upon close of dialog box
-                    Intent refresh = new Intent(EditActivity.this, MainActivity.class);
-                    startActivity(refresh);
-                    finish();
+                    //edtDescription.setEnabled(false);
+                    edtDescription.setFocusableInTouchMode(false);
+                   // edtTitle.setEnabled(false);
+                    edtTitle.setFocusable(false);
+                    edtDescription.setFocusable(false);
+                    edtTitle.setFocusableInTouchMode(false);
+                    btnCancel.setVisibility(View.GONE);
+                    btnSave.setVisibility(View.GONE);
+                    itemsListView.setEnabled(false);
+                    setTitle("Detail");
+                }
 
             }
         });
@@ -190,7 +194,12 @@ public class EditActivity extends AppCompatActivity implements DatePickerDialog.
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
 
-        date = "" + dayOfMonth + "/" + (monthOfYear + 1) + "/" + year;
+        //date = "" + dayOfMonth + "/" + (monthOfYear + 1) + "/" + year;
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat dateF = new SimpleDateFormat("dd/MM/yyyy");
+        String formattedDate = dateF.format(calendar.getTime());
+        date = formattedDate;
+
         //update itemList at the field of Date
         itemList.set(0, new Item("Date", date));
         itemsListView.setAdapter(new CustomListAdapter(this,itemList));
@@ -199,15 +208,9 @@ public class EditActivity extends AppCompatActivity implements DatePickerDialog.
 
     @Override
     public void onTimeSet(TimePickerDialog view, int hourOfDay, int minute, int second) {
-        String AM_PM ;
-        if(hourOfDay < 12) {
-            AM_PM = "AM";
-        } else {
-            hourOfDay -= 12;
-            AM_PM = "PM";
-        }
 
-        time = hourOfDay + " : " + minute + " " + AM_PM ;
+        int hour = hourOfDay % 12;
+            time = String.format("%02d:%02d %s", hour == 0 ? 12 : hour, minute, hourOfDay < 12 ? "AM" : "PM");
 
         //update itemList at the field of Time
         itemList.set(1, new Item("Time", time));
@@ -226,18 +229,19 @@ public class EditActivity extends AppCompatActivity implements DatePickerDialog.
 
                 if(resultCode == RESULT_OK){
 
-                    PathHolder = data.getData().getPath();
+                    String PathHolder1 = data.getData().getPath();
                     //String[] filePath = PathHolder.split("/");
                    // String fileName = filePath[filePath.length-1];
-                    File file=new File(PathHolder);
-                    String fileName=file.getName();
-                    String extension = fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length());
+                    File file = new File(PathHolder1);
+                    String fileName1 = file.getName();
+                    String extension = fileName1.substring(fileName1.lastIndexOf(".") + 1, fileName1.length());
                     Log.e("Extension", extension);
-
                     if(extension.equals("mp3")||extension.equals("m4a")||extension.equals("m4b")||
                             extension.equals("ogg")||extension.equals("3gp")||extension.equals("wma")||
                             extension.equals("msv")){
 
+                        PathHolder = PathHolder1;
+                        fileName = fileName1;
                         //update itemList1 at the field of Alarm
                         itemList.set(2, new Item("Alarm", fileName));
                         itemsListView.setAdapter(new CustomListAdapter(EditActivity.this, itemList));
@@ -320,5 +324,21 @@ public class EditActivity extends AppCompatActivity implements DatePickerDialog.
                 .create();
 
         return myQuittingDialogBox;
+    }
+
+    @Override
+    protected void onPause()
+    {
+        super.onPause();
+        stopService(new Intent(this, ReminderAlarmManger.class));
+        startService(new Intent(this, ReminderAlarmManger.class));
+    }
+
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
+        stopService(new Intent(this, ReminderAlarmManger.class));
+        startService(new Intent(this, ReminderAlarmManger.class));
     }
 }

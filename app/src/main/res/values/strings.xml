@@ -20,4 +20,35 @@
     <string name="title_activity_detail"> Detail </string>
     <string name="title_activity_edit"> Detail </string>
     <string name="title_activity_add"> New </string>
+
+    <string name="help_page_intro">For information on the different parts of this app, read the following tips.</string>
+    <string name="help_title_section1">Plus </string>
+    <string name="help_text_section1">
+    This is the icon for new remind. If you want to add new reminder, you can simply click this icon
+    to add new remind for your need.
+    </string>
+
+
+    <string name="help_title_section2">Edit</string>
+    <string name="help_text_section2">
+     This is the icon to edit your remind. It locates at head of the detailed page.
+     If you want to edit your remind for better, simply click this icon. We handle your editing quickly.
+    </string>
+
+
+    <string name="help_title_section3">Delete</string>
+    <string name="help_text_section3">
+       This is delete button for you if you want to delete any reminders that you dont want. The deleted
+        reminders should be completed reminders or reminds that is not happened.
+    </string>
+
+    <string name="help_title_section4">Menu</string>
+    <string name="help_text_section4">
+      This is the menu icon for other options such as help and feedback. We would like to know your
+        opinions and want to help you if your are in trouble.
+    </string>
+
+    <string name="Feedback_about"> I am telling you about</string>
+    <string name="rate_app">How are we doing?</string>
+
 </resources>

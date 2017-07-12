@@ -1,11 +1,6 @@
 package com.frobom.reminder;
- 
-import android.app.Activity;
+
 import android.content.Intent;
-import android.media.MediaPlayer;
-import android.os.Build;
-import android.os.PowerManager;
-import android.support.annotation.RequiresApi;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,11 +9,19 @@ import android.view.Window;
 import android.view.WindowManager.LayoutParams;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.Toast;
+import android.widget.TextView;
+
+import java.util.List;
 
 public class alarm extends AppCompatActivity {
- 
-    //MediaPlayer mediaPlayer;
+
+    public DatabaseAccessAdapter datasource;
+    private int idgot;
+
+    public TextView Title;
+    public TextView Clock;
+    public TextView Date;
+    public TextView Content;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,15 +29,56 @@ public class alarm extends AppCompatActivity {
         setContentView(R.layout.activity_alarm);
 
 
-        /*mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.redzonefullmix);
+        Bundle b = this.getIntent().getExtras();
+        int id = b.getInt("id");
 
-        mediaPlayer.setScreenOnWhilePlaying(true);
-        mediaPlayer.setWakeMode(getApplicationContext(), PowerManager.PARTIAL_WAKE_LOCK);
-        mediaPlayer.start();
-        mediaPlayer.setLooping(true);*/
+        setData(id);
 
-        //Remove title bar
-                //this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        closeActivity();
+    }
+
+    private void setData(int idGet)
+    {
+
+        setScreen();
+
+        idgot=idGet;
+        Title = (TextView)findViewById(R.id.titleAlarm);
+        Clock = (TextView)findViewById(R.id.clockAlarm);
+        Date = (TextView)findViewById(R.id.dateAlarm);
+        Content = (TextView)findViewById(R.id.contentAlarm);
+
+        datasource = new DatabaseAccessAdapter(this);
+        datasource.open();
+
+        List<Attributes> values = datasource.getAllAttributes();
+
+
+        if(values.size()>0) {
+            for (int i = 0; i < values.size(); i++)
+            {
+                if(idgot == values.get(i).getId())
+                {
+                    String title = values.get(i).getTitle();
+                    String time = values.get(i).getAlarmDate();
+                    String date = values.get(i).getAlarmTime();
+                    String description = values.get(i).getDescription();
+
+                    Title.setText(title);
+                    Clock.setText(time);
+                    Date.setText(date);
+                    Content.setText(description);
+
+                    break;
+                }
+            }
+        }
+
+        datasource.close();
+    }
+
+    private void setScreen()
+    {
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
 
@@ -50,9 +94,8 @@ public class alarm extends AppCompatActivity {
         //set content view AFTER ABOVE sequence (to avoid crash)
         this.setContentView(R.layout.activity_alarm);
 
-        closeActivity();
-
     }
+
 
     private void closeActivity()
     {
@@ -62,31 +105,32 @@ public class alarm extends AppCompatActivity {
         btnOK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Intent alarm = new Intent(alarm.this, MainActivity.class);
-                //Toast.makeText(getApplicationContext(),"Clicked",Toast.LENGTH_SHORT).show();
-                //finishAffinity();
                 finish();
             }
         });
     }
 
     @Override
-    protected void onPause() {
-                super.onPause();
-                //mediaPlayer.stop();
-                //mediaPlayer.release();
-                Intent intent = new Intent(alarm.this, AlarmService.class);
-                alarm.this.stopService(intent);
+    protected void onPause()
+    {
+        super.onPause();
+        Intent intent = new Intent(alarm.this, AlarmService.class);
+        alarm.this.stopService(intent);
+
+        stopService(new Intent(this, ReminderAlarmManger.class));
+        startService(new Intent(this, ReminderAlarmManger.class));
 
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        //if (mediaPlayer != null) mediaPlayer.release();
 
         Intent intent = new Intent(alarm.this, AlarmService.class);
         alarm.this.stopService(intent);
+
+        stopService(new Intent(this, ReminderAlarmManger.class));
+        startService(new Intent(this, ReminderAlarmManger.class));
     }
 
 }

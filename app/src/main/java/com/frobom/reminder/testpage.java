@@ -117,7 +117,7 @@ public class testpage extends AppCompatActivity {
         Button go = (Button)findViewById(R.id.dummy_button);
         go.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                startService(new Intent(testpage.this, AlarmService.class));
+                startService(new Intent(testpage.this, ReminderAlarmManger.class));
                 //startActivity(new Intent(testpage.this, alarm.class));
                 cancelTimer();
                 }
