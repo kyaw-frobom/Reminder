@@ -10,7 +10,7 @@ android:layout_height="match_parent"
 
         <TextView
             android:id="@+id/titleAlarm"
-            android:text="Title here"
+            android:text=""
     android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="#ffffff"
@@ -20,7 +20,7 @@ android:layout_height="match_parent"
 
         <TextView
             android:id="@+id/clockAlarm"
-            android:text="1:00AM"
+            android:text=""
             android:textSize="20dp"
             android:textColor="#ffffff"
             android:layout_below="@+id/titleAlarm"
@@ -30,7 +30,7 @@ android:layout_height="match_parent"
 
         <TextView
             android:id="@+id/dateAlarm"
-            android:text="30日12月2017年"
+            android:text=""
             android:textSize="15dp"
             android:textColor="#ffffff"
             android:layout_below="@+id/clockAlarm"
@@ -40,7 +40,7 @@ android:layout_height="match_parent"
 
         <TextView
             android:id="@+id/contentAlarm"
-            android:text="You have to go to meeting with your friends tonight. And need to call a phone to your grand mom. Also need to buy a present for your wife when get to home."
+            android:text="No description!"
             android:paddingTop="50dp"
             android:textAlignment="center"
             android:textColor="#ffffff"

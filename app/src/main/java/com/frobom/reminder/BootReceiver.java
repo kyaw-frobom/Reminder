@@ -15,6 +15,7 @@ public class BootReceiver extends BroadcastReceiver
         if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED"))
         {
             context.startService(new Intent(context,AlarmManager.class));
+            context.startService(new Intent(context,RefreshManager.class));
         }
     }
 }
