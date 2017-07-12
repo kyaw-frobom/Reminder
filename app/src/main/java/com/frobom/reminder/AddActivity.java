@@ -18,6 +18,7 @@ import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -159,7 +160,11 @@ public class AddActivity extends AppCompatActivity implements DatePickerDialog.O
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
 
-        date = "" + dayOfMonth + "/" + (monthOfYear + 1) + "/" + year;
+        //date = "" + dayOfMonth + "/" + (monthOfYear + 1) + "/" + year;
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat dateF = new SimpleDateFormat("dd/MM/yyyy");
+        String formattedDate = dateF.format(calendar.getTime());
+        date = formattedDate;
 
         //update itemList at the field of Date
         itemList.set(0, new Item("Date", date));
@@ -169,14 +174,9 @@ public class AddActivity extends AppCompatActivity implements DatePickerDialog.O
 
     @Override
     public void onTimeSet(TimePickerDialog view, int hourOfDay, int minute, int second) {
-        String AM_PM ;
-        if(hourOfDay < 12) {
-            AM_PM = "AM";
-        } else {
-            hourOfDay -= 12;
-            AM_PM = "PM";
-        }
-        time = hourOfDay + " : " + minute + " " + AM_PM ;
+
+        int hour = hourOfDay % 12;
+        time = String.format("%02d:%02d %s", hour == 0 ? 12 : hour, minute, hourOfDay < 12 ? "AM" : "PM");
 
         //update itemList at the field of Time
         itemList.set(1,new Item("Time",time));
@@ -226,5 +226,21 @@ public class AddActivity extends AppCompatActivity implements DatePickerDialog.O
     public ArrayList<Item> generateItemsList(){
         //setup data of add page
         return itemList;
+    }
+
+    @Override
+    protected void onPause()
+    {
+        super.onPause();
+        stopService(new Intent(this, ReminderAlarmManger.class));
+        startService(new Intent(this, ReminderAlarmManger.class));
+    }
+
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
+        stopService(new Intent(this, ReminderAlarmManger.class));
+        startService(new Intent(this, ReminderAlarmManger.class));
     }
 }

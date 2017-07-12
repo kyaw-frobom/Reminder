@@ -4,6 +4,8 @@ package com.frobom.reminder;
  * Created by Lenovo on 6/29/2017.
  */
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import android.app.Activity;
@@ -12,6 +14,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Debug;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -140,6 +143,84 @@ public class DatabaseAccessAdapter {
             att.setAlarmPath(cursor.getString(5));
             att.setEnabled(cursor.getString(6));
             return att;
+        }
+
+
+        public List<Attributes> getTodayAttributes() {
+            List<Attributes> attributeList = new ArrayList<Attributes>();
+
+            Calendar c = Calendar.getInstance();
+            int day = c.get (Calendar.DATE);
+            int month = c.get(Calendar.MONTH ) + 1;
+            int year = c.get(Calendar.YEAR);
+            String TodayDate = day + "/" + month + "/" + year;
+
+            Cursor cursor = database.query(MySQLiteHelper.TABLE_NAME,
+                    allColumns, MySQLiteHelper.alarmDate + " = " + TodayDate , null, null, null, null);
+
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                Attributes atti = cursorToAttribute(cursor);
+                attributeList.add(atti);
+                cursor.moveToNext();
+            }
+
+            // make sure to close the cursor
+            cursor.close();
+            return attributeList;
+        }
+
+        public List<Attributes> getTomorrowAttributes() {
+            List<Attributes> attributeList = new ArrayList<Attributes>();
+
+            Calendar c = Calendar.getInstance();
+            int day = c.get (Calendar.DATE) + 1;
+            int month = c.get(Calendar.MONTH ) + 1;
+            int year = c.get(Calendar.YEAR);
+            String TomorrowDate = day + "/" + month + "/" + year;
+
+            Cursor cursor = database.query(MySQLiteHelper.TABLE_NAME,
+                    allColumns, MySQLiteHelper.alarmDate + " = " + TomorrowDate, null, null, null, null);
+
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                Attributes atti = cursorToAttribute(cursor);
+                attributeList.add(atti);
+                cursor.moveToNext();
+            }
+
+            // make sure to close the cursor
+            cursor.close();
+            return attributeList;
+        }
+
+        public List<Attributes> getUpcomingAttributes() {
+            List<Attributes> attributeList = new ArrayList<Attributes>();
+
+            Calendar c = Calendar.getInstance();
+            int day = c.get (Calendar.DATE);
+            int month = c.get(Calendar.MONTH ) + 1;
+            int year = c.get(Calendar.YEAR);
+            String TodayDate = day + "/" + month + "/" + year;
+            String TomorrowDate = (day + 1) + "/" + month + "/" + year;
+            Log.e("Today Date : " , TodayDate);
+            Log.e("Tomorrow Date : " , TomorrowDate);
+
+            Cursor cursor = database.query(MySQLiteHelper.TABLE_NAME,
+                    allColumns, MySQLiteHelper.alarmDate + " != " + TodayDate + " AND "
+                            + MySQLiteHelper.alarmDate + " != " + TomorrowDate,
+                    null, null, null, null);
+
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                Attributes atti = cursorToAttribute(cursor);
+                attributeList.add(atti);
+                cursor.moveToNext();
+            }
+
+            // make sure to close the cursor
+            cursor.close();
+            return attributeList;
         }
     }
 
