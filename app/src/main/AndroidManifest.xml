@@ -33,9 +33,6 @@
             android:name=".AlarmService"
             android:enabled="true" />
 
-        </service>
-
-
         <activity android:name=".AddActivity"
             android:label="@string/title_activity_add"
             android:parentActivityName=".MainActivity">
@@ -70,7 +67,6 @@
         </receiver>
 
         <activity android:name=".HelpActivity" />
-
     </application>
 
 </manifest>
