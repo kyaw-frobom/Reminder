@@ -36,11 +36,7 @@
         <activity android:name=".AddActivity"
             android:label="@string/title_activity_add"
             android:parentActivityName=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.PICK" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <data android:mimeType="image/*" />
-            </intent-filter>
+
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.frobom.reminder.MainActivity"/>
