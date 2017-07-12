@@ -5,21 +5,27 @@
 
 
     <item
+
         android:id="@+id/action_help"
         android:title="@string/action_help"
         android:orderInCategory="100"
         app:showAsAction="never" />
-    <View
-        android:layout_height="1dp"
+
+
+    <TextView
+        android:id="@+id/line"
+        style="?android:attr/listSeparatorTextViewStyle"
+        android:paddingTop="5dip"
+        android:gravity="center_horizontal"
+        android:layout_below="@+id/action_help"
         android:layout_width="match_parent"
-        android:background="@android:color/darker_gray"
-        />
+        android:layout_height="2dp"
+        android:background="#000" />
 
     <item
         android:id="@+id/action_feedback"
         android:title="@string/action_feedback"
         android:orderInCategory="100"
         app:showAsAction="never" />
-
 
 </menu>

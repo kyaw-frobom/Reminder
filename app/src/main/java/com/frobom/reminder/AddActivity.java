@@ -2,6 +2,8 @@ package com.frobom.reminder;
 
 
 import android.content.Intent;
+import android.graphics.Path;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,6 +17,7 @@ import android.widget.Toast;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -35,7 +38,9 @@ public class AddActivity extends AppCompatActivity implements DatePickerDialog.O
     private String time;
     private String date;
     private String PathHolder;
+    private String fileName;
     private Attributes attReturn;
+    private Uri uri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,8 +105,9 @@ public class AddActivity extends AppCompatActivity implements DatePickerDialog.O
 
                     case 2:
                         // Create the ACTION_GET_CONTENT INTENT to open file explorer
+
                         intent = new Intent(Intent.ACTION_GET_CONTENT);
-                        intent.setType("*/*");
+                        intent.setType("audio/*");
                         startActivityForResult(intent, 7);
                         break;
                     //add more if you have more items in listview
@@ -189,17 +195,21 @@ public class AddActivity extends AppCompatActivity implements DatePickerDialog.O
                 if(resultCode == RESULT_OK){
 
                     String PathHolder1 = data.getData().getPath();
-                    String[] filePath = PathHolder1.split("/");
-                    String fileName = filePath[filePath.length-1];
-                    String extension = fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length());
-                    Log.e("Extension ",extension);
+                    File file = new File(PathHolder1);
+                    String fileName1 = file.getName();
+                    String extension = fileName1.substring(fileName1.lastIndexOf(".") + 1, fileName1.length());
+                    //String extension = FilenameUtils.getExtension(mFile.getName());
+                    //String extension = file1.getAbsolutePath().substring(file1.getAbsolutePath().lastIndexOf("."));
 
+                    Log.e("Path : ",PathHolder1);
+                    Log.e("Extension", extension);
                     if(extension.equals("mp3")||extension.equals("m4a")||extension.equals("m4b")||
                             extension.equals("ogg")||extension.equals("3gp")||extension.equals("wma")||
                             extension.equals("msv")){
-                        Toast.makeText(AddActivity.this, PathHolder, Toast.LENGTH_LONG).show();
+                       // Toast.makeText(AddActivity.this, PathHolder, Toast.LENGTH_LONG).show();
 
                         PathHolder = PathHolder1;
+                        fileName = fileName1;
                         //update itemList1 at the field of Alarm
                         itemList.set(2, new Item("Alarm", fileName));
                         itemsListView.setAdapter(new CustomListAdapter(AddActivity.this, itemList));
