@@ -42,7 +42,6 @@ public class MainActivity extends AppCompatActivity {
     private ArrayAdapter<Attributes> adapter1, adapter2, adapter3;
     private String TO = "eiyadanr70@gmial.com";
     public final static String ID_EXTRA = "com.frobom.reminder_ID";
-    private String TO = "eiyadanr70@gmial.com";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
