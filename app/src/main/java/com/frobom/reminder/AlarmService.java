@@ -2,6 +2,7 @@ package com.frobom.reminder;
 
 import android.app.Service;
 import android.content.Intent;
+import android.media.AudioTrack;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -55,6 +56,7 @@ public class AlarmService extends Service
         startActivity(intent);
 
         mediaPlayer = new MediaPlayer();
+        mediaPlayer.setAudioStreamType(AudioTrack.MODE_STREAM);
 
         //String filePath = Environment.getExternalStorageDirectory()+path;
         //mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.redzonefullmix);
