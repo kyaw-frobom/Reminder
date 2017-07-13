@@ -160,12 +160,13 @@ public class AddActivity extends AppCompatActivity implements DatePickerDialog.O
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
 
-        //date = "" + dayOfMonth + "/" + (monthOfYear + 1) + "/" + year;
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat dateF = new SimpleDateFormat("dd/MM/yyyy");
-        String formattedDate = dateF.format(calendar.getTime());
-        date = formattedDate;
+        date = "" + dayOfMonth + "/" + (monthOfYear + 1) + "/" + year;
+        //Calendar calendar = Calendar.getInstance();
+        //SimpleDateFormat dateF = new SimpleDateFormat("dd/MM/yyyy");
+        //String formattedDate = dateF.format(calendar.getTime());
+        //date = formattedDate;
 
+        Log.e("Date Error ", date);
         //update itemList at the field of Date
         itemList.set(0, new Item("Date", date));
         itemsListView.setAdapter(new CustomListAdapter(this,itemList));
@@ -203,9 +204,9 @@ public class AddActivity extends AppCompatActivity implements DatePickerDialog.O
 
                     Log.e("Path : ",PathHolder1);
                     Log.e("Extension", extension);
-                    if(extension.equals("mp3")||extension.equals("m4a")||extension.equals("m4b")||
-                            extension.equals("ogg")||extension.equals("3gp")||extension.equals("wma")||
-                            extension.equals("msv")){
+                    //if(extension.equals("mp3")||extension.equals("m4a")||extension.equals("m4b")||
+                     //       extension.equals("ogg")||extension.equals("3gp")||extension.equals("wma")||
+                     //      extension.equals("msv")){
                        // Toast.makeText(AddActivity.this, PathHolder, Toast.LENGTH_LONG).show();
 
                         PathHolder = PathHolder1;
@@ -213,11 +214,11 @@ public class AddActivity extends AppCompatActivity implements DatePickerDialog.O
                         //update itemList1 at the field of Alarm
                         itemList.set(2, new Item("Alarm", fileName));
                         itemsListView.setAdapter(new CustomListAdapter(AddActivity.this, itemList));
-                    }
+                   // }
 
-                    else {
-                        Toast.makeText(this, "You file extension must be audio file!", Toast.LENGTH_SHORT).show();
-                    }
+                   // else {
+                   //     Toast.makeText(this, "You file extension must be audio file!", Toast.LENGTH_SHORT).show();
+                   // }
                 }
                 break;
 

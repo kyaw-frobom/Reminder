@@ -115,8 +115,8 @@ public class Attributes implements Parcelable{
         parcel.writeInt(id);
         parcel.writeString(title);
         parcel.writeString(description);
-        parcel.writeString(alarmDate);
         parcel.writeString(alarmTime);
+        parcel.writeString(alarmDate);
         parcel.writeString(alarmPath);
         parcel.writeString(enabled);
     }
