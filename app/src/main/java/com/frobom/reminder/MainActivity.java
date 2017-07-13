@@ -39,10 +39,10 @@ import static java.lang.System.out;
 public class MainActivity extends AppCompatActivity {
 
     public DatabaseAccessAdapter datasource;
-    private ListView listViewToday, listViewTomorrow, listViewUpcoming;
+    private ListView listViewToday, listViewTomorrow, listViewUpcoming, listViewExpired;
     public Attributes att;
     private Attributes returnValue;
-    private ArrayAdapter<Attributes> adapter1, adapter2, adapter3;
+    private ArrayAdapter<Attributes> adapter1, adapter2, adapter3, adapter4;
     private String TO = "eiyadanr70@gmial.com";
     public final static String ID_EXTRA = "com.frobom.reminder_ID";
     @Override
@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
         listViewToday = (ListView) findViewById(R.id.list_today);
         listViewTomorrow = (ListView) findViewById(R.id.list_tomorrow);
         listViewUpcoming = (ListView) findViewById(R.id.list_upcoming);
+        listViewExpired = (ListView) findViewById(R.id.list_expired);
 
         //Start Alarm Manager
         startService(new Intent(this, ReminderAlarmManger.class));
@@ -79,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
         TabHost.TabSpec tab1 = tabHost.newTabSpec("TODAY");
         TabHost.TabSpec tab2 = tabHost.newTabSpec("TOMORROW");
         TabHost.TabSpec tab3 = tabHost.newTabSpec("UPCOMING");
+        TabHost.TabSpec tab4 = tabHost.newTabSpec("EXPIRED");
 
         tab1.setIndicator("TODAY");
         tab1.setContent(R.id.tab1);
@@ -89,9 +91,13 @@ public class MainActivity extends AppCompatActivity {
         tab3.setIndicator("UPCOMING");
         tab3.setContent(R.id.tab3);
 
+        tab4.setIndicator("EXPIRED");
+        tab4.setContent(R.id.tab4);
+
         tabHost.addTab(tab1);
         tabHost.addTab(tab2);
         tabHost.addTab(tab3);
+        tabHost.addTab(tab4);
 
         datasource = new DatabaseAccessAdapter(this);
         datasource.open();
@@ -100,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
         List<Attributes> todayList = datasource.getTodayAttributes();
         List<Attributes> tomorrowList = datasource.getTomorrowAttributes();
         List<Attributes> upcomingList = datasource.getUpcomingAttributes();
+        List<Attributes> expiredList = datasource.getExpiredAttributes();
         // use the SimpleCursorAdapter to show the
         // elements in a ListView
         adapter1 = new ArrayAdapter<Attributes>(this,
@@ -111,9 +118,13 @@ public class MainActivity extends AppCompatActivity {
         adapter3 = new ArrayAdapter<Attributes>(this,
                 android.R.layout.simple_list_item_1, upcomingList);
 
+        adapter4 = new ArrayAdapter<Attributes>(this,
+                android.R.layout.simple_list_item_1, expiredList);
+
         adapter1.notifyDataSetChanged();
         adapter2.notifyDataSetChanged();
         adapter3.notifyDataSetChanged();
+        adapter4.notifyDataSetChanged();
 
         listViewToday.setAdapter(adapter1);
         listViewToday.setOnItemClickListener(new AdapterView.OnItemClickListener()
@@ -153,6 +164,20 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+
+        listViewExpired.setAdapter(adapter4);
+        listViewExpired.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                att = (Attributes) listViewExpired.getItemAtPosition(position);
+                Intent i = new Intent(MainActivity.this, EditActivity.class );
+                i.putExtra("attributeObject", att);
+                startActivity(i);
+            }
+        });
+
     }
 
     private void setIconInMenu(Menu menu, int menuItemId, int labelId, int iconId){

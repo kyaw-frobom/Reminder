@@ -20,6 +20,7 @@ import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
 import java.io.File;
+import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -225,36 +226,32 @@ public class EditActivity extends AppCompatActivity implements DatePickerDialog.
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // TODO Auto-generated method stub
-
+        String PathHolder1 = "";
         switch(requestCode){
 
             case 7:
 
                 if(resultCode == RESULT_OK){
 
-                    String PathHolder1 = (new AddActivity()).getPathFromMediaUri(this,data.getData());
+                    try {
+                         PathHolder1 = (new AddActivity()).getPath(this, data.getData());
+                    }
+                    catch (URISyntaxException msg){
+                        msg.printStackTrace();
+                    }
                     File file = new File(PathHolder1);
                     String fileName1 = file.getName();
-                    //String extension = fileName1.substring(fileName1.lastIndexOf(".") + 1, fileName1.length());
-                   // Log.e("Extension", extension);
-                    //if(extension.equals("mp3")||extension.equals("m4a")||extension.equals("m4b")||
-                           // extension.equals("ogg")||extension.equals("3gp")||extension.equals("wma")||
-                           // extension.equals("msv")){
 
                         PathHolder = PathHolder1;
                         fileName = fileName1;
                         //update itemList1 at the field of Alarm
                         itemList.set(2, new Item("Alarm", fileName));
                         itemsListView.setAdapter(new CustomListAdapter(EditActivity.this, itemList));
-
-                    //}
-                   // else {
-                        //Toast.makeText(this, "You file extension must be audio file!", Toast.LENGTH_SHORT).show();
                         Toast.makeText(EditActivity.this, PathHolder , Toast.LENGTH_LONG).show();
-                    //}
+
 
                 }
-               // break;
+                break;
 
         }
     }
