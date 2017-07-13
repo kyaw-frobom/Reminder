@@ -1,9 +1,12 @@
 package com.frobom.reminder;
 
 
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Path;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -198,7 +201,7 @@ public class AddActivity extends AppCompatActivity implements DatePickerDialog.O
 
                 if(resultCode == RESULT_OK){
 
-                    String PathHolder1 = data.getData().getPath();
+                    String PathHolder1 = getPathFromMediaUri(this,data.getData());
                     File file = new File(PathHolder1);
                     String fileName1 = file.getName();
                     String extension = fileName1.substring(fileName1.lastIndexOf(".") + 1, fileName1.length());
@@ -226,6 +229,18 @@ public class AddActivity extends AppCompatActivity implements DatePickerDialog.O
                 break;
 
         }
+    }
+    public String getPathFromMediaUri(Context context, Uri uri) {
+        String result = null;
+
+        String[] projection = { MediaStore.Audio.Media.DATA };
+        Cursor cursor = context.getContentResolver().query(uri, projection, null, null, null);
+        int col = cursor.getColumnIndex(MediaStore.Audio.Media.DATA);
+        if (col >= 0 && cursor.moveToFirst())
+            result = cursor.getString(col);
+        cursor.close();
+
+        return result;
     }
     public ArrayList<Item> generateItemsList(){
         //setup data of add page

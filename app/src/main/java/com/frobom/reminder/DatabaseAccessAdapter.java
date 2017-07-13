@@ -155,7 +155,7 @@ public class DatabaseAccessAdapter {
             int day = c.get (Calendar.DATE);
             int month = c.get(Calendar.MONTH ) + 1;
             int year = c.get(Calendar.YEAR);
-            String TodayDate = day + "/" + month + "/" + year;
+            String TodayDate = day + "/0" + month + "/" + year;
             Log.e("TodayDate ", TodayDate);
            // Log.e("alarm date ", MySQLiteHelper.alarmDate);
 
@@ -186,7 +186,7 @@ public class DatabaseAccessAdapter {
             int day = c.get (Calendar.DATE) + 1;
             int month = c.get(Calendar.MONTH ) + 1;
             int year = c.get(Calendar.YEAR);
-            String TomorrowDate = day + "/" + month + "/" + year;
+            String TomorrowDate = day + "/0" + month + "/" + year;
 
             Cursor cursor = database.query(MySQLiteHelper.TABLE_NAME,
                     allColumns, null, null, null, null, null);
@@ -213,8 +213,8 @@ public class DatabaseAccessAdapter {
             int day = c.get (Calendar.DATE);
             int month = c.get(Calendar.MONTH ) + 1;
             int year = c.get(Calendar.YEAR);
-            String TodayDate = day + "/" + month + "/" + year;
-            String TomorrowDate = (day + 1) + "/" + month + "/" + year;
+            String TodayDate = day + "/0" + month + "/" + year;
+            String TomorrowDate = (day + 1) + "/0" + month + "/" + year;
             //Log.e("Today Date for Up: " , TodayDate);
             //Log.e("Tomorrow Date for Up : " , TomorrowDate);
 

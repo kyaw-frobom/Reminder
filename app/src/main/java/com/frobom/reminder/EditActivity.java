@@ -134,7 +134,7 @@ public class EditActivity extends AppCompatActivity implements DatePickerDialog.
                     case 2:
                         // Create the ACTION_GET_CONTENT INTENT to open file explorer
                         intent = new Intent(Intent.ACTION_GET_CONTENT);
-                        intent.setType("*/*");
+                        intent.setType("audio/*");
                         startActivityForResult(intent, 7);
 
                         break;
@@ -232,9 +232,7 @@ public class EditActivity extends AppCompatActivity implements DatePickerDialog.
 
                 if(resultCode == RESULT_OK){
 
-                    String PathHolder1 = data.getData().getPath();
-                    //String[] filePath = PathHolder.split("/");
-                   // String fileName = filePath[filePath.length-1];
+                    String PathHolder1 = (new AddActivity()).getPathFromMediaUri(this,data.getData());
                     File file = new File(PathHolder1);
                     String fileName1 = file.getName();
                     //String extension = fileName1.substring(fileName1.lastIndexOf(".") + 1, fileName1.length());
