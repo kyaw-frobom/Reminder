@@ -60,8 +60,8 @@ public class alarm extends AppCompatActivity {
                 if(idgot == values.get(i).getId())
                 {
                     String title = values.get(i).getTitle();
-                    String time = values.get(i).getAlarmDate();
-                    String date = values.get(i).getAlarmTime();
+                    String time = values.get(i).getAlarmTime();
+                    String date = values.get(i).getAlarmDate();
                     String description = values.get(i).getDescription();
 
                     Title.setText(title);
@@ -87,6 +87,7 @@ public class alarm extends AppCompatActivity {
         window.addFlags(LayoutParams.FLAG_DISMISS_KEYGUARD);
         window.addFlags(LayoutParams.FLAG_SHOW_WHEN_LOCKED);
         window.addFlags(LayoutParams.FLAG_TURN_SCREEN_ON);
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         //Remove notification bar
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);

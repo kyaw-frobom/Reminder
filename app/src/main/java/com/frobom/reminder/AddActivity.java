@@ -145,12 +145,20 @@ public class AddActivity extends AppCompatActivity implements DatePickerDialog.O
                     startActivity(refresh);
                     finish();
                 }
+
+                AddActivity.this.stopService(new Intent(AddActivity.this, ReminderAlarmManger.class));
+                AddActivity.this.startService(new Intent(AddActivity.this, ReminderAlarmManger.class));
+
             }
         });
 
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                AddActivity.this.stopService(new Intent(AddActivity.this, ReminderAlarmManger.class));
+                AddActivity.this.startService(new Intent(AddActivity.this, ReminderAlarmManger.class));
+
                 Intent i = new Intent(AddActivity.this, MainActivity.class );
                 startActivity(i);
             }

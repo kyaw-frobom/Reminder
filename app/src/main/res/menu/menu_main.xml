@@ -10,14 +10,12 @@
         android:id="@+id/action_help"
         android:title="@string/action_help"
         android:orderInCategory="100"
-        app:showAsAction="never"
-        android:actionLayout="@layout/cart_update_count"/>
+        app:showAsAction="never"/>
 
     <item
         android:id="@+id/action_feedback"
         android:title="@string/action_feedback"
         android:orderInCategory="100"
-        app:showAsAction="never"
-        android:actionLayout="@layout/cart_update_count"/>
+        app:showAsAction="never" />
 
 </menu>
