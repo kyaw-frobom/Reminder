@@ -1,12 +1,10 @@
 package com.frobom.reminder;
 
-
 import android.annotation.SuppressLint;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Path;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -29,6 +27,7 @@ import java.io.File;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 public class AddActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener{
 
@@ -177,11 +176,31 @@ public class AddActivity extends AppCompatActivity implements DatePickerDialog.O
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
 
         date = String.format("%02d",dayOfMonth) + "/" + String.format("%02d",(monthOfYear + 1)) + "/" + year;
+        Calendar c = Calendar.getInstance();
 
-        Log.e("Date Error ", date);
-        //update itemList at the field of Date
-        itemList.set(0, new Item("Date", date));
-        itemsListView.setAdapter(new CustomListAdapter(this,itemList));
+        c.set(Calendar.HOUR_OF_DAY, 0);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+        c.set(Calendar.MILLISECOND, 0);
+        Date today = c.getTime();
+
+        c.set(Calendar.YEAR, year);
+        c.set(Calendar.MONTH, monthOfYear);
+        c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+        c.set(Calendar.HOUR_OF_DAY, 0);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+        c.set(Calendar.MILLISECOND, 0);
+        Date dateSpecified = c.getTime();
+
+        if(dateSpecified.before(today)){
+            Toast.makeText(this, "You cannot set the date that are expired!", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            //update itemList at the field of Date
+            itemList.set(0, new Item("Date", date));
+            itemsListView.setAdapter(new CustomListAdapter(this, itemList));
+        }
 
     }
 
