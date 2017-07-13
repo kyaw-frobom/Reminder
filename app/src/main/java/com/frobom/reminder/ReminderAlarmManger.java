@@ -62,21 +62,21 @@ public class ReminderAlarmManger extends Service
             for (int i = 0; i < values.size(); i++)
             {
 
-                String[] separatedTimeS = values.get(i).getAlarmDate().split(" ");
+                String[] separatedTimeS = values.get(i).getAlarmTime().split(" ");
                 String separatedTimeSA = separatedTimeS[0];
                 String[] separatedTimeSR = separatedTimeSA.split(":");
                 int TimeS = Integer.parseInt(separatedTimeSR[0]+separatedTimeSR[1]);
                 String AA = separatedTimeS[1];
                 String PM = "PM";
 
-                if (PM.equals(AA))
+                if (PM.equals(AA)&& TimeS>=100)
                 {
                     TimeS += 1200;
                 }
 
-                if ( formattedDate.equals(values.get(i).getAlarmTime()) && TimeN < TimeS)
+                if ( formattedDate.equals(values.get(i).getAlarmDate()) && TimeN < TimeS)
                 {
-                    if (PM.equals(separatedTimeS[1]))
+                    if (PM.equals(separatedTimeS[1]) && TimeS>=100)
                     {
                         hr = Integer.parseInt(separatedTimeSR[0]) + 12;
                     } else

@@ -1,9 +1,15 @@
 package com.frobom.reminder;
 
-
+import android.annotation.SuppressLint;
+import android.content.ContentUris;
+import android.content.Context;
 import android.content.Intent;
-import android.graphics.Path;
+import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
+import android.os.Environment;
+import android.provider.DocumentsContract;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,9 +24,10 @@ import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 public class AddActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener{
 
@@ -145,12 +152,20 @@ public class AddActivity extends AppCompatActivity implements DatePickerDialog.O
                     startActivity(refresh);
                     finish();
                 }
+
+                AddActivity.this.stopService(new Intent(AddActivity.this, ReminderAlarmManger.class));
+                AddActivity.this.startService(new Intent(AddActivity.this, ReminderAlarmManger.class));
+
             }
         });
 
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                AddActivity.this.stopService(new Intent(AddActivity.this, ReminderAlarmManger.class));
+                AddActivity.this.startService(new Intent(AddActivity.this, ReminderAlarmManger.class));
+
                 Intent i = new Intent(AddActivity.this, MainActivity.class );
                 startActivity(i);
             }
@@ -160,15 +175,32 @@ public class AddActivity extends AppCompatActivity implements DatePickerDialog.O
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
 
-        //date = "" + dayOfMonth + "/" + (monthOfYear + 1) + "/" + year;
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat dateF = new SimpleDateFormat("dd/MM/yyyy");
-        String formattedDate = dateF.format(calendar.getTime());
-        date = formattedDate;
+        date = String.format("%02d",dayOfMonth) + "/" + String.format("%02d",(monthOfYear + 1)) + "/" + year;
+        Calendar c = Calendar.getInstance();
 
-        //update itemList at the field of Date
-        itemList.set(0, new Item("Date", date));
-        itemsListView.setAdapter(new CustomListAdapter(this,itemList));
+        c.set(Calendar.HOUR_OF_DAY, 0);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+        c.set(Calendar.MILLISECOND, 0);
+        Date today = c.getTime();
+
+        c.set(Calendar.YEAR, year);
+        c.set(Calendar.MONTH, monthOfYear);
+        c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+        c.set(Calendar.HOUR_OF_DAY, 0);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+        c.set(Calendar.MILLISECOND, 0);
+        Date dateSpecified = c.getTime();
+
+        if(dateSpecified.before(today)){
+            Toast.makeText(this, "You cannot set the date that are expired!", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            //update itemList at the field of Date
+            itemList.set(0, new Item("Date", date));
+            itemsListView.setAdapter(new CustomListAdapter(this, itemList));
+        }
 
     }
 
@@ -187,42 +219,36 @@ public class AddActivity extends AppCompatActivity implements DatePickerDialog.O
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // TODO Auto-generated method stub
-
+        String PathHolder1="";
         switch(requestCode){
 
             case 7:
 
                 if(resultCode == RESULT_OK){
 
-                    String PathHolder1 = data.getData().getPath();
+                    try {
+                        PathHolder1 = getPath(this, data.getData());
+                    }
+                    catch (URISyntaxException e) {
+                    }
+                    //String PathHolder1 = data.getData().getPath();
+                    Log.e("Path ", PathHolder1);
                     File file = new File(PathHolder1);
                     String fileName1 = file.getName();
-                    String extension = fileName1.substring(fileName1.lastIndexOf(".") + 1, fileName1.length());
-                    //String extension = FilenameUtils.getExtension(mFile.getName());
-                    //String extension = file1.getAbsolutePath().substring(file1.getAbsolutePath().lastIndexOf("."));
-
+                   // String extension = fileName1.substring(fileName1.lastIndexOf(".") + 1, fileName1.length());
                     Log.e("Path : ",PathHolder1);
-                    Log.e("Extension", extension);
-                    if(extension.equals("mp3")||extension.equals("m4a")||extension.equals("m4b")||
-                            extension.equals("ogg")||extension.equals("3gp")||extension.equals("wma")||
-                            extension.equals("msv")){
-                       // Toast.makeText(AddActivity.this, PathHolder, Toast.LENGTH_LONG).show();
 
                         PathHolder = PathHolder1;
                         fileName = fileName1;
                         //update itemList1 at the field of Alarm
                         itemList.set(2, new Item("Alarm", fileName));
                         itemsListView.setAdapter(new CustomListAdapter(AddActivity.this, itemList));
-                    }
-
-                    else {
-                        Toast.makeText(this, "You file extension must be audio file!", Toast.LENGTH_SHORT).show();
-                    }
                 }
                 break;
 
         }
     }
+
     public ArrayList<Item> generateItemsList(){
         //setup data of add page
         return itemList;
@@ -243,4 +269,79 @@ public class AddActivity extends AppCompatActivity implements DatePickerDialog.O
         stopService(new Intent(this, ReminderAlarmManger.class));
         startService(new Intent(this, ReminderAlarmManger.class));
     }
+
+    @SuppressLint("NewApi")
+    public static String getPath(Context context, Uri uri) throws URISyntaxException {
+        final boolean needToCheckUri = Build.VERSION.SDK_INT >= 19;
+        String selection = null;
+        String[] selectionArgs = null;
+        // Uri is different in versions after KITKAT (Android 4.4), we need to
+        // deal with different Uris.
+        if (needToCheckUri && DocumentsContract.isDocumentUri(context.getApplicationContext(), uri)) {
+            if (isExternalStorageDocument(uri)) {
+                final String docId = DocumentsContract.getDocumentId(uri);
+                final String[] split = docId.split(":");
+                return Environment.getExternalStorageDirectory() + "/" + split[1];
+            } else if (isDownloadsDocument(uri)) {
+                final String id = DocumentsContract.getDocumentId(uri);
+                uri = ContentUris.withAppendedId(
+                        Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
+            } else if (isMediaDocument(uri)) {
+                final String docId = DocumentsContract.getDocumentId(uri);
+                final String[] split = docId.split(":");
+                final String type = split[0];
+                if ("image".equals(type)) {
+                    uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+                } else if ("video".equals(type)) {
+                    uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
+                } else if ("audio".equals(type)) {
+                    uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+                }
+                selection = "_id=?";
+                selectionArgs = new String[]{split[1]};
+            }
+        }
+        if ("content".equalsIgnoreCase(uri.getScheme())) {
+            String[] projection = {MediaStore.Images.Media.DATA};
+            Cursor cursor = null;
+            try {
+                cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs, null);
+                int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                if (cursor.moveToFirst()) {
+                    return cursor.getString(column_index);
+                }
+            } catch (Exception e) {
+            }
+        } else if ("file".equalsIgnoreCase(uri.getScheme())) {
+            return uri.getPath();
+        }
+        return null;
+    }
+
+
+    /**
+     * @param uri The Uri to check.
+     * @return Whether the Uri authority is ExternalStorageProvider.
+     */
+    public static boolean isExternalStorageDocument(Uri uri) {
+        return "com.android.externalstorage.documents".equals(uri.getAuthority());
+    }
+
+    /**
+     * @param uri The Uri to check.
+     * @return Whether the Uri authority is DownloadsProvider.
+     */
+    public static boolean isDownloadsDocument(Uri uri) {
+        return "com.android.providers.downloads.documents".equals(uri.getAuthority());
+    }
+
+    /**
+     * @param uri The Uri to check.
+     * @return Whether the Uri authority is MediaProvider.
+     */
+    public static boolean isMediaDocument(Uri uri) {
+        return "com.android.providers.media.documents".equals(uri.getAuthority());
+    }
 }
+
+

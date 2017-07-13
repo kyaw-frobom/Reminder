@@ -1,26 +1,16 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.frobom.reminder.MainActivity" >
+    tools:context="com.frobom.reminder.MainActivity"
+    android:divider="#FFFFFF"
+    android:dividerHeight="2px">
 
 
     <item
-
         android:id="@+id/action_help"
         android:title="@string/action_help"
         android:orderInCategory="100"
-        app:showAsAction="never" />
-
-
-    <TextView
-        android:id="@+id/line"
-        style="?android:attr/listSeparatorTextViewStyle"
-        android:paddingTop="5dip"
-        android:gravity="center_horizontal"
-        android:layout_below="@+id/action_help"
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="#000" />
+        app:showAsAction="never"/>
 
     <item
         android:id="@+id/action_feedback"

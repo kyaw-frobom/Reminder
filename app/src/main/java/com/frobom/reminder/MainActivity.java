@@ -1,18 +1,10 @@
 package com.frobom.reminder;
 
-
-import android.content.Context;
-import android.app.Activity;
-import android.app.ListActivity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.Toolbar;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
@@ -23,20 +15,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TabHost;
-import android.widget.TabWidget;
 import android.widget.Toast;
-
 import java.util.List;
 
-import java.util.Random;
-
-import static java.lang.System.out;
-
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
 
     public DatabaseAccessAdapter datasource;
     private ListView listViewToday, listViewTomorrow, listViewUpcoming;
@@ -45,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayAdapter<Attributes> adapter1, adapter2, adapter3;
     private String TO = "eiyadanr70@gmial.com";
     public final static String ID_EXTRA = "com.frobom.reminder_ID";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Start Alarm Manager
         startService(new Intent(this, ReminderAlarmManger.class));
+        startService(new Intent(this, RefreshManager.class));
 
         listViewToday = (ListView) findViewById(R.id.list_today);
         listViewTomorrow = (ListView) findViewById(R.id.list_tomorrow);
@@ -79,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
         TabHost.TabSpec tab2 = tabHost.newTabSpec("TOMORROW");
         TabHost.TabSpec tab3 = tabHost.newTabSpec("UPCOMING");
 
+
         tab1.setIndicator("TODAY");
         tab1.setContent(R.id.tab1);
 
@@ -99,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
         List<Attributes> todayList = datasource.getTodayAttributes();
         List<Attributes> tomorrowList = datasource.getTomorrowAttributes();
         List<Attributes> upcomingList = datasource.getUpcomingAttributes();
+
         // use the SimpleCursorAdapter to show the
         // elements in a ListView
         adapter1 = new ArrayAdapter<Attributes>(this,
@@ -109,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
 
         adapter3 = new ArrayAdapter<Attributes>(this,
                 android.R.layout.simple_list_item_1, upcomingList);
+
 
         adapter1.notifyDataSetChanged();
         adapter2.notifyDataSetChanged();
@@ -152,6 +141,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+
     }
 
     private void setIconInMenu(Menu menu, int menuItemId, int labelId, int iconId){
@@ -193,6 +183,7 @@ public class MainActivity extends AppCompatActivity {
                 R.drawable.ic_action_help
         );
 
+      menu.setGroupEnabled(1,true);
         setIconInMenu(
                 menu,
                 R.id.action_feedback,
