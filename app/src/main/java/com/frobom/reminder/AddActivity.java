@@ -202,6 +202,8 @@ public class AddActivity extends AppCompatActivity implements DatePickerDialog.O
                 if(resultCode == RESULT_OK){
 
                     String PathHolder1 = getPathFromMediaUri(this,data.getData());
+                    //String PathHolder1 = data.getData().getPath();
+                    Log.e("Path ", PathHolder1);
                     File file = new File(PathHolder1);
                     String fileName1 = file.getName();
                     String extension = fileName1.substring(fileName1.lastIndexOf(".") + 1, fileName1.length());
