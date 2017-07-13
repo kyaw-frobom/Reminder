@@ -138,8 +138,8 @@ public class DatabaseAccessAdapter {
             att.setId(cursor.getInt(0));
             att.setTitle(cursor.getString(1));
             att.setDescription(cursor.getString(2));
-            att.setAlarmDate(cursor.getString(3));
-            att.setAlarmTime(cursor.getString(4));
+            att.setAlarmTime(cursor.getString(3));
+            att.setAlarmDate(cursor.getString(4));
             att.setAlarmPath(cursor.getString(5));
             att.setEnabled(cursor.getString(6));
             return att;

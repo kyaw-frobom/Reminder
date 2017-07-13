@@ -14,10 +14,25 @@ public class RefreshManager extends Service
     private AlarmManager alarmMgr;
     private PendingIntent alarmIntent;
 
-    public RefreshManager()
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent)
     {
+        // TODO: Return the communication channel to the service.
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
 
-        Intent intent = new Intent(this, RefreshReciver.class);
+    @Override
+    public void onCreate()
+    {
+        super.onCreate();
+
+        if (alarmMgr!= null)
+        {
+            alarmMgr.cancel(alarmIntent);
+        }
+
+        Intent intent = new Intent(this, RefreshReceiver.class);
         alarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
 
 
@@ -33,14 +48,4 @@ public class RefreshManager extends Service
         alarmMgr.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, alarmIntent);
 
     }
-
-    @Nullable
-    @Override
-    public IBinder onBind(Intent intent)
-    {
-        // TODO: Return the communication channel to the service.
-        throw new UnsupportedOperationException("Not yet implemented");
-    }
-
-
 }

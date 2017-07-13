@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Start Alarm Manager
         startService(new Intent(this, ReminderAlarmManger.class));
+        startService(new Intent(this, RefreshManager.class));
 
         listViewToday = (ListView) findViewById(R.id.list_today);
         listViewTomorrow = (ListView) findViewById(R.id.list_tomorrow);

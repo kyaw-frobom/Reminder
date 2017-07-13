@@ -6,7 +6,8 @@ android:layout_height="match_parent"
         tools:context="com.frobom.reminder.alarm"
         android:background="@drawable/background"
         android:paddingLeft="25dp"
-        android:paddingRight="25dp">
+        android:paddingRight="25dp"
+        android:keepScreenOn="true">
 
         <TextView
             android:id="@+id/titleAlarm"

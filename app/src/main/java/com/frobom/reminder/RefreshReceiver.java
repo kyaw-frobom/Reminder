@@ -8,7 +8,7 @@ import android.content.Intent;
  * Created by ソーイエーリン on 12-Jul-17.
  */
 
-public class RefreshReciver extends BroadcastReceiver
+public class RefreshReceiver extends BroadcastReceiver
 {
 
     @Override

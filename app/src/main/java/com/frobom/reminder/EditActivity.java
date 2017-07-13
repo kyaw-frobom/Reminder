@@ -179,12 +179,19 @@ public class EditActivity extends AppCompatActivity implements DatePickerDialog.
                     setTitle("Detail");
                 }
 
+                stopService(new Intent(EditActivity.this, ReminderAlarmManger.class));
+                startService(new Intent(EditActivity.this, ReminderAlarmManger.class));
+
             }
         });
 
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                stopService(new Intent(EditActivity.this, ReminderAlarmManger.class));
+                startService(new Intent(EditActivity.this, ReminderAlarmManger.class));
+
                 Intent i = new Intent(EditActivity.this, MainActivity.class );
                 startActivity(i);
             }
