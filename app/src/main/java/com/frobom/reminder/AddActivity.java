@@ -18,7 +18,6 @@ import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -168,11 +167,7 @@ public class AddActivity extends AppCompatActivity implements DatePickerDialog.O
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
 
-        //date = "" + dayOfMonth + "/" + (monthOfYear + 1) + "/" + year;
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat dateF = new SimpleDateFormat("dd/MM/yyyy");
-        String formattedDate = dateF.format(calendar.getTime());
-        date = formattedDate;
+        date = String.format("%02d",dayOfMonth) + "/" + String.format("%02d",(monthOfYear + 1)) + "/" + year;
 
         //update itemList at the field of Date
         itemList.set(0, new Item("Date", date));
