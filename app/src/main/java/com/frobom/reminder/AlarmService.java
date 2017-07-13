@@ -62,24 +62,19 @@ public class AlarmService extends Service
         //mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.redzonefullmix);
 
 
-        mediaPlayer = MediaPlayer.create(this, Uri.parse(Environment.getExternalStorageDirectory().getPath()+ path));
+        mediaPlayer = MediaPlayer.create(AlarmService.this, Uri.parse(Environment.getExternalStorageDirectory().getPath()+ path));
         //mediaPlayer.setDataSource(filePath);
 
 
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                //Do something after 100ms
-                mediaPlayer.setWakeMode(getApplicationContext(), PowerManager.PARTIAL_WAKE_LOCK);
-                mediaPlayer.setVolume(50,50);
-                mediaPlayer.setScreenOnWhilePlaying(true);
-                mediaPlayer.setLooping(true);
+        //mediaPlayer.setWakeMode(getApplicationContext(), PowerManager.PARTIAL_WAKE_LOCK);
+        if(mediaPlayer != null && mediaPlayer.isPlaying() != true)
+        {
+            mediaPlayer.setVolume(50, 50);
+            mediaPlayer.setScreenOnWhilePlaying(true);
+            mediaPlayer.setLooping(true);
 
-                mediaPlayer.start();
-            }
-        }, 10000);
-
+            mediaPlayer.start();
+        }
     }
 
     public void setData(int idGet)
