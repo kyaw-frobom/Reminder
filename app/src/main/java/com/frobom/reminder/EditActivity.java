@@ -237,11 +237,11 @@ public class EditActivity extends AppCompatActivity implements DatePickerDialog.
                    // String fileName = filePath[filePath.length-1];
                     File file = new File(PathHolder1);
                     String fileName1 = file.getName();
-                    String extension = fileName1.substring(fileName1.lastIndexOf(".") + 1, fileName1.length());
-                    Log.e("Extension", extension);
-                    if(extension.equals("mp3")||extension.equals("m4a")||extension.equals("m4b")||
-                            extension.equals("ogg")||extension.equals("3gp")||extension.equals("wma")||
-                            extension.equals("msv")){
+                    //String extension = fileName1.substring(fileName1.lastIndexOf(".") + 1, fileName1.length());
+                   // Log.e("Extension", extension);
+                    //if(extension.equals("mp3")||extension.equals("m4a")||extension.equals("m4b")||
+                           // extension.equals("ogg")||extension.equals("3gp")||extension.equals("wma")||
+                           // extension.equals("msv")){
 
                         PathHolder = PathHolder1;
                         fileName = fileName1;
@@ -249,14 +249,14 @@ public class EditActivity extends AppCompatActivity implements DatePickerDialog.
                         itemList.set(2, new Item("Alarm", fileName));
                         itemsListView.setAdapter(new CustomListAdapter(EditActivity.this, itemList));
 
-                    }
-                    else {
-                        Toast.makeText(this, "You file extension must be audio file!", Toast.LENGTH_SHORT).show();
+                    //}
+                   // else {
+                        //Toast.makeText(this, "You file extension must be audio file!", Toast.LENGTH_SHORT).show();
                         Toast.makeText(EditActivity.this, PathHolder , Toast.LENGTH_LONG).show();
-                    }
+                    //}
 
                 }
-                break;
+               // break;
 
         }
     }

@@ -169,6 +169,7 @@ public class AddActivity extends AppCompatActivity implements DatePickerDialog.O
 
         date = String.format("%02d",dayOfMonth) + "/" + String.format("%02d",(monthOfYear + 1)) + "/" + year;
 
+        Log.e("Date Error ", date);
         //update itemList at the field of Date
         itemList.set(0, new Item("Date", date));
         itemsListView.setAdapter(new CustomListAdapter(this,itemList));
@@ -206,9 +207,9 @@ public class AddActivity extends AppCompatActivity implements DatePickerDialog.O
 
                     Log.e("Path : ",PathHolder1);
                     Log.e("Extension", extension);
-                    if(extension.equals("mp3")||extension.equals("m4a")||extension.equals("m4b")||
-                            extension.equals("ogg")||extension.equals("3gp")||extension.equals("wma")||
-                            extension.equals("msv")){
+                    //if(extension.equals("mp3")||extension.equals("m4a")||extension.equals("m4b")||
+                     //       extension.equals("ogg")||extension.equals("3gp")||extension.equals("wma")||
+                     //      extension.equals("msv")){
                        // Toast.makeText(AddActivity.this, PathHolder, Toast.LENGTH_LONG).show();
 
                         PathHolder = PathHolder1;
@@ -216,11 +217,11 @@ public class AddActivity extends AppCompatActivity implements DatePickerDialog.O
                         //update itemList1 at the field of Alarm
                         itemList.set(2, new Item("Alarm", fileName));
                         itemsListView.setAdapter(new CustomListAdapter(AddActivity.this, itemList));
-                    }
+                   // }
 
-                    else {
-                        Toast.makeText(this, "You file extension must be audio file!", Toast.LENGTH_SHORT).show();
-                    }
+                   // else {
+                   //     Toast.makeText(this, "You file extension must be audio file!", Toast.LENGTH_SHORT).show();
+                   // }
                 }
                 break;
 

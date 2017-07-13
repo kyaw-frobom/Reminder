@@ -118,8 +118,7 @@
                 <Button
                     android:id="@+id/help_button4"
                     style="@style/HelpButton.Dark"
-                    android:layout_width="80dp"
-                    android:layout_height="118dp"
+                    android:layout_width="180dip"
                     android:drawableTop="@drawable/light_bulb_default"
                     android:text="@string/help_title_section4" />
 

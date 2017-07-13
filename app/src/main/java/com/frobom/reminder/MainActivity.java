@@ -194,6 +194,7 @@ public class MainActivity extends AppCompatActivity {
                 R.drawable.ic_action_help
         );
 
+      menu.setGroupEnabled(1,true);
         setIconInMenu(
                 menu,
                 R.id.action_feedback,

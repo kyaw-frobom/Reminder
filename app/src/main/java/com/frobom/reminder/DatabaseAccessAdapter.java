@@ -66,6 +66,8 @@ public class DatabaseAccessAdapter {
             Cursor cursor = database.query( MySQLiteHelper.TABLE_NAME,
                     allColumns, MySQLiteHelper.id + " = " + insertId, null,
                     null, null, null);
+           // Log.e(" Time : ", cursor.getString(0));
+            //Log.e(" Date : ", cursor.getString(1));
             Log.e("Test","Successfully query");
 
             cursor.moveToFirst();
@@ -154,14 +156,21 @@ public class DatabaseAccessAdapter {
             int month = c.get(Calendar.MONTH ) + 1;
             int year = c.get(Calendar.YEAR);
             String TodayDate = day + "/" + month + "/" + year;
+            Log.e("TodayDate ", TodayDate);
+           // Log.e("alarm date ", MySQLiteHelper.alarmDate);
 
             Cursor cursor = database.query(MySQLiteHelper.TABLE_NAME,
-                    allColumns, MySQLiteHelper.alarmDate + " = " + TodayDate , null, null, null, null);
+                    allColumns, null, null, null, null, null);
 
+
+            //Log.e("Date ", cursor.getString(3));
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
                 Attributes atti = cursorToAttribute(cursor);
-                attributeList.add(atti);
+                Log.e("atti ", atti.getAlarmDate());
+
+                if( atti.getAlarmDate().equals(TodayDate))
+                    attributeList.add(atti);
                 cursor.moveToNext();
             }
 
@@ -180,12 +189,15 @@ public class DatabaseAccessAdapter {
             String TomorrowDate = day + "/" + month + "/" + year;
 
             Cursor cursor = database.query(MySQLiteHelper.TABLE_NAME,
-                    allColumns, MySQLiteHelper.alarmDate + " = " + TomorrowDate, null, null, null, null);
+                    allColumns, null, null, null, null, null);
 
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
+                //Log.e("Tomorrow date : ", TomorrowDate);
+                //Log.e("Tomorrow cursor count:", ""+cursor.getCount());
                 Attributes atti = cursorToAttribute(cursor);
-                attributeList.add(atti);
+                if( atti.getAlarmDate().equals(TomorrowDate))
+                    attributeList.add(atti);
                 cursor.moveToNext();
             }
 
@@ -203,19 +215,22 @@ public class DatabaseAccessAdapter {
             int year = c.get(Calendar.YEAR);
             String TodayDate = day + "/" + month + "/" + year;
             String TomorrowDate = (day + 1) + "/" + month + "/" + year;
-            Log.e("Today Date : " , TodayDate);
-            Log.e("Tomorrow Date : " , TomorrowDate);
+            //Log.e("Today Date for Up: " , TodayDate);
+            //Log.e("Tomorrow Date for Up : " , TomorrowDate);
 
             Cursor cursor = database.query(MySQLiteHelper.TABLE_NAME,
-                    allColumns, MySQLiteHelper.alarmDate + " != " + TodayDate + " AND "
-                            + MySQLiteHelper.alarmDate + " != " + TomorrowDate,
+                    allColumns, null,
                     null, null, null, null);
-
+            Log.e("cursor for UpComing ", ""+cursor.getCount());
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
                 Attributes atti = cursorToAttribute(cursor);
-                attributeList.add(atti);
+                if( !atti.getAlarmDate().equals(TodayDate) && !atti.getAlarmDate().equals(TomorrowDate) ) {
+                    Log.e("first ", atti.getAlarmDate());
+                    attributeList.add(atti);
+                }
                 cursor.moveToNext();
+                //Log.e("attribute list size ", ""+attributeList.size());
             }
 
             // make sure to close the cursor
