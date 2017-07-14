@@ -21,6 +21,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
 public class alarm extends AppCompatActivity implements MediaPlayer.OnPreparedListener {
@@ -54,7 +56,7 @@ public class alarm extends AppCompatActivity implements MediaPlayer.OnPreparedLi
         id=0;
 
         Bundle f = new Bundle();
-        f.clear();
+        f.remove("id2");
         f = this.getIntent().getExtras();
         id = f.getInt("id2");
         f.clear();
@@ -129,10 +131,39 @@ public class alarm extends AppCompatActivity implements MediaPlayer.OnPreparedLi
         List<Attributes> values = datasource.getAllAttributes();
 
 
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat dateF = new SimpleDateFormat("dd/MM/yyyy");
+        String formattedDate = dateF.format(calendar.getTime());
+
+        SimpleDateFormat timeF = new SimpleDateFormat("kk:mm");
+        String formattedTime = timeF.format(calendar.getTime());
+
+        String[] separatedTimeN = formattedTime.split(":");
+        int TimeN = Integer.parseInt(separatedTimeN[0]+separatedTimeN[1]);
+
+
         if(values.size()>0) {
             for (int i = 0; i < values.size(); i++)
             {
-                if(idgot == values.get(i).getId())
+
+                String[] separatedTimeS = values.get(i).getAlarmTime().split(" ");
+                String separatedTimeSA = separatedTimeS[0];
+                String[] separatedTimeSR = separatedTimeSA.split(":");
+                int TimeS = Integer.parseInt(separatedTimeSR[0]+separatedTimeSR[1]);
+                String AA = separatedTimeS[1];
+                String PM = "PM";
+
+                if(PM.equals(AA) && 100<=TimeS && TimeS>=1200)
+                {
+                    trigger= 1 ;
+                }
+
+                if (PM.equals(AA)&& TimeS>=100 && trigger==0)
+                {
+                    TimeS += 1200;
+                }
+
+                if( formattedDate.equals(values.get(i).getAlarmDate()) && TimeN == TimeS)
                 {
                     String title = values.get(i).getTitle();
                     String time = values.get(i).getAlarmTime();
@@ -158,10 +189,10 @@ public class alarm extends AppCompatActivity implements MediaPlayer.OnPreparedLi
 
         Window window = this.getWindow();
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
-        window.addFlags(LayoutParams.FLAG_DISMISS_KEYGUARD);
-        window.addFlags(LayoutParams.FLAG_SHOW_WHEN_LOCKED);
-        window.addFlags(LayoutParams.FLAG_TURN_SCREEN_ON);
-        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD|
+                    WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED|
+                    WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON|
+                    WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         //Remove notification bar
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);

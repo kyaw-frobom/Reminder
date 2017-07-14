@@ -112,7 +112,7 @@ public class ReminderAlarmManger extends Service
             Alarm_manager = (AlarmManager) getSystemService(ALARM_SERVICE);
             Intent intent = new Intent(this, AlarmReceiver.class);
             Bundle c = new Bundle();
-            c.clear();
+            c.remove("id");
             c.putInt("id",Aid);
 
             Log.d("ReminderManager", String.valueOf(Aid));

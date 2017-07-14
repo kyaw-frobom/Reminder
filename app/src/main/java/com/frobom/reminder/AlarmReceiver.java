@@ -20,7 +20,7 @@ public class AlarmReceiver extends BroadcastReceiver
 
         DD = 0;
         Bundle b = new Bundle();
-        b.clear();
+        b.remove("id");
         b = intent.getExtras();
         DD = b.getInt("id");
         b.clear();
@@ -29,6 +29,7 @@ public class AlarmReceiver extends BroadcastReceiver
 
         Intent Alarm = new Intent(context,AlarmService.class);
         Bundle d = new Bundle();
+        d.remove("id1");
         d.putInt("id1",DD);
         Alarm.putExtras(d);
         context.startService(Alarm);

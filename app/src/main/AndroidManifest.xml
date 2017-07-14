@@ -28,7 +28,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".alarm" />
+        <activity
+            android:name=".alarm"
+            android:showOnLockScreen="true"
+            android:screenOrientation="sensorPortrait" />
 
         <service
             android:name=".AlarmService"
