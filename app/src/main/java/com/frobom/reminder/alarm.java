@@ -12,6 +12,7 @@ import android.support.v13.app.ActivityCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager.LayoutParams;
@@ -25,8 +26,11 @@ import java.util.List;
 public class alarm extends AppCompatActivity implements MediaPlayer.OnPreparedListener {
 
     public DatabaseAccessAdapter datasource;
-    private int idgot;
+    private int idgot =0;
     private int trigger = 0;
+    private int id=0;
+
+    private static final String tag = "alarm";
 
     MediaPlayer mediaPlayer;
 
@@ -34,7 +38,6 @@ public class alarm extends AppCompatActivity implements MediaPlayer.OnPreparedLi
 
     public TextView Title;
     public TextView Clock;
-    public TextView Date;
     public TextView Content;
 
     // Storage Permissions
@@ -47,9 +50,16 @@ public class alarm extends AppCompatActivity implements MediaPlayer.OnPreparedLi
         setContentView(R.layout.activity_alarm);
 
         trigger=0;
+        idgot=0;
+        id=0;
 
-        Bundle b = this.getIntent().getExtras();
-        int id = b.getInt("id");
+        Bundle f = new Bundle();
+        f.clear();
+        f = this.getIntent().getExtras();
+        id = f.getInt("id2");
+        f.clear();
+
+        Log.d(tag, String.valueOf(id));
 
         verifyStoragePermissions(alarm.this);
 
@@ -111,7 +121,6 @@ public class alarm extends AppCompatActivity implements MediaPlayer.OnPreparedLi
         idgot=idGet;
         Title = (TextView)findViewById(R.id.titleAlarm);
         Clock = (TextView)findViewById(R.id.clockAlarm);
-        Date = (TextView)findViewById(R.id.dateAlarm);
         Content = (TextView)findViewById(R.id.contentAlarm);
 
         datasource = new DatabaseAccessAdapter(this);
@@ -127,13 +136,11 @@ public class alarm extends AppCompatActivity implements MediaPlayer.OnPreparedLi
                 {
                     String title = values.get(i).getTitle();
                     String time = values.get(i).getAlarmTime();
-                    String date = values.get(i).getAlarmDate();
                     String description = values.get(i).getDescription();
                     path = values.get(i).getAlarmPath();
 
                     Title.setText(title);
                     Clock.setText(time);
-                    Date.setText(date);
                     Content.setText(description);
 
                     break;
@@ -193,7 +200,6 @@ public class alarm extends AppCompatActivity implements MediaPlayer.OnPreparedLi
         startService(new Intent(this, ReminderAlarmManger.class));
 
         finish();
-
     }
 
     @Override

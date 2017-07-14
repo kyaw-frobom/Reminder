@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.app.AlarmManager;
+import android.util.Log;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
@@ -22,6 +24,8 @@ public class ReminderAlarmManger extends Service
     private int min;
     private int AlarmSetTrigger = 0;
 
+    public int trigger=0;
+
 
     @Nullable
     @Override
@@ -33,6 +37,8 @@ public class ReminderAlarmManger extends Service
     @Override
     public void onCreate()
     {
+
+        trigger = 0;
 
         if (Alarm_manager!= null)
         {
@@ -69,14 +75,19 @@ public class ReminderAlarmManger extends Service
                 String AA = separatedTimeS[1];
                 String PM = "PM";
 
-                if (PM.equals(AA)&& TimeS>=100)
+                if(PM.equals(AA) && 100<=TimeS && TimeS>=1200)
+                {
+                    trigger= 1 ;
+                }
+
+                if (PM.equals(AA)&& TimeS>=100 && trigger==0)
                 {
                     TimeS += 1200;
                 }
 
                 if ( formattedDate.equals(values.get(i).getAlarmDate()) && TimeN < TimeS)
                 {
-                    if (PM.equals(separatedTimeS[1]) && TimeS>=100)
+                    if (PM.equals(separatedTimeS[1]) && TimeS>=100 && trigger == 0)
                     {
                         hr = Integer.parseInt(separatedTimeSR[0]) + 12;
                     } else
@@ -87,7 +98,9 @@ public class ReminderAlarmManger extends Service
                     min = Integer.parseInt(separatedTimeSR[1]);
 
                     Aid = values.get(i).getId();
+
                     AlarmSetTrigger = 1;
+                    trigger=0;
                     break;
                 }
             }
@@ -99,7 +112,11 @@ public class ReminderAlarmManger extends Service
             Alarm_manager = (AlarmManager) getSystemService(ALARM_SERVICE);
             Intent intent = new Intent(this, AlarmReceiver.class);
             Bundle c = new Bundle();
+            c.clear();
             c.putInt("id",Aid);
+
+            Log.d("ReminderManager", String.valueOf(Aid));
+
             intent.putExtras(c);
             alarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
 
