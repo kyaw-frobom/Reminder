@@ -45,7 +45,6 @@ public class alarm extends AppCompatActivity {
         idgot=idGet;
         Title = (TextView)findViewById(R.id.titleAlarm);
         Clock = (TextView)findViewById(R.id.clockAlarm);
-        Date = (TextView)findViewById(R.id.dateAlarm);
         Content = (TextView)findViewById(R.id.contentAlarm);
 
         datasource = new DatabaseAccessAdapter(this);
@@ -61,12 +60,10 @@ public class alarm extends AppCompatActivity {
                 {
                     String title = values.get(i).getTitle();
                     String time = values.get(i).getAlarmTime();
-                    String date = values.get(i).getAlarmDate();
                     String description = values.get(i).getDescription();
 
                     Title.setText(title);
                     Clock.setText(time);
-                    Date.setText(date);
                     Content.setText(description);
 
                     break;

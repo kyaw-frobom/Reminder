@@ -1,5 +1,6 @@
 package com.frobom.reminder;
 
+import android.app.Activity;
 import android.app.Service;
 import android.content.Intent;
 import android.media.AudioManager;
@@ -27,6 +28,7 @@ public class AlarmService extends Service
     int idgot;
     String path="";
     public DatabaseAccessAdapter datasource;
+    private Activity activity;
 
     @Nullable
     @Override
@@ -70,12 +72,14 @@ public class AlarmService extends Service
            // mediaPlayer = MediaPlayer.create(this, Uri.parse(path));
             mediaPlayer = new MediaPlayer();
            // mediaPlayer.setDataSource("file://"+path);
-            File file = new File(path);
-            FileInputStream inputStream = new FileInputStream(file);
-            mediaPlayer.setDataSource(inputStream.getFD());
+            File file = new File("file://"+path);
+            Uri uri = Uri.fromFile(file);
+            //FileInputStream inputStream = new FileInputStream(file);
+            //mediaPlayer.setDataSource(inputStream.getFD());
+            mediaPlayer.setDataSource(activity, uri);
 
             // mediaPlayer.prepare();;
-            inputStream.close();
+           // inputStream.close();
         }
         catch (IOException e){
             e.printStackTrace();

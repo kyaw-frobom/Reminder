@@ -203,7 +203,7 @@ public class EditActivity extends AppCompatActivity implements DatePickerDialog.
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
 
         date = String.format("%02d",dayOfMonth) + "/" + String.format("%02d",(monthOfYear + 1)) + "/" + year;
-        date = String.format("%02d",dayOfMonth) + "/" + String.format("%02d",(monthOfYear + 1)) + "/" + year;
+
         Calendar c = Calendar.getInstance();
 
         c.set(Calendar.HOUR_OF_DAY, 0);
@@ -256,9 +256,9 @@ public class EditActivity extends AppCompatActivity implements DatePickerDialog.
                 if(resultCode == RESULT_OK){
 
                     try {
-                         PathHolder1 = (new AddActivity()).getPath(this, data.getData());
+                        // PathHolder1 = (new AddActivity()).getPath(this, data.getData());
                     }
-                    catch (URISyntaxException msg){
+                    catch (Exception msg){
                         msg.printStackTrace();
                     }
                     File file = new File(PathHolder1);

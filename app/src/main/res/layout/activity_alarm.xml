@@ -54,7 +54,7 @@
             android:textSize="24sp"
             tools:ignore="HardcodedText,SpUsage" />
 
-        <EditText
+        <TextView
             android:id="@+id/contentAlarm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -74,7 +74,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:background="@color/colorPrimary"
-            android:nt="center"
+            android:layout_gravity="center"
             android:text="Got It" />
 
     </LinearLayout>
