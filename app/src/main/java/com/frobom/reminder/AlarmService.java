@@ -14,6 +14,8 @@ import android.os.PowerManager;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
 
@@ -62,12 +64,18 @@ public class AlarmService extends Service
 
         // mediaPlayer = MediaPlayer.create(AlarmService.this, Uri.parse(Environment.getExternalStorageDirectory().getPath()+ path));
         //mediaPlayer.setDataSource(filePath);
-        Log.e("Path fo alarm ", path);
+
         try{
+            Log.e("Path of alarm ", path);
            // mediaPlayer = MediaPlayer.create(this, Uri.parse(path));
             mediaPlayer = new MediaPlayer();
-            mediaPlayer.setDataSource(path);
-           // mediaPlayer.prepare();
+           // mediaPlayer.setDataSource("file://"+path);
+            File file = new File(path);
+            FileInputStream inputStream = new FileInputStream(file);
+            mediaPlayer.setDataSource(inputStream.getFD());
+
+            // mediaPlayer.prepare();;
+            inputStream.close();
         }
         catch (IOException e){
             e.printStackTrace();
@@ -122,7 +130,7 @@ public class AlarmService extends Service
     public void onDestroy()
     {
         super.onDestroy();
-        mediaPlayer.stop();
+       // mediaPlayer.stop();
         mediaPlayer.release();
         stopService(new Intent(this, ReminderAlarmManger.class));
         startService(new Intent(this, ReminderAlarmManger.class));
