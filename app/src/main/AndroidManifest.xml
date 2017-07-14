@@ -49,6 +49,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.frobom.reminder.MainActivity"/>
         </activity>
+        <activity
+            android:name=".HelpActivity"
+            android:label="@string/title_activity_help"
+            android:parentActivityName=".MainActivity">
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.frobom.reminder.MainActivity"/>
+        </activity>
 
         <service
             android:name=".ReminderAlarmManger"
@@ -66,8 +75,6 @@
             android:enabled="true">
 
         </receiver>
-
-        <activity android:name=".HelpActivity" />
 
         <service
             android:name=".RefreshManager"
