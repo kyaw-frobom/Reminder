@@ -6,26 +6,37 @@
         android:layout_height="match_parent"
         tools:context="com.frobom.reminder.alarm"
         android:background="@drawable/background"
-        android:paddingLeft="25dp"
-        android:paddingRight="25dp"
         android:keepScreenOn="true">
 
+    <ImageView
+        android:id="@+id/reminder_pic"
+        app:srcCompat="@drawable/alarm"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="10dp"
+        tools:ignore="ContentDescription" />
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/reminder_title"
+        android:text="Reminder"
+        android:textColor="#ffff"
+        android:textSize="25dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:weightSum="1">
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/reminder_pic"
+        tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
 
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="match_parent"
-            android:layout_height="114dp"
-            android:layout_alignParentTop="true"
+            android:layout_height="200dp"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="50dp"
+            android:layout_above="@+id/clockAlarm"
             app:srcCompat="@drawable/clock"
-            android:layout_weight="0.77" />
+            tools:ignore="ContentDescription,InefficientWeight,ObsoleteLayoutParam" />
 
         <TextView
             android:id="@+id/clockAlarm"
@@ -33,18 +44,19 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/imageView"
             android:text="3:33 PM"
             android:textAlignment="center"
             android:textColor="#ffffff"
             android:textSize="60sp"
-            tools:ignore="HardcodedText,SpUsage" />
+            android:layout_marginTop="5dp"
+            android:layout_centerVertical="true"
+            tools:ignore="HardcodedText,ObsoleteLayoutParam,SpUsage" />
 
         <TextView
             android:id="@+id/titleAlarm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/contentAlarm"
+            android:layout_below="@+id/clockAlarm"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:paddingTop="40dp"
@@ -52,31 +64,36 @@
             android:textAlignment="center"
             android:textColor="#ffffff"
             android:textSize="24sp"
-            tools:ignore="HardcodedText,SpUsage" />
+            android:layout_marginTop="5dp"
+            tools:ignore="HardcodedText,ObsoleteLayoutParam,SpUsage" />
 
         <TextView
             android:id="@+id/contentAlarm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
+            android:layout_below="@+id/titleAlarm"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
             android:layout_marginTop="20dp"
             android:ems="10"
             android:inputType="textMultiLine"
             android:text="he Official IDE for Android. Android Studio provides the fastest tools for building apps on every type of Android device. "
             android:textAlignment="center"
             android:textColor="@color/light_background"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            tools:ignore="HardcodedText,TextViewEdits" />
 
         <Button
             android:id="@+id/buttonOk"
-            android:layout_width="match_parent"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:background="@color/colorPrimary"
             android:layout_gravity="center"
-            android:text="Got It" />
+            android:text="Got It"
+            android:layout_marginBottom="20dp"
+            android:layout_centerHorizontal="true"
+            tools:ignore="HardcodedText,ObsoleteLayoutParam" />
 
-    </LinearLayout>
 
 </android.widget.RelativeLayout>

@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 /**
  * Created by ソーイエーリン on 10-Jul-17.
@@ -11,19 +12,26 @@ import android.os.Bundle;
 
 public class AlarmReceiver extends BroadcastReceiver
 {
-    int DD;
+    int DD = 0;
 
     @Override
     public void onReceive(Context context, Intent intent)
     {
 
-        Bundle b = intent.getExtras();
+        DD = 0;
+        Bundle b = new Bundle();
+        b.clear();
+        b = intent.getExtras();
         DD = b.getInt("id");
+        b.clear();
+
+        Log.d("AlarmReceiver", String.valueOf(DD));
 
         Intent Alarm = new Intent(context,AlarmService.class);
-        Bundle c = new Bundle();
-        c.putInt("id",DD);
-        Alarm.putExtras(c);
+        Bundle d = new Bundle();
+        d.putInt("id1",DD);
+        Alarm.putExtras(d);
         context.startService(Alarm);
+        d.clear();
     }
 }
