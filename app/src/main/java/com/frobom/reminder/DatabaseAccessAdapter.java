@@ -171,7 +171,7 @@ public class DatabaseAccessAdapter {
             Calendar c = Calendar.getInstance();
             int day = c.get (Calendar.DATE) + 1;
             int month = c.get(Calendar.MONTH ) + 1;
-            int year = c.get(Calendar.YEAR);
+            int year = c.get(Calendar.YEAR) ;
             String TomorrowDate = day + "/0" + month + "/" + year;
 
             Cursor cursor = database.query(MySQLiteHelper.TABLE_NAME,
@@ -198,17 +198,22 @@ public class DatabaseAccessAdapter {
             int day = c.get (Calendar.DATE);
             int month = c.get(Calendar.MONTH ) + 1;
             int year = c.get(Calendar.YEAR);
+
             String TodayDate = day + "/0" + month + "/" + year;
             String TomorrowDate = (day + 1) + "/0" + month + "/" + year;
 
             Cursor cursor = database.query(MySQLiteHelper.TABLE_NAME,
                     allColumns, null,
                     null, null, null, null);
-            Log.e("cursor for UpComing ", ""+cursor.getCount());
+
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
                 Attributes atti = cursorToAttribute(cursor);
-                if( !atti.getAlarmDate().equals(TodayDate) && !atti.getAlarmDate().equals(TomorrowDate) ) {
+                String[] day1 = atti.getAlarmDate().split("/");
+                int test_day = Integer.parseInt(day1[0]);
+
+                if( !atti.getAlarmDate().equals(TodayDate) && !atti.getAlarmDate().equals(TomorrowDate)
+                        && test_day > day) {
                     Log.e("first ", atti.getAlarmDate());
                     attributeList.add(atti);
                 }
@@ -219,35 +224,5 @@ public class DatabaseAccessAdapter {
             cursor.close();
             return attributeList;
         }
-
-    public List<Attributes> getExpiredAttributes() {
-        List<Attributes> attributeList = new ArrayList<Attributes>();
-
-        Calendar c = Calendar.getInstance();
-        int day = c.get (Calendar.DATE);
-        int month = c.get(Calendar.MONTH ) + 1;
-        int year = c.get(Calendar.YEAR);
-        String TodayDate = day + "/0" + month + "/" + year;
-        Log.e("TodayDate ", TodayDate);
-
-        Cursor cursor = database.query(MySQLiteHelper.TABLE_NAME,
-                allColumns, null, null, null, null, null);
-
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            Attributes atti = cursorToAttribute(cursor);
-            String[] day1 = atti.getAlarmDate().split("/");
-            String test_day = day1[0];
-            Log.e("atti ", test_day);
-            if(Integer.parseInt(test_day) < day)
-                attributeList.add(atti);
-            cursor.moveToNext();
-        }
-
-        // make sure to close the cursor
-        cursor.close();
-        return attributeList;
-    }
-
 }
 
