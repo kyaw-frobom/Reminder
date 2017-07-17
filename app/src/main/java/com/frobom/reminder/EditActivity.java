@@ -44,6 +44,7 @@ public class EditActivity extends AppCompatActivity implements DatePickerDialog.
     private String date;
     private String PathHolder;
     private String fileName;
+    private String fileNameFrom;
 
     public Attributes att;
     private Attributes updateReturn;
@@ -65,14 +66,14 @@ public class EditActivity extends AppCompatActivity implements DatePickerDialog.
         PathHolder = att.getAlarmPath();
         String[] filePath = PathHolder.split("/");
         File file=new File(PathHolder);
-        String fileName=file.getName();
+        fileNameFrom=file.getName();
 
         date = att.getAlarmDate();
         time = att.getAlarmTime();
         Log.e("att.getAlarmTime ()", att.getAlarmTime());
         itemList.add(0, new Item("Date", date));
         itemList.add(1, new Item("Time", time));
-        itemList.add(2, new Item("Alarm", fileName));
+        itemList.add(2, new Item("Alarm", fileNameFrom));
 
         edtTitle = (TextView) findViewById(R.id.txtTitle);
         edtDescription = (TextView) findViewById(R.id.txtDescription);
@@ -192,9 +193,20 @@ public class EditActivity extends AppCompatActivity implements DatePickerDialog.
 
                 stopService(new Intent(EditActivity.this, ReminderAlarmManger.class));
                 startService(new Intent(EditActivity.this, ReminderAlarmManger.class));
+                edtTitle.setText(att.getTitle());
+                edtDescription.setText(att.getDescription());
+                itemList.add(0, new Item("Date", att.getAlarmDate()));
+                itemList.add(1, new Item("Time", att.getAlarmTime()));
+                itemList.add(2, new Item("Alarm", fileNameFrom));
+                itemsListView.setAdapter(new CustomListAdapter(EditActivity.this,itemList));
+                edtTitle.setFocusable(false);
+                edtDescription.setFocusable(false);
+                edtTitle.setFocusableInTouchMode(false);
+                btnCancel.setVisibility(View.GONE);
+                btnSave.setVisibility(View.GONE);
+                itemsListView.setEnabled(false);
+                setTitle("Detail");
 
-                Intent i = new Intent(EditActivity.this, MainActivity.class );
-                startActivity(i);
             }
         });
     }
@@ -203,7 +215,7 @@ public class EditActivity extends AppCompatActivity implements DatePickerDialog.
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
 
         date = String.format("%02d",dayOfMonth) + "/" + String.format("%02d",(monthOfYear + 1)) + "/" + year;
-        date = String.format("%02d",dayOfMonth) + "/" + String.format("%02d",(monthOfYear + 1)) + "/" + year;
+
         Calendar c = Calendar.getInstance();
 
         c.set(Calendar.HOUR_OF_DAY, 0);
@@ -258,7 +270,7 @@ public class EditActivity extends AppCompatActivity implements DatePickerDialog.
                     try {
                          PathHolder1 = (new AddActivity()).getPath(this, data.getData());
                     }
-                    catch (URISyntaxException msg){
+                    catch (Exception msg){
                         msg.printStackTrace();
                     }
                     File file = new File(PathHolder1);

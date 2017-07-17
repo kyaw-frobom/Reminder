@@ -152,12 +152,12 @@ public class DatabaseAccessAdapter {
             Cursor cursor = database.query(MySQLiteHelper.TABLE_NAME,
                     allColumns, null, null, null, null, null);
 
-            cursor.moveToFirst();
-            while (!cursor.isAfterLast()) {
+            //cursor.moveToFirst();
+            for (cursor.moveToLast(); !cursor.isBeforeFirst(); cursor.moveToPrevious()) {
                 Attributes atti = cursorToAttribute(cursor);
                 if( atti.getAlarmDate().equals(TodayDate))
                     attributeList.add(atti);
-                cursor.moveToNext();
+                //cursor.moveToNext();
             }
 
             // make sure to close the cursor
@@ -177,15 +177,11 @@ public class DatabaseAccessAdapter {
             Cursor cursor = database.query(MySQLiteHelper.TABLE_NAME,
                     allColumns, null, null, null, null, null);
 
-            cursor.moveToFirst();
-            while (!cursor.isAfterLast()) {
-
+            for (cursor.moveToLast(); !cursor.isBeforeFirst(); cursor.moveToPrevious()) {
                 Attributes atti = cursorToAttribute(cursor);
-                if( atti.getAlarmDate().equals(TomorrowDate))
+                if (atti.getAlarmDate().equals(TomorrowDate))
                     attributeList.add(atti);
-                cursor.moveToNext();
             }
-
             // make sure to close the cursor
             cursor.close();
             return attributeList;
@@ -206,8 +202,7 @@ public class DatabaseAccessAdapter {
                     allColumns, null,
                     null, null, null, null);
 
-            cursor.moveToFirst();
-            while (!cursor.isAfterLast()) {
+            for (cursor.moveToLast(); !cursor.isBeforeFirst(); cursor.moveToPrevious()) {
                 Attributes atti = cursorToAttribute(cursor);
                 String[] day1 = atti.getAlarmDate().split("/");
                 int test_day = Integer.parseInt(day1[0]);
@@ -217,7 +212,6 @@ public class DatabaseAccessAdapter {
                     Log.e("first ", atti.getAlarmDate());
                     attributeList.add(atti);
                 }
-                cursor.moveToNext();
             }
 
             // make sure to close the cursor

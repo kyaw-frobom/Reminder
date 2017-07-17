@@ -5,6 +5,7 @@ import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Path;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -219,7 +220,9 @@ public class AddActivity extends AppCompatActivity implements DatePickerDialog.O
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // TODO Auto-generated method stub
+        Log.e ("Build version " , " "+Build.VERSION.SDK_INT);
         String PathHolder1="";
+        uri = data.getData();
         switch(requestCode){
 
             case 7:
@@ -227,22 +230,29 @@ public class AddActivity extends AppCompatActivity implements DatePickerDialog.O
                 if(resultCode == RESULT_OK){
 
                     try {
+
+                        Log.e("Uri auh before", uri.getAuthority());
                         PathHolder1 = getPath(this, data.getData());
+
                     }
-                    catch (URISyntaxException e) {
+                    catch (Exception e) {
                     }
-                    //String PathHolder1 = data.getData().getPath();
-                    Log.e("Path ", PathHolder1);
+
                     File file = new File(PathHolder1);
                     String fileName1 = file.getName();
-                   // String extension = fileName1.substring(fileName1.lastIndexOf(".") + 1, fileName1.length());
+                    String extension = fileName1.substring(fileName1.lastIndexOf(".") + 1, fileName1.length());
                     Log.e("Path : ",PathHolder1);
-
-                        PathHolder = PathHolder1;
-                        fileName = fileName1;
-                        //update itemList1 at the field of Alarm
-                        itemList.set(2, new Item("Alarm", fileName));
-                        itemsListView.setAdapter(new CustomListAdapter(AddActivity.this, itemList));
+                        //if(extension.equals("mp3")|| extension.equals("m4a") || extension.equals("ogg")||
+                         //       extension.equals("wma")) {
+                            PathHolder = PathHolder1;
+                            fileName = fileName1;
+                            //update itemList1 at the field of Alarm
+                            itemList.set(2, new Item("Alarm", fileName));
+                            itemsListView.setAdapter(new CustomListAdapter(AddActivity.this, itemList));
+                       // }
+                        //else {
+                          //  Toast.makeText(this, "You file must be audio file", Toast.LENGTH_SHORT).show();
+                        //}
                 }
                 break;
 
@@ -269,9 +279,9 @@ public class AddActivity extends AppCompatActivity implements DatePickerDialog.O
         stopService(new Intent(this, ReminderAlarmManger.class));
         startService(new Intent(this, ReminderAlarmManger.class));
     }
-
     @SuppressLint("NewApi")
-    public static String getPath(Context context, Uri uri) throws URISyntaxException {
+    public String getPath(Context context, Uri uri) throws URISyntaxException {
+        Log.e("Uri auh ", uri.getAuthority());
         final boolean needToCheckUri = Build.VERSION.SDK_INT >= 19;
         String selection = null;
         String[] selectionArgs = null;
@@ -279,40 +289,42 @@ public class AddActivity extends AppCompatActivity implements DatePickerDialog.O
         // deal with different Uris.
         if (needToCheckUri && DocumentsContract.isDocumentUri(context.getApplicationContext(), uri)) {
             if (isExternalStorageDocument(uri)) {
+                Log.e("Uri authority external ", uri.getAuthority());
                 final String docId = DocumentsContract.getDocumentId(uri);
                 final String[] split = docId.split(":");
                 return Environment.getExternalStorageDirectory() + "/" + split[1];
             } else if (isDownloadsDocument(uri)) {
+                Log.e("Uri internal ", uri.getAuthority());
                 final String id = DocumentsContract.getDocumentId(uri);
                 uri = ContentUris.withAppendedId(
                         Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
             } else if (isMediaDocument(uri)) {
-                final String docId = DocumentsContract.getDocumentId(uri);
-                final String[] split = docId.split(":");
-                final String type = split[0];
-                if ("image".equals(type)) {
-                    uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-                } else if ("video".equals(type)) {
-                    uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
-                } else if ("audio".equals(type)) {
-                    uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-                }
-                selection = "_id=?";
-                selectionArgs = new String[]{split[1]};
+                return uri.getPath();
             }
+
         }
         if ("content".equalsIgnoreCase(uri.getScheme())) {
-            String[] projection = {MediaStore.Images.Media.DATA};
+            Log.e("Content verify ", ""+uri);
+            String[] projection = {MediaStore.Audio.Media.DATA};
             Cursor cursor = null;
             try {
-                cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs, null);
-                int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+
+                cursor = managedQuery(uri, projection, selection, selectionArgs, null);
+                Log.e("Return Path Last1" , ""+cursor);
+                int column_index = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA);
+
                 if (cursor.moveToFirst()) {
+
                     return cursor.getString(column_index);
                 }
             } catch (Exception e) {
             }
         } else if ("file".equalsIgnoreCase(uri.getScheme())) {
+            Log.e("File verify ", ""+uri.getPath());
+            return uri.getPath();
+        }
+        else{
+            Log.e("Other  ", ""+uri.getPath());
             return uri.getPath();
         }
         return null;
@@ -342,6 +354,17 @@ public class AddActivity extends AppCompatActivity implements DatePickerDialog.O
     public static boolean isMediaDocument(Uri uri) {
         return "com.android.providers.media.documents".equals(uri.getAuthority());
     }
+
+    @SuppressLint("NewApi")
+    public String getRealPathFromURI(Uri contentUri)
+    {
+        String[] proj = { MediaStore.Audio.Media.DATA };
+        Cursor cursor = managedQuery(contentUri, proj, null, null, null);
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA);
+        cursor.moveToFirst();
+        return cursor.getString(column_index);
+    }
+
 }
 
 

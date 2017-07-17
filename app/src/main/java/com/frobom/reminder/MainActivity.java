@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity{
     public Attributes att;
     private Attributes returnValue;
     private ArrayAdapter<Attributes> adapter1, adapter2, adapter3;
-    private String TO = "eiyadanr70@gmial.com";
+    private String TO = "ei.yadanar.myint@frobom.com";
     public final static String ID_EXTRA = "com.frobom.reminder_ID";
 
     @Override
