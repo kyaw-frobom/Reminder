@@ -244,7 +244,7 @@ public class AddActivity extends AppCompatActivity implements DatePickerDialog.O
                         Log.d("File Path: " , PathHolder1);
                         // Get the file instance*/
                         Log.e("Uri auh before", uri.getAuthority());
-                        PathHolder1 = (new FilePath()).getPath(this, data.getData());
+                        PathHolder1 = getPath(this, data.getData());
                         //PathHolder1 = data.getData().getPath();
                     }
                     catch (Exception e) {
@@ -311,8 +311,8 @@ public class AddActivity extends AppCompatActivity implements DatePickerDialog.O
                 uri = ContentUris.withAppendedId(
                         Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
             } else if (isMediaDocument(uri)) {
-                //return uri.getPath();
-                Log.e("uri contents ", ""+uri);
+                return uri.getPath();
+                /*Log.e("uri contents ", ""+uri);
                 Log.e("Uri authority media ", uri.getAuthority());
                 final String docId = DocumentsContract.getDocumentId(uri);
                 final String[] split = docId.split(":");
@@ -325,7 +325,7 @@ public class AddActivity extends AppCompatActivity implements DatePickerDialog.O
                     uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
                 }
                selection = "_id=?";
-                selectionArgs = new String[]{split[1]};
+                selectionArgs = new String[]{split[1]};*/
 
             }
 
@@ -336,7 +336,7 @@ public class AddActivity extends AppCompatActivity implements DatePickerDialog.O
             Cursor cursor = null;
             try {
 
-                cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs, null);
+                cursor = managedQuery(uri, projection, selection, selectionArgs, null);
                 Log.e("Return Path Last1" , ""+cursor);
                 int column_index = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA);
 
