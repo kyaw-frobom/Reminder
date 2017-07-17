@@ -231,21 +231,9 @@ public class AddActivity extends AppCompatActivity implements DatePickerDialog.O
 
                     try {
 
-                       /* if (Build.VERSION.SDK_INT < 11)
-                            PathHolder1 = RealPathUtils.getRealPathFromURI_BelowAPI11(AddActivity.this, uri);
-
-                            // SDK >= 11 && SDK < 19
-                        else if (Build.VERSION.SDK_INT < 19)
-                            PathHolder1 = RealPathUtils.getRealPathFromURI_API11to18(AddActivity.this, uri);
-
-                            // SDK > 19 (Android 4.4)
-                        else
-                            PathHolder1 = RealPathUtils.getRealPathFromURI_API19(AddActivity.this, uri);
-                        Log.d("File Path: " , PathHolder1);
-                        // Get the file instance*/
                         Log.e("Uri auh before", uri.getAuthority());
                         PathHolder1 = getPath(this, data.getData());
-                        //PathHolder1 = data.getData().getPath();
+
                     }
                     catch (Exception e) {
                     }
@@ -312,21 +300,6 @@ public class AddActivity extends AppCompatActivity implements DatePickerDialog.O
                         Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
             } else if (isMediaDocument(uri)) {
                 return uri.getPath();
-                /*Log.e("uri contents ", ""+uri);
-                Log.e("Uri authority media ", uri.getAuthority());
-                final String docId = DocumentsContract.getDocumentId(uri);
-                final String[] split = docId.split(":");
-                final String type = split[0];
-                if ("image".equals(type)) {
-                    uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-                } else if ("video".equals(type)) {
-                    uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
-                } else if ("audio".equals(type)) {
-                    uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-                }
-               selection = "_id=?";
-                selectionArgs = new String[]{split[1]};*/
-
             }
 
         }
