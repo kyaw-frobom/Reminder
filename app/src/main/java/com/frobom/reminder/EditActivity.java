@@ -58,7 +58,7 @@ public class EditActivity extends AppCompatActivity implements DatePickerDialog.
         att = (Attributes) data.getParcelable("attributeObject");
         datasource = new DatabaseAccessAdapter(this);
         datasource.open();
-
+        attToDB = att;
 
         //for back button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -92,7 +92,7 @@ public class EditActivity extends AppCompatActivity implements DatePickerDialog.
         final ArrayList<Item> itemsArrayList = generateItemsList(); // calls function to get items list
 
         // instantiate the custom list adapter
-        CustomListAdapter adapter = new CustomListAdapter(this, itemsArrayList);
+        final CustomListAdapter adapter = new CustomListAdapter(this, itemsArrayList);
 
         // get the ListView and attach the adapter
         itemsListView = (ListView) findViewById(R.id.listview);
@@ -193,12 +193,21 @@ public class EditActivity extends AppCompatActivity implements DatePickerDialog.
 
                 stopService(new Intent(EditActivity.this, ReminderAlarmManger.class));
                 startService(new Intent(EditActivity.this, ReminderAlarmManger.class));
-                edtTitle.setText(att.getTitle());
-                edtDescription.setText(att.getDescription());
-                itemList.add(0, new Item("Date", att.getAlarmDate()));
-                itemList.add(1, new Item("Time", att.getAlarmTime()));
-                itemList.add(2, new Item("Alarm", fileNameFrom));
+
+                edtTitle.setText(attToDB.getTitle());
+                edtDescription.setText(attToDB.getDescription());
+                itemList.set(0, new Item("Date", attToDB.getAlarmDate()));
+                itemList.set(1, new Item("Time", attToDB.getAlarmTime()));
+
+                String[] filePath = attToDB.getAlarmPath().split("/");
+                File file = new File(PathHolder);
+                fileNameFrom = file.getName();
+                itemList.set(2, new Item("Alarm", fileNameFrom));
+
+                //CustomListAdapter adapter = new CustomListAdapter(this, itemsArrayList);
                 itemsListView.setAdapter(new CustomListAdapter(EditActivity.this,itemList));
+                adapter.notifyDataSetChanged();
+
                 edtTitle.setFocusable(false);
                 edtDescription.setFocusable(false);
                 edtTitle.setFocusableInTouchMode(false);
