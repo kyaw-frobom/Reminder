@@ -30,8 +30,10 @@
         </activity>
         <activity
             android:name=".alarm"
+            android:enabled="true"
             android:showOnLockScreen="true"
-            android:screenOrientation="sensorPortrait" />
+            android:screenOrientation="sensorPortrait">
+        </activity>
 
         <service
             android:name=".AlarmService"

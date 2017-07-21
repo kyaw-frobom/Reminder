@@ -3,11 +3,9 @@ package com.frobom.reminder;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.app.AlarmManager;
-import android.util.Log;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -111,13 +109,6 @@ public class ReminderAlarmManger extends Service
         {
             Alarm_manager = (AlarmManager) getSystemService(ALARM_SERVICE);
             Intent intent = new Intent(this, AlarmReceiver.class);
-            Bundle c = new Bundle();
-            c.remove("id");
-            c.putInt("id",Aid);
-
-            Log.d("ReminderManager", String.valueOf(Aid));
-
-            intent.putExtras(c);
             alarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
 
 

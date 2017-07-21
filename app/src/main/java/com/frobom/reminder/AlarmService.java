@@ -4,20 +4,14 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.PixelFormat;
-import android.graphics.drawable.AnimatedStateListDrawable;
-import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 
-import java.util.zip.Inflater;
-
 public class AlarmService extends Service{
-    int DD = 0;
 
 
     @Nullable
@@ -32,33 +26,15 @@ public class AlarmService extends Service{
     public int onStartCommand(Intent intent, int flags, int startId)
     {
         // do your jobs here
-        DD=0;
-        startAlarm(intent);
+        startAlarm();
         return super.onStartCommand(intent, flags, startId);
     }
 
-    void startAlarm(Intent ID)
+    void startAlarm()
     {
-        Bundle a = new Bundle();
-        a.remove("id1");
-        a = ID.getExtras();
-        DD = a.getInt("id1");
-        a.clear();
-
-        Log.d("AlarmService", String.valueOf(DD));
-
         Intent intent = new Intent(AlarmService.this, alarm.class);
-        Bundle e = new Bundle();
-        e.remove("id2");
-        e.putInt("id2", DD);
-        intent.putExtras(e);
-
-        //lockedscreen();
-
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
-
-        e.clear();
     }
 
     private void lockedscreen()
