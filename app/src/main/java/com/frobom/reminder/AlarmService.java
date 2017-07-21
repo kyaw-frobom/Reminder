@@ -53,7 +53,7 @@ public class AlarmService extends Service{
         e.putInt("id2", DD);
         intent.putExtras(e);
 
-        //lockedscreen();
+        lockedscreen();
 
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
