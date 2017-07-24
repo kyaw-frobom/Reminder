@@ -196,7 +196,7 @@ public class alarm extends AppCompatActivity implements MediaPlayer.OnPreparedLi
         window.addFlags(LayoutParams.FLAG_SHOW_WHEN_LOCKED);
         window.addFlags(LayoutParams.FLAG_TURN_SCREEN_ON);
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        window.setType(LayoutParams.TYPE_TOAST);
+        window.setType(LayoutParams.TYPE_APPLICATION_PANEL);
 
         //Remove notification bar
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
