@@ -12,7 +12,6 @@ import android.support.v13.app.ActivityCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager.LayoutParams;
@@ -28,9 +27,8 @@ import java.util.List;
 public class alarm extends AppCompatActivity implements MediaPlayer.OnPreparedListener {
 
     public DatabaseAccessAdapter datasource;
-    private int idgot =0;
     private int trigger = 0;
-    private int id=0;
+    private int mediatrigger = 0;
 
     private static final String tag = "alarm";
 
@@ -52,24 +50,23 @@ public class alarm extends AppCompatActivity implements MediaPlayer.OnPreparedLi
         setContentView(R.layout.activity_alarm);
 
         trigger=0;
-        idgot=0;
-        id=0;
+        mediatrigger=0;
 
-        Bundle f = new Bundle();
-        f.remove("id2");
-        f = this.getIntent().getExtras();
-        id = f.getInt("id2");
-        f.clear();
+        permission_relay();
 
-        Log.d(tag, String.valueOf(id));
+        setData();
 
-        verifyStoragePermissions(alarm.this);
-
-        setData(id);
-
-        mediaPlay();
+        if(mediatrigger==0)
+        {
+            mediaPlay();
+        }
 
         closeActivity();
+    }
+
+    public void permission_relay()
+    {
+        verifyStoragePermissions(alarm.this);
     }
 
     public static void verifyStoragePermissions(Activity activity) {
@@ -103,7 +100,7 @@ public class alarm extends AppCompatActivity implements MediaPlayer.OnPreparedLi
 
         mediaPlayer.setAudioStreamType(AudioTrack.MODE_STREAM);
         mediaPlayer.setWakeMode(getApplicationContext(), PowerManager.PARTIAL_WAKE_LOCK);
-        mediaPlayer.setVolume(50,50);
+        //mediaPlayer.setVolume(50,50);
         mediaPlayer.setLooping(true);
         mediaPlayer.setOnPreparedListener(alarm.this);
         mediaPlayer.prepareAsync();
@@ -115,12 +112,11 @@ public class alarm extends AppCompatActivity implements MediaPlayer.OnPreparedLi
         mp.start();
     }
 
-    private void setData(int idGet)
+    private void setData()
     {
 
         setScreen();
 
-        idgot=idGet;
         Title = (TextView)findViewById(R.id.titleAlarm);
         Clock = (TextView)findViewById(R.id.clockAlarm);
         Content = (TextView)findViewById(R.id.contentAlarm);
@@ -178,7 +174,10 @@ public class alarm extends AppCompatActivity implements MediaPlayer.OnPreparedLi
                 }
             }
         }
-
+        else if (values.size()==0)
+        {
+            mediatrigger=1;
+        }
         datasource.close();
     }
 
@@ -187,21 +186,37 @@ public class alarm extends AppCompatActivity implements MediaPlayer.OnPreparedLi
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
 
+
+        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_FULLSCREEN;
+
         Window window = this.getWindow();
-        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD|
-                    WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED|
-                    WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON|
-                    WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        window.getDecorView().setSystemUiVisibility(uiOptions);
+        window.addFlags(LayoutParams.FLAG_DISMISS_KEYGUARD);
+        window.addFlags(LayoutParams.FLAG_SHOW_WHEN_LOCKED);
+        window.addFlags(LayoutParams.FLAG_TURN_SCREEN_ON);
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        window.setType(LayoutParams.TYPE_TOAST);
 
         //Remove notification bar
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         //set content view AFTER ABOVE sequence (to avoid crash)
         this.setContentView(R.layout.activity_alarm);
-
     }
-
+/*
+    @Override
+    public void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        this.getWindow().setType(LayoutParams.TYPE_KEYGUARD_DIALOG);
+    }
+*/
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        //startActivity(new Intent (this,alarm.class));
+    }
 
     private void closeActivity()
     {
@@ -212,9 +227,12 @@ public class alarm extends AppCompatActivity implements MediaPlayer.OnPreparedLi
             @Override
             public void onClick(View view) {
                 trigger=1;
-                mediaPlayer.stop();
-                mediaPlayer.release();
-                finish();
+                if(mediaPlayer != null)
+                {
+                    mediaPlayer.stop();
+                    mediaPlayer.release();
+                }
+                    finish();
             }
         });
     }
@@ -230,7 +248,7 @@ public class alarm extends AppCompatActivity implements MediaPlayer.OnPreparedLi
         stopService(new Intent(this, ReminderAlarmManger.class));
         startService(new Intent(this, ReminderAlarmManger.class));
 
-        finish();
+        //finish();
     }
 
     @Override

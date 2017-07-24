@@ -1,6 +1,8 @@
 package com.frobom.reminder;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -29,6 +31,7 @@ public class MainActivity extends AppCompatActivity{
     private ArrayAdapter<Attributes> adapter1, adapter2, adapter3;
     private String TO = "ei.yadanar.myint@frobom.com";
     public final static String ID_EXTRA = "com.frobom.reminder_ID";
+    public SharedPreferences prefs = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +41,8 @@ public class MainActivity extends AppCompatActivity{
         //Start Alarm Manager
         startService(new Intent(this, ReminderAlarmManger.class));
         startService(new Intent(this, RefreshManager.class));
+
+        prefs = getSharedPreferences("com.forbom.reminder", MODE_PRIVATE);
 
         listViewToday = (ListView) findViewById(R.id.list_today);
         listViewTomorrow = (ListView) findViewById(R.id.list_tomorrow);
@@ -161,6 +166,15 @@ public class MainActivity extends AppCompatActivity{
         adapter2.notifyDataSetChanged();
         adapter3.notifyDataSetChanged();
         super.onResume();
+
+        if (prefs.getBoolean("firstrun", true)) {
+            // Do first run stuff here then set 'firstrun' as false
+            // using the following line to edit/commit prefs
+
+            startActivity(new Intent(this,alarm.class));
+
+            prefs.edit().putBoolean("firstrun", false).commit();
+        }
     }
 
     @Override
