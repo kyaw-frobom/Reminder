@@ -1,9 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.frobom.reminder.GeoLocations">
+    android:orientation="vertical"
+    tools:context="com.frobom.reminder.GeoLocations"
+    android:weightSum="1">
 
-</android.support.constraint.ConstraintLayout>
+    <TextView
+        android:id="@+id/fieldLatitude"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:text="Latitude"
+        tools:layout_editor_absoluteX="27dp"
+        tools:layout_editor_absoluteY="3dp"
+        android:layout_weight="0.06" />
+
+    <TextView
+        android:id="@+id/fieldLongitude"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.06"
+        android:text="Longitude" />
+
+    <TextView
+        android:id="@+id/fieldCountry"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.06"
+        android:text="Country" />
+
+    <TextView
+        android:id="@+id/fieldCity"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.06"
+        android:text="City" />
+
+    <TextView
+        android:id="@+id/fieldPostalCode"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.06"
+        android:text="PostalCode" />
+
+    <TextView
+        android:id="@+id/fieldAddressLine"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.06"
+        android:text="Address" />
+</LinearLayout>

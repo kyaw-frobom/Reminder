@@ -64,7 +64,7 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
 
             //You can still do this if you like, you might get lucky:
             try {
-                location = locationManager.getLastKnownLocation(bestProvider);
+                location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
                 if (location != null) {
                     Log.e("TAG", "GPS is on");
