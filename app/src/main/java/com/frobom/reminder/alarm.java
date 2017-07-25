@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.media.AudioTrack;
 import android.media.MediaPlayer;
+import android.os.Handler;
 import android.os.PowerManager;
 import android.support.v13.app.ActivityCompat;
 import android.support.v7.app.ActionBar;
@@ -18,6 +19,7 @@ import android.view.WindowManager.LayoutParams;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -30,8 +32,6 @@ public class alarm extends AppCompatActivity implements MediaPlayer.OnPreparedLi
     private int trigger = 0;
     private int mediatrigger = 0;
 
-    private static final String tag = "alarm";
-
     MediaPlayer mediaPlayer;
 
     public String path;
@@ -39,6 +39,8 @@ public class alarm extends AppCompatActivity implements MediaPlayer.OnPreparedLi
     public TextView Title;
     public TextView Clock;
     public TextView Content;
+
+    boolean doubleBackToExitPressedOnce = false;
 
     // Storage Permissions
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
@@ -100,7 +102,7 @@ public class alarm extends AppCompatActivity implements MediaPlayer.OnPreparedLi
 
         mediaPlayer.setAudioStreamType(AudioTrack.MODE_STREAM);
         mediaPlayer.setWakeMode(getApplicationContext(), PowerManager.PARTIAL_WAKE_LOCK);
-        //mediaPlayer.setVolume(50,50);
+        mediaPlayer.setVolume(50,50);
         mediaPlayer.setLooping(true);
         mediaPlayer.setOnPreparedListener(alarm.this);
         mediaPlayer.prepareAsync();
@@ -196,7 +198,7 @@ public class alarm extends AppCompatActivity implements MediaPlayer.OnPreparedLi
         window.addFlags(LayoutParams.FLAG_SHOW_WHEN_LOCKED);
         window.addFlags(LayoutParams.FLAG_TURN_SCREEN_ON);
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        window.setType(LayoutParams.TYPE_APPLICATION_PANEL);
+        window.setType(LayoutParams.TYPE_SYSTEM_ALERT);
 
         //Remove notification bar
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -268,4 +270,21 @@ public class alarm extends AppCompatActivity implements MediaPlayer.OnPreparedLi
         startService(new Intent(this, ReminderAlarmManger.class));
     }
 
+    @Override
+    public void onBackPressed() {if (doubleBackToExitPressedOnce) {
+        super.onBackPressed();
+        return;
+    }
+
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce=false;
+            }
+        }, 2000);
+    }
 }

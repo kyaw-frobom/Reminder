@@ -167,13 +167,16 @@ public class MainActivity extends AppCompatActivity{
         adapter3.notifyDataSetChanged();
         super.onResume();
 
-        if (prefs.getBoolean("firstrun", true)) {
-            // Do first run stuff here then set 'firstrun' as false
-            // using the following line to edit/commit prefs
+        if(prefs != null)
+        {
+            if (prefs.getBoolean("firstrun", true)) {
+                // Do first run stuff here then set 'firstrun' as false
+                // using the following line to edit/commit prefs
 
-            startActivity(new Intent(this,alarm.class));
+                startActivity(new Intent(this, alarm.class));
 
-            prefs.edit().putBoolean("firstrun", false).commit();
+                prefs.edit().putBoolean("firstrun", false).commit();
+            }
         }
     }
 
