@@ -1,6 +1,5 @@
 package com.frobom.reminder;
 
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Criteria;
@@ -17,13 +16,12 @@ import android.widget.Toast;
 
 public class LocationActivity extends AppCompatActivity implements LocationListener {
 
-    Intent intentThatCalled;
     public double latitude;
     public double longitude;
     public LocationManager locationManager;
     public Criteria criteria;
     public String bestProvider;
-    Location location;
+    public Location location;
 
     String voice2text; //added
     @Override
@@ -36,7 +34,7 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
             public void onClick(View v) {
                 try {
                     //Location loc = GPS.getLastLocation(getApplicationContext());
-                   getLocation();
+                   location = getLocation();
                     //using google maps you will create a map setting lat & long.
                     String urlAddress = "http://maps.google.com/maps?q="+ latitude +"," + longitude +"("+ "hello" + ")&iwloc=A&hl=es";
                     //second option:: urlAddress = "http://maps.googleapis.com/maps/api/streetview?size=500x500&location=" + myLatitude + "," + myLongitude + "&fov=90&heading=235&pitch=10&sensor=false";
@@ -56,7 +54,7 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
         return true;
     }
 
-    protected void getLocation() {
+    public Location getLocation() {
         if (isLocationEnabled(LocationActivity.this)) {
             locationManager = (LocationManager)  this.getSystemService(Context.LOCATION_SERVICE);
             criteria = new Criteria();
@@ -84,10 +82,11 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
             //prompt user to enable location....
             //.................
         }
+        return location;
     }
 
     @Override
-    protected void onPause() {
+    public void onPause() {
         super.onPause();
         locationManager.removeUpdates(this);
 
@@ -126,25 +125,4 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
         //.....
     }
 
-   /* public void onClick(View v){
-        String uri = "http://maps.google.com/maps?daddr=" + 12f + "," + 2f + " (" + "Where the party is at" + ")";
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
-        intent.setPackage("com.google.android.apps.maps");
-        try
-        {
-            startActivity(intent);
-        }
-        catch(ActivityNotFoundException ex)
-        {
-            try
-            {
-                Intent unrestrictedIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
-                startActivity(unrestrictedIntent);
-            }
-            catch(ActivityNotFoundException innerEx)
-            {
-                Toast.makeText(this, "Please install a maps application", Toast.LENGTH_LONG).show();
-            }
-        }
-    }*/
 }
