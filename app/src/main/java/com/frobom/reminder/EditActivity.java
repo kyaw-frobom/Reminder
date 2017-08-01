@@ -385,9 +385,9 @@ public class EditActivity extends AppCompatActivity implements DatePickerDialog.
 
     @Override
     public void onBackPressed() {
-        finish();
         Intent i = new Intent(EditActivity.this, MainActivity.class );
         startActivity(i);
+        finish();
 
     }
 }

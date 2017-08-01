@@ -22,5 +22,7 @@
     <string name="title_activity_add"> New </string>
     <string name="title_activity_help"> Help </string>
 
+    <string name="prompt_radius"> Radius </string>
+
 
 </resources>

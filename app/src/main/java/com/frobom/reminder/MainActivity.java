@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity{
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent myIntent = new Intent(MainActivity.this, AddActivity.class);
+                Intent myIntent = new Intent(MainActivity.this, AddLocationActivity.class);
                 startActivity(myIntent);
             }
         });
@@ -244,6 +244,7 @@ public class MainActivity extends AppCompatActivity{
     }
     @Override
     public void onBackPressed() {
+        super.onBackPressed();
        finish();
     }
 }
