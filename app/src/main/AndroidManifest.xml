@@ -33,15 +33,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-            android:theme="@style/AppTheme.NoActionBar">
 
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
-
-        </activity>
         <activity
             android:name=".alarm"
             android:enabled="true"
@@ -72,18 +64,6 @@
             android:name=".HelpActivity"
             android:label="@string/title_activity_help"
             android:parentActivityName=".MainActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.frobom.reminder.MainActivity" />
-        </activity>
-
-        <activity
-            android:name=".AddLocationActivity"
-            android:label="Add"
-            android:parentActivityName=".MainActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.frobom.reminder.MainActivity" />
 
         </activity>
         <service
@@ -111,8 +91,14 @@
             android:name=".RefreshReceiver"
             android:enabled="true" />
 
-        <activity android:name=".LocationActivity"></activity>
-        <activity android:name=".GeoLocations" />
+        <activity
+            android:name=".LocationActivity"
+            android:label="Location"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.frobom.reminder.MainActivity" />
+        </activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -128,12 +114,7 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity
-            android:name=".MapsActivity"
-            android:label="@string/title_activity_maps">
 
-        <activity android:name=".LocationActivity">
-        </activity>
     </application>
 
 </manifest>

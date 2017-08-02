@@ -8,7 +8,7 @@
     android:padding="10dp"
     android:weightSum="1"
     app:layout_behavior="@string/prompt_title"
-    tools:context="com.frobom.reminder.AddLocationActivity">
+    tools:context="com.frobom.reminder.LocationActivity">
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
@@ -88,7 +88,7 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/btnSave"
+            android:id="@+id/btnAdd"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
