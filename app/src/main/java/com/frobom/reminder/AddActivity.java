@@ -169,8 +169,18 @@ public class AddActivity extends AppCompatActivity implements DatePickerDialog.O
 
                 Intent i = new Intent(AddActivity.this, MainActivity.class );
                 startActivity(i);
+                finish();
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent i = new Intent(AddActivity.this, MainActivity.class );
+        startActivity(i);
+        finish();
+
     }
 
     @Override
