@@ -1,6 +1,8 @@
 package com.frobom.reminder;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -20,6 +22,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TabHost;
 import android.widget.Toast;
+
+import java.lang.reflect.Array;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity{
@@ -32,6 +36,8 @@ public class MainActivity extends AppCompatActivity{
     private String TO = "ei.yadanar.myint@frobom.com";
     public final static String ID_EXTRA = "com.frobom.reminder_ID";
     public SharedPreferences prefs = null;
+    private AlertDialog.Builder myDialog;
+    private String[] array = new String[]{"Time based","Location based"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,8 +64,25 @@ public class MainActivity extends AppCompatActivity{
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent myIntent = new Intent(MainActivity.this, LocationActivity.class);
-                startActivity(myIntent);
+                myDialog = new AlertDialog.Builder(MainActivity.this)
+                        .setTitle("Select Alarm method !")
+                        .setItems(array , new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which)
+                            {
+                                if(which == 0)
+                                {
+                                    Intent myIntent = new Intent(MainActivity.this, AddActivity.class);
+                                    startActivity(myIntent);
+                                }
+                                else
+                                    {
+                                        Intent myIntent = new Intent(MainActivity.this, AddLocationActivity.class);
+                                        startActivity(myIntent);
+                                    }
+                            }
+                        });
+                myDialog.show();
             }
         });
 
@@ -242,6 +265,9 @@ public class MainActivity extends AppCompatActivity{
         }
         return super.onOptionsItemSelected(item);
     }
-
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+       finish();
+    }
 }
