@@ -23,13 +23,11 @@
             android:name=".MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
-
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".alarm"
@@ -65,7 +63,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.frobom.reminder.MainActivity" />
         </activity>
-
         <activity
             android:name=".AddLocationActivity"
             android:label="Add"
@@ -73,8 +70,8 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.frobom.reminder.MainActivity" />
-
         </activity>
+
         <service
             android:name=".ReminderAlarmManger"
             android:enabled="true"
@@ -100,9 +97,8 @@
             android:name=".RefreshReceiver"
             android:enabled="true" />
 
-        <activity android:name=".LocationActivity">
-        </activity>
-        <activity android:name=".GeoLocations"></activity>
+        <activity android:name=".LocationActivity"></activity>
+        <activity android:name=".GeoLocations" />
     </application>
 
 </manifest>

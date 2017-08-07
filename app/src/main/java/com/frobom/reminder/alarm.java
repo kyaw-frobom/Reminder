@@ -20,6 +20,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewFlipper;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -122,6 +123,7 @@ public class alarm extends AppCompatActivity implements MediaPlayer.OnPreparedLi
         Title = (TextView)findViewById(R.id.titleAlarm);
         Clock = (TextView)findViewById(R.id.clockAlarm);
         Content = (TextView)findViewById(R.id.contentAlarm);
+        ViewFlipper flipy = (ViewFlipper) findViewById(R.id.Flipper_the_flip);
 
         datasource = new DatabaseAccessAdapter(this);
         datasource.open();
@@ -172,6 +174,7 @@ public class alarm extends AppCompatActivity implements MediaPlayer.OnPreparedLi
                     Clock.setText(time);
                     Content.setText(description);
 
+                    flipy.setDisplayedChild(1);
                     break;
                 }
             }
