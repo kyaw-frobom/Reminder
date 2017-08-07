@@ -15,7 +15,7 @@
         android:layout_height="30dp"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
-        tools:ignore="ContentDescription" />
+        tools:ignore="ContentDescription,RtlHardcoded" />
 
     <TextView
         android:id="@+id/reminder_title"
@@ -29,14 +29,12 @@
         android:layout_toRightOf="@id/reminder_pic"
         tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="match_parent"
+        <AnalogClock
+            android:id="@+id/AnalogClock"
+            android:layout_width="200dp"
             android:layout_height="200dp"
             android:layout_centerHorizontal="true"
-            android:layout_above="@+id/clockAlarm"
-            app:srcCompat="@drawable/clock"
-            tools:ignore="ContentDescription,InefficientWeight,ObsoleteLayoutParam" />
+            android:layout_above="@+id/clockAlarm"  />
 
         <TextView
             android:id="@+id/clockAlarm"

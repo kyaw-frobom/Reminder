@@ -23,7 +23,14 @@
     <string name="title_activity_help"> Help </string>
     <string name="title_activity_maps">Map</string>
 
-    <string name="prompt_radius"> Radius </string>
+    <string name="radius_prompt">Choose a radius (Meter)</string>
+    <string-array name="radius_arrays">
+        <item>100</item>
+        <item>150</item>
+        <item>200</item>
+        <item>250</item>
+        <item>300</item>
+    </string-array>
 
 
 </resources>
