@@ -32,6 +32,8 @@ public class DatabaseAccessAdapter4Loc {
             MySQLiteHelperForLocation.alarmLocation,
             MySQLiteHelperForLocation.latitude,
             MySQLiteHelperForLocation.longitude,
+            MySQLiteHelperForLocation.radius,
+            MySQLiteHelperForLocation.alarmPath,
             MySQLiteHelperForLocation.enabled
     };
 
@@ -52,10 +54,13 @@ public class DatabaseAccessAdapter4Loc {
         values.put(MySQLiteHelperForLocation.title, att.getTitle());
         values.put(MySQLiteHelperForLocation.description, att.getDescription());
         values.put(MySQLiteHelperForLocation.alarmLocation, att.getAlarmLocation());
-        values.put(MySQLiteHelperForLocation.longitude, att.getLatitude());
+        values.put(MySQLiteHelperForLocation.latitude, att.getLatitude());
         values.put(MySQLiteHelperForLocation.longitude, att.getLongitude());
-        values.put(MySQLiteHelper.enabled, att.isEnabled());
+        values.put(MySQLiteHelperForLocation.radius, att.getRadius());
+        values.put(MySQLiteHelperForLocation.alarmPath, att.getAlarmPath());
+        values.put(MySQLiteHelperForLocation.enabled, att.isEnabled());
 
+        Log.e("Path test : ", att.getAlarmPath());
         long insertId = database.insert( MySQLiteHelperForLocation.TABLE_NAME, null, values);
         Log.e("insertId ",""+insertId);
         if(insertId < -1 )
@@ -64,7 +69,7 @@ public class DatabaseAccessAdapter4Loc {
             Log.e("Test","Successfully added");
 
         Cursor cursor = database.query( MySQLiteHelperForLocation.TABLE_NAME,
-                allColumns, MySQLiteHelper.id + " = " + insertId, null,
+                allColumns, MySQLiteHelperForLocation.id + " = " + insertId, null,
                 null, null, null);
 
         cursor.moveToFirst();
@@ -98,18 +103,20 @@ public class DatabaseAccessAdapter4Loc {
         return attributeList;
     }
 
-    public LocationAttributes updateAttributes(Attributes att,int id){
+    public LocationAttributes updateAttributes(LocationAttributes att,int id){
         ContentValues values = new ContentValues();
-        values.put(MySQLiteHelper.title, att.getTitle());
-        values.put(MySQLiteHelper.description, att.getDescription());
-        values.put(MySQLiteHelper.alarmTime, att.getAlarmTime());
-        values.put(MySQLiteHelper.alarmDate, att.getAlarmDate());
-        values.put(MySQLiteHelper.alarmPath, att.getAlarmPath());
+        values.put(MySQLiteHelperForLocation.title, att.getTitle());
+        values.put(MySQLiteHelperForLocation.description, att.getDescription());
+        values.put(MySQLiteHelperForLocation.alarmLocation, att.getAlarmLocation());
+        values.put(MySQLiteHelperForLocation.latitude, att.getLatitude());
+        values.put(MySQLiteHelperForLocation.longitude, att.getLongitude());
+        values.put(MySQLiteHelperForLocation.radius, att.getRadius());
+        values.put(MySQLiteHelperForLocation.alarmPath, att.getAlarmPath());
         values.put(MySQLiteHelper.enabled, att.isEnabled());
 
-        long insertId= database.update( MySQLiteHelper.TABLE_NAME,
+        long insertId= database.update( MySQLiteHelperForLocation.TABLE_NAME,
                 values,
-                MySQLiteHelper.id + " = " + id,
+                MySQLiteHelperForLocation.id + " = " + id,
                 null);
 
         if(insertId < -1 )
@@ -117,8 +124,8 @@ public class DatabaseAccessAdapter4Loc {
         else
             Log.e("Test","Successfully updated!");
 
-        Cursor cursor = database.query( MySQLiteHelper.TABLE_NAME,
-                allColumns, MySQLiteHelper.id + " = " + id, null,
+        Cursor cursor = database.query( MySQLiteHelperForLocation.TABLE_NAME,
+                allColumns, MySQLiteHelperForLocation.id + " = " + id, null,
                 null, null, null);
 
         cursor.moveToFirst();
@@ -135,7 +142,9 @@ public class DatabaseAccessAdapter4Loc {
         att.setAlarmLocation(cursor.getString(3));
         att.setLatitude(cursor.getString(4));
         att.setLongitude(cursor.getString(5));
-        att.setEnabled(cursor.getString(6));
+        att.setRadius(cursor.getInt(6));
+        att.setAlarmPath(cursor.getString(7));
+        att.setEnabled(cursor.getString(8));
         return att;
     }
 

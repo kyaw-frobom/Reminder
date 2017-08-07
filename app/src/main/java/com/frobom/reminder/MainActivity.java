@@ -29,14 +29,18 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity{
 
     public DatabaseAccessAdapter datasource;
-    private ListView listViewToday, listViewTomorrow, listViewUpcoming;
+    public DatabaseAccessAdapter4Loc datasourceLoc;
+    private ListView listViewToday, listViewTomorrow, listViewUpcoming, listViewLoc;
     public Attributes att;
+    public LocationAttributes attLoc;
     private Attributes returnValue;
     private ArrayAdapter<Attributes> adapter1, adapter2, adapter3;
+    private ArrayAdapter<LocationAttributes> adapter4;
     private String TO = "ei.yadanar.myint@frobom.com";
     public final static String ID_EXTRA = "com.frobom.reminder_ID";
     public SharedPreferences prefs = null;
     private AlertDialog.Builder myDialog;
+    private String tab1 = "TODAY", tab2 = "TOMORROW", tab3 = "UPCOMING", tab4 = "LOCATION";
     private String[] array = new String[]{"Time based","Location based"};
 
     @Override
@@ -53,6 +57,7 @@ public class MainActivity extends AppCompatActivity{
         listViewToday = (ListView) findViewById(R.id.list_today);
         listViewTomorrow = (ListView) findViewById(R.id.list_tomorrow);
         listViewUpcoming = (ListView) findViewById(R.id.list_upcoming);
+        listViewLoc = (ListView) findViewById(R.id.list_location);
 
         //Start Alarm Manager
         startService(new Intent(this, ReminderAlarmManger.class));
@@ -77,7 +82,7 @@ public class MainActivity extends AppCompatActivity{
                                 }
                                 else
                                     {
-                                        Intent myIntent = new Intent(MainActivity.this, AddLocationActivity.class);
+                                        Intent myIntent = new Intent(MainActivity.this, LocationActivity.class);
                                         startActivity(myIntent);
                                     }
                             }
@@ -92,7 +97,7 @@ public class MainActivity extends AppCompatActivity{
         TabHost.TabSpec tab1 = tabHost.newTabSpec("TODAY");
         TabHost.TabSpec tab2 = tabHost.newTabSpec("TOMORROW");
         TabHost.TabSpec tab3 = tabHost.newTabSpec("UPCOMING");
-
+        TabHost.TabSpec tab4 = tabHost.newTabSpec("LOCATION");
 
         tab1.setIndicator("TODAY");
         tab1.setContent(R.id.tab1);
@@ -103,17 +108,24 @@ public class MainActivity extends AppCompatActivity{
         tab3.setIndicator("UPCOMING");
         tab3.setContent(R.id.tab3);
 
+        tab4.setIndicator("LOCATION");
+        tab4.setContent(R.id.tab4);
+
         tabHost.addTab(tab1);
         tabHost.addTab(tab2);
         tabHost.addTab(tab3);
+        tabHost.addTab(tab4);
 
         datasource = new DatabaseAccessAdapter(this);
         datasource.open();
+        datasourceLoc = new DatabaseAccessAdapter4Loc(this);
+        datasourceLoc.open();
 
 //        List<Attributes> values = datasource.getAllAttributes();
         List<Attributes> todayList = datasource.getTodayAttributes();
         List<Attributes> tomorrowList = datasource.getTomorrowAttributes();
         List<Attributes> upcomingList = datasource.getUpcomingAttributes();
+        List<LocationAttributes> locationList = datasourceLoc.getAllAttributes();
 
         // use the SimpleCursorAdapter to show the
         // elements in a ListView
@@ -126,10 +138,14 @@ public class MainActivity extends AppCompatActivity{
         adapter3 = new ArrayAdapter<Attributes>(this,
                 android.R.layout.simple_list_item_1, upcomingList);
 
+        adapter4 = new ArrayAdapter<LocationAttributes>(this,
+                android.R.layout.simple_list_item_1, locationList);
+
 
         adapter1.notifyDataSetChanged();
         adapter2.notifyDataSetChanged();
         adapter3.notifyDataSetChanged();
+        adapter4.notifyDataSetChanged();
 
         listViewToday.setAdapter(adapter1);
         listViewToday.setOnItemClickListener(new AdapterView.OnItemClickListener()
@@ -166,6 +182,20 @@ public class MainActivity extends AppCompatActivity{
                 att = (Attributes) listViewUpcoming.getItemAtPosition(position);
                 Intent i = new Intent(MainActivity.this, EditActivity.class );
                 i.putExtra("attributeObject", att);
+                startActivity(i);
+            }
+        });
+
+        listViewLoc.setAdapter(adapter4);
+        listViewLoc.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                attLoc = (LocationAttributes) listViewLoc.getItemAtPosition(position);
+                Log.e("Path for Location Main ", attLoc.getAlarmPath());
+                Intent i = new Intent(MainActivity.this, LocationDetailActivity.class );
+                i.putExtra("attributeObjectLoc", attLoc);
                 startActivity(i);
             }
         });

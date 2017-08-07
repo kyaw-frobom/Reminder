@@ -9,11 +9,14 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,26 +26,29 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DatabaseException;
+import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
 import org.w3c.dom.Text;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
-public class LocationActivity extends AppCompatActivity  {
+public class LocationActivity extends AppCompatActivity {
 
     //public double latitude;
-   // public double longitude;
+    // public double longitude;
 
     private TextView txtTitle;
     private TextView txtDescription;
     private TextView txtRadius;
     private Button btnAdd;
     private Button btnCancel;
+    private Button btnAlarm;
     private TextView txtaddress;
     int PLACE_PICKER_REQUEST = 1;
-
+    private Spinner spinner1;
     private String title;
     private String description;
     private String addressLocation;
@@ -51,21 +57,45 @@ public class LocationActivity extends AppCompatActivity  {
     private String longitude;
     String voice2text; //added
 
+    private Uri uri;
+    private String PathHolder;
+    private String fileName;
+
     public DatabaseAccessAdapter4Loc datasource;
     public LocationAttributes locAtt;
+    private AddActivity addObj = new AddActivity();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_location);
         //for back button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        addListenerOnSpinnerItemSelection();
 
-        txtTitle = (TextView)findViewById(R.id.txtTitle);
-        txtDescription = (TextView)findViewById(R.id.txtDescription);
-        txtRadius = (TextView)findViewById(R.id.radius);
-        txtaddress = (TextView)findViewById(R.id.Address);
-        btnAdd = (Button)findViewById(R.id.btnAdd);
-        btnCancel = (Button)findViewById(R.id.btnCancel);
+        datasource = new DatabaseAccessAdapter4Loc(this);
+        datasource.open();
+
+        txtTitle = (TextView) findViewById(R.id.txtTitle);
+        txtDescription = (TextView) findViewById(R.id.txtDescription);
+
+        txtaddress = (TextView) findViewById(R.id.Address);
+        btnAdd = (Button) findViewById(R.id.btnAdd);
+        btnCancel = (Button) findViewById(R.id.btnCancel);
+        btnAlarm = (Button) findViewById(R.id.alarmSong);
+
+        spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                radius = String.valueOf(parent.getItemAtPosition(position));
+                Log.e("Radius ", radius);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         Button placeMarkerButton = (Button) findViewById(R.id.searchLocation);
         placeMarkerButton.setOnClickListener(new View.OnClickListener() {
@@ -80,19 +110,28 @@ public class LocationActivity extends AppCompatActivity  {
                     //third option:: urlAddress = "geo:<" + myLatitude + ">,<" + myLongitude +">?q=<" + latitude + ">,<" + longitude +">(this is my currently location)"
                     Intent maps = new Intent(Intent.ACTION_VIEW, Uri.parse(urlAddress));
                     startActivity(maps);*/
-                    PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+                PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
 
-                    try {
-                        //builder.setLatLngBounds();
-                        startActivityForResult(builder.build(LocationActivity.this), PLACE_PICKER_REQUEST);
-                    }
-                    catch (GooglePlayServicesRepairableException e){
-                        Log.e("Error: ", e.getMessage());
-                    }
-                    catch (GooglePlayServicesNotAvailableException e){
-                        Log.e("Error : ", e.getMessage());
-                    }
+                try {
+                    //builder.setLatLngBounds();
+                    startActivityForResult(builder.build(LocationActivity.this), PLACE_PICKER_REQUEST);
+                } catch (GooglePlayServicesRepairableException e) {
+                    Log.e("Error: ", e.getMessage());
+                } catch (GooglePlayServicesNotAvailableException e) {
+                    Log.e("Error : ", e.getMessage());
+                }
 
+            }
+        });
+
+        btnAlarm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Create the ACTION_GET_CONTENT INTENT to open file explorer
+
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("audio/*");
+                startActivityForResult(intent, 7);
             }
         });
 
@@ -101,132 +140,181 @@ public class LocationActivity extends AppCompatActivity  {
             public void onClick(View v) {
                 title = txtTitle.getText().toString();
                 description = txtDescription.getText().toString();
-                radius = txtRadius.getText().toString();
 
-                locAtt = new LocationAttributes();
-                locAtt.setTitle(title);
-                locAtt.setDescription(description);
-                locAtt.setAlarmLocation(addressLocation);
-                locAtt.setLatitude(latitude);
-                locAtt.setLongitude(longitude);
-                locAtt.setEnabled("true");
-
-                try{
+                if(title.matches("")||radius.matches("")||addressLocation.matches("")||PathHolder.matches("")){
+                    Toast.makeText(LocationActivity.this, "You must be added the required field", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    locAtt = new LocationAttributes();
+                    locAtt.setTitle(title);
+                    locAtt.setDescription(description);
+                    locAtt.setAlarmLocation(addressLocation);
+                    locAtt.setLatitude(latitude);
+                    locAtt.setLongitude(longitude);
+                    locAtt.setRadius(Integer.parseInt(radius));
+                    locAtt.setAlarmPath(PathHolder);
+                    locAtt.setEnabled("true");
+                }
+                try {
+                    Log.e("Path for Location LocAc", PathHolder);
                     locAtt = datasource.createAttributes(locAtt);
                     Toast.makeText(LocationActivity.this, "Location Data Added!", Toast.LENGTH_SHORT).show();
-                }
-                catch (DatabaseException e){
+                    Intent refresh = new Intent(LocationActivity.this, MainActivity.class);
+                    startActivity(refresh);
+                    finish();
+                } catch (DatabaseException e) {
                     Log.e("Database Exception ", e.getMessage());
                 }
             }
         });
 
     }
-   /* public static boolean isLocationEnabled(Context context)
-    {
-        //...............
-        return true;
-    }
 
-    public Location getLocation() {
-        if (isLocationEnabled(LocationActivity.this)) {
-            locationManager = (LocationManager)  this.getSystemService(Context.LOCATION_SERVICE);
-            criteria = new Criteria();
-            bestProvider = String.valueOf(locationManager.getBestProvider(criteria, true)).toString();
+    /* public static boolean isLocationEnabled(Context context)
+     {
+         //...............
+         return true;
+     }
 
-            //You can still do this if you like, you might get lucky:
-            try {
-                location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+     public Location getLocation() {
+         if (isLocationEnabled(LocationActivity.this)) {
+             locationManager = (LocationManager)  this.getSystemService(Context.LOCATION_SERVICE);
+             criteria = new Criteria();
+             bestProvider = String.valueOf(locationManager.getBestProvider(criteria, true)).toString();
 
-                if (location != null) {
-                    Log.e("TAG", "GPS is on");
-                    latitude = location.getLatitude();
-                    longitude = location.getLongitude();
-                    Toast.makeText(LocationActivity.this, "latitude:" + latitude + " longitude:" + longitude, Toast.LENGTH_SHORT).show();
-                    searchNearestPlace(voice2text);
-                } else {
-                    //This is what you need:
-                    locationManager.requestLocationUpdates(bestProvider, 1000, 0, this);
+             //You can still do this if you like, you might get lucky:
+             try {
+                 location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+
+                 if (location != null) {
+                     Log.e("TAG", "GPS is on");
+                     latitude = location.getLatitude();
+                     longitude = location.getLongitude();
+                     Toast.makeText(LocationActivity.this, "latitude:" + latitude + " longitude:" + longitude, Toast.LENGTH_SHORT).show();
+                     searchNearestPlace(voice2text);
+                 } else {
+                     //This is what you need:
+                     locationManager.requestLocationUpdates(bestProvider, 1000, 0, this);
+                 }
+             }
+             catch (SecurityException e){}
+         }
+         else
+         {
+             //prompt user to enable location....
+             //.................
+         }
+         return location;
+     }
+
+     @Override
+     public void onPause() {
+         super.onPause();
+         locationManager.removeUpdates(this);
+
+     }
+
+     @Override
+     public void onLocationChanged(Location location) {
+         //Hey, a non null location! Sweet!
+
+         //remove location callback:
+         locationManager.removeUpdates(this);
+
+         //open the map:
+         latitude = location.getLatitude();
+         longitude = location.getLongitude();
+         Toast.makeText(LocationActivity.this, "latitude:" + latitude + " longitude:" + longitude, Toast.LENGTH_SHORT).show();
+         searchNearestPlace(voice2text);
+     }
+
+     @Override
+     public void onStatusChanged(String provider, int status, Bundle extras) {
+
+     }
+
+     @Override
+     public void onProviderEnabled(String provider) {
+
+     }
+
+     @Override
+     public void onProviderDisabled(String provider) {
+
+     }
+
+     public void searchNearestPlace(String v2txt) {
+         //.....
+     }
+ */
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        switch (requestCode) {
+
+            case 7:
+                Log.e("Build version ", " " + Build.VERSION.SDK_INT);
+                String PathHolder1 = "";
+                uri = data.getData();
+                if (resultCode == RESULT_OK) {
+
+                    try {
+                        Log.e("Uri auh before", uri.getAuthority());
+                        PathHolder1 = addObj.getPath(this, data.getData());
+                        Log.e("PathHolder1 ", PathHolder1);
+
+                    } catch (Exception e) {
+                    }
+
+                    File file = new File(PathHolder1);
+                    String fileName1 = file.getName();
+                    String extension = fileName1.substring(fileName1.lastIndexOf(".") + 1, fileName1.length());
+                    Log.e("Path : ", PathHolder1);
+                    //if(extension.equals("mp3")|| extension.equals("m4a") || extension.equals("ogg")||
+                    //       extension.equals("wma")) {
+                    PathHolder = PathHolder1;
+                    fileName = fileName1;
+                    btnAlarm.setText(fileName);
+
                 }
-            }
-            catch (SecurityException e){}
+                break;
         }
-        else
-        {
-            //prompt user to enable location....
-            //.................
-        }
-        return location;
-    }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        locationManager.removeUpdates(this);
-
-    }
-
-    @Override
-    public void onLocationChanged(Location location) {
-        //Hey, a non null location! Sweet!
-
-        //remove location callback:
-        locationManager.removeUpdates(this);
-
-        //open the map:
-        latitude = location.getLatitude();
-        longitude = location.getLongitude();
-        Toast.makeText(LocationActivity.this, "latitude:" + latitude + " longitude:" + longitude, Toast.LENGTH_SHORT).show();
-        searchNearestPlace(voice2text);
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-
-    }
-
-    public void searchNearestPlace(String v2txt) {
-        //.....
-    }
-*/
-   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-       if (requestCode == PLACE_PICKER_REQUEST) {
-           if (resultCode == RESULT_OK) {
-               Place place = PlacePicker.getPlace(this, data);
+        if (requestCode == PLACE_PICKER_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                Place place = PlacePicker.getPlace(this, data);
                 LatLng address = place.getLatLng();
 
-               latitude = Double.toString(address.latitude);
-               longitude = Double.toString(address.longitude);
-               addressLocation = (String) place.getAddress();
+                latitude = Double.toString(address.latitude);
+                longitude = Double.toString(address.longitude);
+                addressLocation = (String) place.getAddress();
                 txtaddress.setText(addressLocation);
-               // ask for geolocation data
-               Geocoder gcd = new Geocoder(this, Locale.getDefault());
-               List<Address> addresses = null;
-               try {
-                   addresses = gcd.getFromLocation(place.getLatLng().latitude, place.getLatLng().longitude, 1);
-               } catch (IOException e) {
-                   e.printStackTrace();
-               }
-               if (addresses.size() > 0) {
-                   String toastMsg1 = String.format("Place: %s", address + " - " + addresses.get(0).getCountryName() + " - " + addresses.get(0).getCountryCode());
-                   Toast.makeText(this, toastMsg1, Toast.LENGTH_LONG).show();
+
+                Toast.makeText(this, "Address: " + latitude + "/" + longitude + "/" + addressLocation, Toast.LENGTH_SHORT).show();
+                // ask for geolocation data
+                Geocoder gcd = new Geocoder(this, Locale.getDefault());
+                List<Address> addresses = null;
+                try {
+                    addresses = gcd.getFromLocation(place.getLatLng().latitude, place.getLatLng().longitude, 1);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                if (addresses.size() > 0) {
+                    String toastMsg1 = String.format("Place: %s", address + " - " + addresses.get(0).getCountryName() + " - " + addresses.get(0).getCountryCode());
+                    Toast.makeText(this, toastMsg1, Toast.LENGTH_LONG).show();
 
 
-                   // NOW SET HERE CORRECT DATA
-                   //location.setText(place.getName());
+                    // NOW SET HERE CORRECT DATA
+                    //location.setText(place.getName());
 
-               }
-           }
-       }
-   }
+                }
+            }
+        }
+    }
+
+    public void addListenerOnSpinnerItemSelection() {
+        spinner1 = (Spinner) findViewById(R.id.spinner1);
+        spinner1.setOnItemSelectedListener(new CustomOnItemSelectedListener());
+
+    }
+
 }

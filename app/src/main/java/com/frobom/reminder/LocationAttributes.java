@@ -11,11 +11,11 @@ public class LocationAttributes implements Parcelable{
     private int id;
     private String title;
     private String description;
-    private String alarmTime;
-    private String alarmDate;
     private String alarmLocation;
     private String latitude;
     private String longitude;
+    private int radius;
+    private String alarmPath;
     private String enabled;
 
 
@@ -23,11 +23,11 @@ public class LocationAttributes implements Parcelable{
         id = in.readInt();
         title = in.readString();
         description = in.readString();
-        alarmTime = in.readString();
-        alarmDate = in.readString();
         alarmLocation = in.readString();
         latitude = in.readString();
         longitude = in.readString();
+        radius = in.readInt();
+        alarmPath = in.readString();
         enabled = in.readString();
     }
 
@@ -94,9 +94,15 @@ public class LocationAttributes implements Parcelable{
         this.longitude = longitude;
     }
 
-    public String isEnabled() {
-        return enabled;
-    }
+    public void setRadius(int radius){ this.radius = radius; }
+
+    public int getRadius() { return radius; }
+
+    public String getAlarmPath() { return  alarmPath; }
+
+    public void setAlarmPath(String alarmPath) { this.alarmPath = alarmPath; }
+
+    public String isEnabled() { return enabled; }
 
     public void setEnabled(String enabled) {
         this.enabled = enabled;
@@ -122,6 +128,8 @@ public class LocationAttributes implements Parcelable{
         parcel.writeString(alarmLocation);
         parcel.writeString(latitude);
         parcel.writeString(longitude);
+        parcel.writeInt(radius);
+        parcel.writeString(alarmPath);
         parcel.writeString(enabled);
     }
 }
