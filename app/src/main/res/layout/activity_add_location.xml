@@ -44,6 +44,11 @@
             android:maxLines="4" />
     </android.support.design.widget.TextInputLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="10dp">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -56,16 +61,27 @@
         style="@style/Widget.AppCompat.Spinner.Underlined"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_marginBottom="20dp"
         android:entries="@array/radius_arrays" />
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/listview"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="10dp"
-        android:layout_marginBottom="20dp"
-        android:layout_marginTop="20dp"
-        android:layout_weight="0.40"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_weight="0.34"
+        android:layout_marginTop="10dp">
 
         <Button
             android:id="@+id/searchLocation"
@@ -81,19 +97,6 @@
             android:layout_marginLeft="20dp"
             android:text="Search for location." />
     </LinearLayout>
-
-    <Button
-        android:id="@+id/alarmSong"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="left"
-        android:background="@color/light_foreground1"
-        android:text="Alarm"
-        android:textAlignment="viewStart"
-        android:textAllCaps="false"
-        android:textColor="@color/colorPrimary"
-        android:textSize="18sp" />
-
 
     <LinearLayout
         android:layout_width="match_parent"

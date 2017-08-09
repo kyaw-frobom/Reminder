@@ -8,8 +8,12 @@
     android:padding="10dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.frobom.reminder.MainActivity"
-    tools:showIn="@layout/activity_main" >
+    tools:showIn="@layout/activity_main"
+    >
 
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
     <TabHost
         android:id="@+id/tabhost"
@@ -59,4 +63,7 @@
             </FrameLayout>
         </LinearLayout>
     </TabHost>
+
+    </HorizontalScrollView>
+
 </RelativeLayout>

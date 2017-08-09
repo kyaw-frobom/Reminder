@@ -30,7 +30,21 @@ public class LocationDetailActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Bundle data = getIntent().getExtras();
-        attLoc = (LocationAttributes) data.getParcelable("attributeObjectLoc");
+        int callingActivity = getIntent().getIntExtra("calling_activity", 0);
+
+        switch (callingActivity) {
+            case ActivityConstants.MAIN_ACTIVITY:
+                attLoc = (LocationAttributes) data.getParcelable("attributeObjectLoc");
+                break;
+            case ActivityConstants.EDIT_ACTIVITY_2:
+                attLoc = (LocationAttributes) data.getParcelable("location_Update");
+                break;
+            default:
+                attLoc = (LocationAttributes)data.getParcelable("attributeObjectLoc");
+                break;
+        }
+
+
 
         //Bundle bundle = getIntent().getExtras();
         //attLoc = (LocationAttributes) bundle.getParcelable("locUpdate");

@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,6 +26,7 @@ import com.google.firebase.database.DatabaseException;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -35,7 +37,6 @@ public class LocationEditActivity extends AppCompatActivity {
     private TextView txtDescription;
     private Button btnUpdate;
     private Button btnCancel;
-    private Button btnAlarm;
     private TextView txtaddress;
     private Spinner spinner;
     int PLACE_PICKER_REQUEST = 1;
@@ -45,25 +46,26 @@ public class LocationEditActivity extends AppCompatActivity {
     private String radius;
     private String latitude;
     private String longitude;
-    String voice2text; //added
-
-    private Uri uri;
     private String PathHolder;
     private String fileName;
+    private Uri uri;
 
     public DatabaseAccessAdapter4Loc datasource;
-    public LocationAttributes locAtt;
+    public LocationAttributes locAtt = new LocationAttributes();
     private AddActivity addObj = new AddActivity();
+    private ListView itemsListView;
+    private ArrayList<Item> itemList=new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_location);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+       // getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Bundle data = getIntent().getExtras();
         attLoc = (LocationAttributes) data.getParcelable("locationObject");
+        locAtt = attLoc;
         datasource = new DatabaseAccessAdapter4Loc(this);
         datasource.open();
 
@@ -73,11 +75,9 @@ public class LocationEditActivity extends AppCompatActivity {
         txtaddress = (TextView) findViewById(R.id.Address);
         btnUpdate = (Button) findViewById(R.id.btnAdd);
         btnCancel = (Button) findViewById(R.id.btnCancel);
-        btnAlarm = (Button) findViewById(R.id.alarmSong);
         spinner = (Spinner) findViewById(R.id.spinner1);
 
         PathHolder = attLoc.getAlarmPath();
-        String[] filePath = PathHolder.split("/");
         File file=new File(PathHolder);
         String fileNameFrom=file.getName();
 
@@ -85,16 +85,33 @@ public class LocationEditActivity extends AppCompatActivity {
         txtTitle.setText(attLoc.getTitle());
         txtDescription.setText(attLoc.getDescription());
         txtaddress.setText(attLoc.getAlarmLocation());
-        btnAlarm.setText(fileNameFrom);
         radius = String.valueOf(attLoc.getRadius());
         addressLocation = attLoc.getAlarmLocation();
         latitude = attLoc.getLatitude();
         longitude = attLoc.getLongitude();
+
         if( radius.equals("100")) { spinner.setSelection(0);}
         else if(radius.equals("150")) { spinner.setSelection(1); }
         else if(radius.equals("200")) { spinner.setSelection(2); }
         else if(radius.equals("250")) { spinner.setSelection(3); }
         else { spinner.setSelection(4);}
+
+        itemList.add(0, new Item("Alarm", fileNameFrom));
+        CustomListAdapter adapter = new CustomListAdapter(this,itemList);
+        // get the ListView and attach the adapter
+        itemsListView  = (ListView) findViewById(R.id.listview);
+        itemsListView.setAdapter(adapter);
+
+        itemsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // Create the ACTION_GET_CONTENT INTENT to open file explorer
+
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("audio/*");
+                startActivityForResult(intent, 7);
+            }
+        });
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -134,17 +151,6 @@ public class LocationEditActivity extends AppCompatActivity {
             }
         });
 
-        btnAlarm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Create the ACTION_GET_CONTENT INTENT to open file explorer
-
-                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                intent.setType("audio/*");
-                startActivityForResult(intent, 7);
-            }
-        });
-
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -155,7 +161,6 @@ public class LocationEditActivity extends AppCompatActivity {
                     Toast.makeText(LocationEditActivity.this, "You must be added the required field", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    locAtt = new LocationAttributes();
                     locAtt.setTitle(title);
                     locAtt.setDescription(description);
                     locAtt.setAlarmLocation(addressLocation);
@@ -169,13 +174,25 @@ public class LocationEditActivity extends AppCompatActivity {
                     Log.e("Path for Location LocAc", PathHolder);
                     locAtt = datasource.updateAttributes(locAtt, attLoc.getId());
                     Toast.makeText(LocationEditActivity.this, "Location Update Added!", Toast.LENGTH_SHORT).show();
-                    //Intent refresh = new Intent(LocationEditActivity.this, LocationDetailActivity.class);
-                    //refresh.putExtra("locUpdate", locAtt);
-                    //startActivity(refresh);
+                    Intent refresh = new Intent(LocationEditActivity.this, LocationDetailActivity.class);
+                    refresh.putExtra("location_Update", locAtt);
+                    refresh.putExtra("calling_activity", ActivityConstants.EDIT_ACTIVITY_2);
+                    startActivity(refresh);
                     finish();
                 } catch (DatabaseException e) {
                     Log.e("Database Exception ", e.getMessage());
                 }
+            }
+        });
+
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent refresh = new Intent(LocationEditActivity.this, LocationDetailActivity.class);
+                refresh.putExtra("location_Update", locAtt);
+                refresh.putExtra("calling_activity", ActivityConstants.EDIT_ACTIVITY_2);
+                startActivity(refresh);
+                finish();
             }
         });
 
@@ -205,7 +222,8 @@ public class LocationEditActivity extends AppCompatActivity {
                     //       extension.equals("wma")) {
                     PathHolder = PathHolder1;
                     fileName = fileName1;
-                    btnAlarm.setText(fileName);
+                    itemList.set(0, new Item("Alarm", fileName));
+                    itemsListView.setAdapter(new CustomListAdapter(LocationEditActivity.this, itemList));
 
                 }
                 break;

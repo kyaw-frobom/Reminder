@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -21,6 +22,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TabHost;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.lang.reflect.Array;
@@ -116,6 +118,12 @@ public class MainActivity extends AppCompatActivity{
         tabHost.addTab(tab3);
         tabHost.addTab(tab4);
 
+        for(int i=0;i<tabHost.getTabWidget().getChildCount();i++)
+        {
+            TextView tv = (TextView) tabHost.getTabWidget().getChildAt(i).findViewById(android.R.id.title);
+            //tv.setTextColor(Color.BLUE);
+            tv.setTextSize(9);
+        }
         datasource = new DatabaseAccessAdapter(this);
         datasource.open();
         datasourceLoc = new DatabaseAccessAdapter4Loc(this);
@@ -196,6 +204,7 @@ public class MainActivity extends AppCompatActivity{
                 Log.e("Path for Location Main ", attLoc.getAlarmPath());
                 Intent i = new Intent(MainActivity.this, LocationDetailActivity.class );
                 i.putExtra("attributeObjectLoc", attLoc);
+                i.putExtra("calling_activity", ActivityConstants.MAIN_ACTIVITY);
                 startActivity(i);
             }
         });

@@ -120,9 +120,6 @@
                 android:value="com.frobom.reminder.MainActivity" />
         </activity>
         <activity android:name=".LocationEditActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.frobom.reminder.LocationDetailActivity" />
         </activity>
     </application>
 
