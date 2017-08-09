@@ -21,8 +21,9 @@
     <string name="title_activity_edit"> Detail </string>
     <string name="title_activity_add"> New </string>
     <string name="title_activity_help"> Help </string>
+    <string name="title_activity_maps">Map</string>
 
-    <string name="radius_prompt">Choose a radius (Meter)</string>
+    <string name="radius_prompt">Radius (Meter)</string>
     <string-array name="radius_arrays">
         <item>100</item>
         <item>150</item>
@@ -31,5 +32,10 @@
         <item>300</item>
     </string-array>
 
+    <string name="loc_title">Title</string>
+    <string name="loc_description">Description</string>
+    <string name="loc_radius">Radius</string>
+    <string name="loc_address">Location</string>
+    <string name="loc_alarm">Alarm</string>
 
 </resources>

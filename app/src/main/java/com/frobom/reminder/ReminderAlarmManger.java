@@ -7,6 +7,8 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.app.AlarmManager;
 
+import com.google.android.gms.location.Geofence;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
@@ -15,6 +17,7 @@ public class ReminderAlarmManger extends Service
 {
 
     public DatabaseAccessAdapter datasource;
+    public DatabaseAccessAdapter4Loc datasourceLoc;
     private AlarmManager Alarm_manager;
     private PendingIntent alarmIntent;
     private int Aid;
@@ -35,14 +38,40 @@ public class ReminderAlarmManger extends Service
     @Override
     public void onCreate()
     {
+        timeBased();
 
+        locationBased();
+    }
+
+    private void locationBased()
+    {
+        toGeofence();
+    }
+
+    public Geofence toGeofence() {
+        // Build a new Geofence object
+        long id = 0;
+        int transitionType = 0;
+        float radius = 1;
+        double latitude = 0.01;
+        double longitude = 0.01;
+        long expirationDuration = 00;
+        return new Geofence.Builder()
+                .setRequestId(Long.toString(id))
+                .setTransitionTypes(transitionType)
+                .setCircularRegion(latitude, longitude, radius)
+                .setExpirationDuration(expirationDuration)
+                .build();
+    }
+
+    private void timeBased()
+    {
         trigger = 0;
 
         if (Alarm_manager!= null)
         {
             Alarm_manager.cancel(alarmIntent);
         }
-
 
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat dateF = new SimpleDateFormat("dd/MM/yyyy");

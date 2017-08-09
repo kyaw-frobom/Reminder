@@ -142,15 +142,19 @@ public class DatabaseAccessAdapter {
 
         public List<Attributes> getTodayAttributes() {
             List<Attributes> attributeList = new ArrayList<Attributes>();
-
+            String today="";
             Calendar c = Calendar.getInstance();
             int day = c.get (Calendar.DATE);
             int month = c.get(Calendar.MONTH ) + 1;
             int year = c.get(Calendar.YEAR);
-            String TodayDate = day + "/0" + month + "/" + year;
+
+            if( day < 10)  today = "0"+day;
+            String TodayDate = today + "/0" + month + "/" + year;
+            Log.e("TodayDate ", ""+TodayDate);
 
             Cursor cursor = database.query(MySQLiteHelper.TABLE_NAME,
                     allColumns, null, null, null, null, null);
+            Log.e("Cursor Count ", "" + cursor.getCount());
 
             //cursor.moveToFirst();
             for (cursor.moveToLast(); !cursor.isBeforeFirst(); cursor.moveToPrevious()) {
@@ -167,15 +171,20 @@ public class DatabaseAccessAdapter {
 
         public List<Attributes> getTomorrowAttributes() {
             List<Attributes> attributeList = new ArrayList<Attributes>();
-
+            String tmrw="";
             Calendar c = Calendar.getInstance();
             int day = c.get (Calendar.DATE) + 1;
             int month = c.get(Calendar.MONTH ) + 1;
             int year = c.get(Calendar.YEAR) ;
-            String TomorrowDate = day + "/0" + month + "/" + year;
+
+            if( day < 10)  tmrw = "0"+day;
+            String TomorrowDate = tmrw + "/0" + month + "/" + year;
+            Log.e("Tomorrow Date ", "" + TomorrowDate);
 
             Cursor cursor = database.query(MySQLiteHelper.TABLE_NAME,
                     allColumns, null, null, null, null, null);
+
+            Log.e("Cursor Count ", "" + cursor.getCount());
 
             for (cursor.moveToLast(); !cursor.isBeforeFirst(); cursor.moveToPrevious()) {
                 Attributes atti = cursorToAttribute(cursor);
@@ -189,14 +198,17 @@ public class DatabaseAccessAdapter {
 
         public List<Attributes> getUpcomingAttributes() {
             List<Attributes> attributeList = new ArrayList<Attributes>();
-
+            String td = "", tmr = "";
             Calendar c = Calendar.getInstance();
             int day = c.get (Calendar.DATE);
             int month = c.get(Calendar.MONTH ) + 1;
             int year = c.get(Calendar.YEAR);
 
-            String TodayDate = day + "/0" + month + "/" + year;
-            String TomorrowDate = (day + 1) + "/0" + month + "/" + year;
+            if( day < 10)  td = "0" + day;
+            if( (day + 1) < 10) tmr = "0" + (day+1);
+
+            String TodayDate = td + "/0" + month + "/" + year;
+            String TomorrowDate = tmr + "/0" + month + "/" + year;
 
             Cursor cursor = database.query(MySQLiteHelper.TABLE_NAME,
                     allColumns, null,

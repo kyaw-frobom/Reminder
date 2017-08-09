@@ -382,12 +382,4 @@ public class EditActivity extends AppCompatActivity implements DatePickerDialog.
         stopService(new Intent(this, ReminderAlarmManger.class));
         startService(new Intent(this, ReminderAlarmManger.class));
     }
-
-    @Override
-    public void onBackPressed() {
-        Intent i = new Intent(EditActivity.this, MainActivity.class );
-        startActivity(i);
-        finish();
-
-    }
 }

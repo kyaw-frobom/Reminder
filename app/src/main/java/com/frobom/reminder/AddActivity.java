@@ -329,13 +329,9 @@ public class AddActivity extends AppCompatActivity implements DatePickerDialog.O
             String[] projection = {MediaStore.Audio.Media.DATA};
             Cursor cursor = null;
             try {
-
-                cursor = managedQuery(uri, projection, selection, selectionArgs, null);
-                Log.e("Return Path Last1" , ""+cursor);
-                int column_index = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA);
-
+                cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs, null);
+                int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
                 if (cursor.moveToFirst()) {
-
                     return cursor.getString(column_index);
                 }
             } catch (Exception e) {

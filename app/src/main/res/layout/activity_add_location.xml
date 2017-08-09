@@ -8,7 +8,7 @@
     android:padding="10dp"
     android:weightSum="1"
     app:layout_behavior="@string/prompt_title"
-    tools:context="com.frobom.reminder.AddLocationActivity">
+    tools:context="com.frobom.reminder.LocationActivity">
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
@@ -44,31 +44,10 @@
             android:maxLines="4" />
     </android.support.design.widget.TextInputLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/searchLocation"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:background="@drawable/search"
-            android:clickable="true"/>
-    <TextView
-        android:layout_marginLeft="20dp"
-        android:id="@+id/Address"
-        android:text="Search for location."
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    </LinearLayout>
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Radius (Meter)"
+        android:text="@string/radius_prompt"
         android:textColor="@color/mdtp_accent_color"
         android:textSize="17dp" />
 
@@ -78,8 +57,43 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_marginBottom="20dp"
-        android:entries="@array/radius_arrays"
-        android:prompt="@string/radius_prompt" />
+        android:entries="@array/radius_arrays" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_weight="0.40"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/searchLocation"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/search"
+            android:clickable="true" />
+
+        <TextView
+            android:id="@+id/Address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:text="Search for location." />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/alarmSong"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:background="@color/light_foreground1"
+        android:text="Alarm"
+        android:textAlignment="viewStart"
+        android:textAllCaps="false"
+        android:textColor="@color/colorPrimary"
+        android:textSize="18sp" />
+
 
     <ListView
         android:id="@+id/listview"
@@ -89,11 +103,11 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="75dp"
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/btnSave"
+            android:id="@+id/btnAdd"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -111,9 +125,9 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginBottom="2dp"
             android:layout_marginLeft="5dp"
             android:layout_weight="1"
-            android:layout_marginBottom="2dp"
             android:background="@drawable/shape"
             android:text="Cancel"
             android:textAllCaps="false"
