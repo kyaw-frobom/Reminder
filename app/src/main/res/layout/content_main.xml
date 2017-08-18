@@ -11,9 +11,6 @@
     tools:showIn="@layout/activity_main"
     >
 
-    <HorizontalScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
     <TabHost
         android:id="@+id/tabhost"
@@ -63,7 +60,5 @@
             </FrameLayout>
         </LinearLayout>
     </TabHost>
-
-    </HorizontalScrollView>
 
 </RelativeLayout>

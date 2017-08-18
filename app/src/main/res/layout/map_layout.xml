@@ -3,11 +3,10 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <fragment
-        android:id="@+id/storelocationmap"
+    <com.google.android.gms.maps.MapView
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:name="com.google.android.gms.maps.MapFragment"
-        />
+        android:layout_height="200dp">
+
+    </com.google.android.gms.maps.MapView>
 
 </LinearLayout>

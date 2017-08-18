@@ -73,19 +73,13 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.frobom.reminder.MainActivity" />
         </activity>
-        <activity
-            android:name=".AddLocationActivity"
-            android:label="Add"
-            android:parentActivityName=".MainActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.frobom.reminder.MainActivity" />
-        </activity>
 
         <service
             android:name=".ReminderAlarmManger"
             android:enabled="true"
-            android:exported="true" />
+            android:exported="true" >
+
+        </service>
 
         <receiver
             android:name=".BootReceiver"
@@ -142,7 +136,7 @@
 
         <service
             android:name=".ReceiveTransitionsIntentService"
-            android:exported="false"
+            android:exported="true"
             android:enabled="true">
 
         </service>

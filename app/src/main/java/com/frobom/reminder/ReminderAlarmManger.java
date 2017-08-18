@@ -1,31 +1,64 @@
 package com.frobom.reminder;
 
+import android.app.Activity;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ReceiverCallNotAllowedException;
+import android.content.pm.PackageManager;
+import android.nfc.Tag;
+import android.os.Build;
 import android.os.IBinder;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.app.AlarmManager;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.location.Geofence;
+import com.google.android.gms.location.GeofencingClient;
+import com.google.android.gms.location.GeofencingRequest;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.concurrent.Executor;
 
-public class ReminderAlarmManger extends Service
-{
+public class ReminderAlarmManger extends Service {
 
+    private static final long NEVER_EXPIRE = -1;
+    private static final int PERMISSION_REQUEST_CODE = 1;
     public DatabaseAccessAdapter datasource;
     public DatabaseAccessAdapter4Loc datasourceLoc;
     private AlarmManager Alarm_manager;
-    private PendingIntent alarmIntent;
+    public PendingIntent alarmIntent;
     private int Aid;
     private int hr;
     private int min;
     private int AlarmSetTrigger = 0;
 
-    public int trigger=0;
+    private long id;
+    private int transitionType;
+    private float radius;
+    private double latitude;
+    private double longitude;
+    private long expirationDuration;
+
+    public PendingIntent mGeofencePendingIntent;
+    public GeofencingClient mGeofencingClient;
+    public List<Geofence> mGeofenceList = new ArrayList<Geofence>();
+
+    public Activity activity;
+    public Context context;
+
+    public int trigger = 0;
 
 
     @Nullable
@@ -45,24 +78,95 @@ public class ReminderAlarmManger extends Service
 
     private void locationBased()
     {
-        toGeofence();
+        Log.e("Locationbased:","Started!!");
+        datasourceLoc = new DatabaseAccessAdapter4Loc(this);
+        datasourceLoc.open();
+
+        List<LocationAttributes> valuesLoc = datasourceLoc.getAllAttributes();
+
+        if (valuesLoc.size() > 0) {
+            for (int d = 0; d < valuesLoc.size(); d++) {
+                // Build a new Geofence object
+                id = valuesLoc.get(d).getId();
+                transitionType = Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT;
+                radius = valuesLoc.get(d).getRadius();
+                latitude = Double.parseDouble(valuesLoc.get(d).getLatitude());
+                longitude = Double.parseDouble(valuesLoc.get(d).getLongitude());
+                toGeofence();
+            }
+            mGeofencingClient = new GeofencingClient(this);
+            try{
+            mGeofencingClient.addGeofences(getGeofencingRequest(), getGeofencePendingIntent())
+                .addOnSuccessListener((Executor) this, new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        // Geofences added
+                        // ...
+                        Log.e("Geofence adding :","Success!");
+                    }
+                })
+                .addOnFailureListener((Executor) this, new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Failed to add geofences
+                        // ...
+                        Log.e("Geofence adding :","Fail!");
+                    }
+                });
+            }
+            catch(Exception Error)
+            {
+                Error.getMessage();
+                Log.e("Error!","pending failed!");
+            }
+    }
+    datasourceLoc.close();
     }
 
-    public Geofence toGeofence() {
-        // Build a new Geofence object
-        long id = 0;
-        int transitionType = 0;
-        float radius = 1;
-        double latitude = 0.01;
-        double longitude = 0.01;
-        long expirationDuration = 00;
-        return new Geofence.Builder()
-                .setRequestId(Long.toString(id))
-                .setTransitionTypes(transitionType)
-                .setCircularRegion(latitude, longitude, radius)
-                .setExpirationDuration(expirationDuration)
-                .build();
+    public void toGeofence()
+    {
+                mGeofenceList.add(new Geofence.Builder()
+                        .setRequestId(Long.toString(id))
+
+                        .setCircularRegion(latitude, longitude, radius)
+                        .setExpirationDuration(NEVER_EXPIRE)
+                        .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER |
+                                Geofence.GEOFENCE_TRANSITION_EXIT)
+                        .build());
+
+                        /*
+                        .setRequestId(Long.toString(id))
+                        .setTransitionTypes(transitionType)
+                        .setCircularRegion(latitude, longitude, radius)
+                        .setExpirationDuration(expirationDuration)
+                        .setLoiteringDelay(3000)
+                        .build());
+                        */
     }
+
+    private GeofencingRequest getGeofencingRequest() {
+        GeofencingRequest.Builder builder = new GeofencingRequest.Builder();
+        builder.setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER);
+        builder.addGeofences(mGeofenceList);
+        return builder.build();
+    }
+
+    private PendingIntent getGeofencePendingIntent() {
+        // Reuse the PendingIntent if we already have it.
+        if (mGeofencePendingIntent != null) {
+            return mGeofencePendingIntent;
+        }
+        Intent intent = new Intent(this, ReceiveTransitionsIntentService.class);
+        // We use FLAG_UPDATE_CURRENT so that we get the same pending intent back when
+        // calling addGeofences() and removeGeofences().
+        mGeofencePendingIntent = PendingIntent.getService(this, 0, intent, PendingIntent.
+                FLAG_UPDATE_CURRENT);
+        return mGeofencePendingIntent;
+    }
+
+
+    //--------------------------------------------------------------------------------------------------------------------
+
 
     private void timeBased()
     {

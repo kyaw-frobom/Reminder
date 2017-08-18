@@ -13,6 +13,7 @@ import android.support.v13.app.ActivityCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager.LayoutParams;
@@ -29,9 +30,13 @@ import java.util.List;
 
 public class alarm extends AppCompatActivity implements MediaPlayer.OnPreparedListener {
 
+    private int idgot=-1;
+
     public DatabaseAccessAdapter datasource;
+    public DatabaseAccessAdapter4Loc datasourceloc;
     private int trigger = 0;
     private int mediatrigger = 0;
+    private int location_Trigger = 0;
 
     MediaPlayer mediaPlayer;
 
@@ -51,6 +56,20 @@ public class alarm extends AppCompatActivity implements MediaPlayer.OnPreparedLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarm);
+
+        location_Trigger = -1;
+
+        Bundle id = getIntent().getExtras();
+        idgot = id.getInt("id");
+
+        Log.e("id got : ", String.valueOf(idgot));
+
+        idgot = -1;
+
+        if(idgot != -1)
+        {
+            location_Trigger=1;
+        }
 
         trigger=0;
         mediatrigger=0;
@@ -125,65 +144,86 @@ public class alarm extends AppCompatActivity implements MediaPlayer.OnPreparedLi
         Content = (TextView)findViewById(R.id.contentAlarm);
         ViewFlipper flipy = (ViewFlipper) findViewById(R.id.Flipper_the_flip);
 
-        datasource = new DatabaseAccessAdapter(this);
-        datasource.open();
+        if(location_Trigger == -1) {
+            datasource = new DatabaseAccessAdapter(this);
+            datasource.open();
 
-        List<Attributes> values = datasource.getAllAttributes();
-
-
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat dateF = new SimpleDateFormat("dd/MM/yyyy");
-        String formattedDate = dateF.format(calendar.getTime());
-
-        SimpleDateFormat timeF = new SimpleDateFormat("kk:mm");
-        String formattedTime = timeF.format(calendar.getTime());
-
-        String[] separatedTimeN = formattedTime.split(":");
-        int TimeN = Integer.parseInt(separatedTimeN[0]+separatedTimeN[1]);
+            List<Attributes> values = datasource.getAllAttributes();
 
 
-        if(values.size()>0) {
-            for (int i = 0; i < values.size(); i++)
-            {
+            Calendar calendar = Calendar.getInstance();
+            SimpleDateFormat dateF = new SimpleDateFormat("dd/MM/yyyy");
+            String formattedDate = dateF.format(calendar.getTime());
 
-                String[] separatedTimeS = values.get(i).getAlarmTime().split(" ");
-                String separatedTimeSA = separatedTimeS[0];
-                String[] separatedTimeSR = separatedTimeSA.split(":");
-                int TimeS = Integer.parseInt(separatedTimeSR[0]+separatedTimeSR[1]);
-                String AA = separatedTimeS[1];
-                String PM = "PM";
+            SimpleDateFormat timeF = new SimpleDateFormat("kk:mm");
+            String formattedTime = timeF.format(calendar.getTime());
 
-                if(PM.equals(AA) && 100<=TimeS && TimeS>=1200)
-                {
-                    trigger= 1 ;
+            String[] separatedTimeN = formattedTime.split(":");
+            int TimeN = Integer.parseInt(separatedTimeN[0] + separatedTimeN[1]);
+
+
+            if (values.size() > 0) {
+                for (int i = 0; i < values.size(); i++) {
+
+                    String[] separatedTimeS = values.get(i).getAlarmTime().split(" ");
+                    String separatedTimeSA = separatedTimeS[0];
+                    String[] separatedTimeSR = separatedTimeSA.split(":");
+                    int TimeS = Integer.parseInt(separatedTimeSR[0] + separatedTimeSR[1]);
+                    String AA = separatedTimeS[1];
+                    String PM = "PM";
+
+                    if (PM.equals(AA) && 100 <= TimeS && TimeS >= 1200) {
+                        trigger = 1;
+                    }
+
+                    if (PM.equals(AA) && TimeS >= 100 && trigger == 0) {
+                        TimeS += 1200;
+                    }
+
+                    if (formattedDate.equals(values.get(i).getAlarmDate()) && TimeN == TimeS) {
+                        String title = values.get(i).getTitle();
+                        String time = values.get(i).getAlarmTime();
+                        String description = values.get(i).getDescription();
+                        path = values.get(i).getAlarmPath();
+
+                        Title.setText(title);
+                        Clock.setText(time);
+                        Content.setText(description);
+
+                        flipy.setDisplayedChild(1);
+                        break;
+                    }
                 }
-
-                if (PM.equals(AA)&& TimeS>=100 && trigger==0)
-                {
-                    TimeS += 1200;
-                }
-
-                if( formattedDate.equals(values.get(i).getAlarmDate()) && TimeN == TimeS)
-                {
-                    String title = values.get(i).getTitle();
-                    String time = values.get(i).getAlarmTime();
-                    String description = values.get(i).getDescription();
-                    path = values.get(i).getAlarmPath();
-
-                    Title.setText(title);
-                    Clock.setText(time);
-                    Content.setText(description);
-
-                    flipy.setDisplayedChild(1);
-                    break;
-                }
+            } else if (values.size() == 0) {
+                mediatrigger = 1;
             }
+            datasource.close();
         }
-        else if (values.size()==0)
+        else
         {
-            mediatrigger=1;
+            datasourceloc = new DatabaseAccessAdapter4Loc(this);
+            datasourceloc.open();
+
+            List<LocationAttributes> valuesloc = datasourceloc.getAllAttributes();
+
+            if(valuesloc.size() >0) {
+                String title = valuesloc.get(idgot).getTitle();
+                String locations = valuesloc.get(idgot).getAlarmLocation();
+                String description = valuesloc.get(idgot).getDescription();
+                path = valuesloc.get(idgot).getAlarmPath();
+
+                Title.setText(title);
+                Clock.setText(locations);
+                Content.setText(description);
+
+                flipy.setDisplayedChild(1);
+            }
+            else
+            {
+                mediatrigger =1;
+            }
+            datasourceloc.close();
         }
-        datasource.close();
     }
 
     private void setScreen()
