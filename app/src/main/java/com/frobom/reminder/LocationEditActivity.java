@@ -203,6 +203,9 @@ public class LocationEditActivity extends AppCompatActivity {
         switch (requestCode) {
 
             case 7:
+                if( data == null){
+                    break;
+                }
                 Log.e("Build version ", " " + Build.VERSION.SDK_INT);
                 String PathHolder1 = "";
                 uri = data.getData();
