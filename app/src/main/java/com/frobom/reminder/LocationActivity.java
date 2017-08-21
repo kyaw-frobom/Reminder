@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
@@ -97,6 +98,7 @@ public class LocationActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                 intent.setType("audio/*");
+                intent.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL);
                 startActivityForResult(intent, 7);
             }
         });

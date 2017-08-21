@@ -64,7 +64,8 @@ public class alarm extends AppCompatActivity implements MediaPlayer.OnPreparedLi
 
         Log.e("id got : ", String.valueOf(idgot));
 
-        idgot = -1;
+        //Testing step!
+        //idgot = -1;
 
         if(idgot != -1)
         {
@@ -207,16 +208,25 @@ public class alarm extends AppCompatActivity implements MediaPlayer.OnPreparedLi
             List<LocationAttributes> valuesloc = datasourceloc.getAllAttributes();
 
             if(valuesloc.size() >0) {
-                String title = valuesloc.get(idgot).getTitle();
-                String locations = valuesloc.get(idgot).getAlarmLocation();
-                String description = valuesloc.get(idgot).getDescription();
-                path = valuesloc.get(idgot).getAlarmPath();
+                for(int i=0;i<valuesloc.size();i++)
+                {
+                    if(idgot == valuesloc.get(i).getId())
+                    {
+                        String title = valuesloc.get(i).getTitle();
+                        String locations = valuesloc.get(i).getAlarmLocation();
+                        String description = valuesloc.get(i).getDescription();
+                        path = valuesloc.get(i).getAlarmPath();
 
-                Title.setText(title);
-                Clock.setText(locations);
-                Content.setText(description);
+                        Title.setText(title);
+                        Clock.setText(locations);
+                        Content.setText(description);
 
-                flipy.setDisplayedChild(1);
+                        flipy.setDisplayedChild(1);
+
+                        datasourceloc.deleteAttributes(valuesloc.get(i));
+                        break;
+                    }
+                }
             }
             else
             {
@@ -277,7 +287,7 @@ public class alarm extends AppCompatActivity implements MediaPlayer.OnPreparedLi
                     mediaPlayer.stop();
                     mediaPlayer.release();
                 }
-                    finish();
+                finish();
             }
         });
     }

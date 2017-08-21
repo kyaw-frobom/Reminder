@@ -5,19 +5,11 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.content.ReceiverCallNotAllowedException;
-import android.content.pm.PackageManager;
-import android.nfc.Tag;
-import android.os.Build;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.app.AlarmManager;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingClient;
@@ -103,6 +95,7 @@ public class ReminderAlarmManger extends Service {
                         // Geofences added
                         // ...
                         Log.e("Geofence adding :","Success!");
+                        callRemove();
                     }
                 })
                 .addOnFailureListener((Executor) this, new OnFailureListener() {
@@ -118,6 +111,7 @@ public class ReminderAlarmManger extends Service {
             {
                 Error.getMessage();
                 Log.e("Error!","pending failed!");
+                callRemove();
             }
     }
     datasourceLoc.close();
@@ -162,6 +156,36 @@ public class ReminderAlarmManger extends Service {
         mGeofencePendingIntent = PendingIntent.getService(this, 0, intent, PendingIntent.
                 FLAG_UPDATE_CURRENT);
         return mGeofencePendingIntent;
+    }
+
+
+    private void callRemove()
+    {
+        try {
+            mGeofencingClient = new GeofencingClient(this);
+            mGeofencingClient.removeGeofences(getGeofencePendingIntent())
+                    .addOnSuccessListener((Executor) this, new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            // Geofences removed
+                            // ...
+                            Log.e("GeoRemove", "Geofences are removed!");
+                        }
+                    })
+                    .addOnFailureListener((Executor) this, new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            // Failed to remove geofences
+                            // ...
+                            Log.e("GeoRemove", "Geofences are failed to remove!");
+                        }
+                    });
+        }
+        catch (Exception Error)
+        {
+            Error.getMessage();
+            Log.e("Error!", "pending failed!");
+        }
     }
 
 
