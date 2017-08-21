@@ -186,6 +186,8 @@ public class alarm extends AppCompatActivity implements MediaPlayer.OnPreparedLi
                         String time = values.get(i).getAlarmTime();
                         String description = values.get(i).getDescription();
                         path = values.get(i).getAlarmPath();
+                        values.get(i).setEnabled("false");
+                        datasource.updateAttributes(values.get(i), values.get(i).getId());
 
                         Title.setText(title);
                         Clock.setText(time);
@@ -224,6 +226,10 @@ public class alarm extends AppCompatActivity implements MediaPlayer.OnPreparedLi
                         flipy.setDisplayedChild(1);
 
                         datasourceloc.deleteAttributes(valuesloc.get(i));
+                        /*
+                        valuesloc.get(i).setEnabled("false");
+                        datasourceloc.updateAttributes(valuesloc.get(i), valuesloc.get(i).getId());
+                        */
                         break;
                     }
                 }
