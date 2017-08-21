@@ -5,10 +5,13 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.SpannableStringBuilder;
@@ -30,6 +33,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity{
 
+    private static final int PERMISSION_REQUEST_CODE = 1;
     public DatabaseAccessAdapter datasource;
     public DatabaseAccessAdapter4Loc datasourceLoc;
     private ListView listViewToday, listViewTomorrow, listViewUpcoming, listViewLoc;
@@ -50,9 +54,7 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //Start Alarm Manager
-        startService(new Intent(this, ReminderAlarmManger.class));
-        startService(new Intent(this, RefreshManager.class));
+        checkpermissionhere();
 
         prefs = getSharedPreferences("com.forbom.reminder", MODE_PRIVATE);
 
@@ -60,9 +62,6 @@ public class MainActivity extends AppCompatActivity{
         listViewTomorrow = (ListView) findViewById(R.id.list_tomorrow);
         listViewUpcoming = (ListView) findViewById(R.id.list_upcoming);
         listViewLoc = (ListView) findViewById(R.id.list_location);
-
-        //Start Alarm Manager
-        startService(new Intent(this, ReminderAlarmManger.class));
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -211,6 +210,72 @@ public class MainActivity extends AppCompatActivity{
 
     }
 
+    private void checkpermissionhere()
+    {
+
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) !=
+                PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) !=
+                        PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    android.Manifest.permission.ACCESS_FINE_LOCATION)) {
+
+                // Show an explanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+
+            } else {
+
+                // No explanation needed, we can request the permission.
+
+                ActivityCompat.requestPermissions(this,
+                        new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION,
+                                android.Manifest.permission.ACCESS_COARSE_LOCATION},
+                        PERMISSION_REQUEST_CODE);
+
+                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+                // app-defined int constant. The callback method gets the
+                // result of the request.
+            }
+        }
+
+        startService(new Intent(this, ReminderAlarmManger.class));
+        startService(new Intent(this, RefreshManager.class));
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case PERMISSION_REQUEST_CODE: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+
+                    Log.e("PermissionResult:","GOT!");
+
+                    //Start Alarm Manager
+                    startService(new Intent(this, ReminderAlarmManger.class));
+                    startService(new Intent(this, RefreshManager.class));
+
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
+    }
+
     private void setIconInMenu(Menu menu, int menuItemId, int labelId, int iconId){
         MenuItem menuItem = menu.findItem(menuItemId);
         SpannableStringBuilder sBuilder = new SpannableStringBuilder("        " + getResources().getString(labelId));
@@ -235,7 +300,9 @@ public class MainActivity extends AppCompatActivity{
                 // Do first run stuff here then set 'firstrun' as false
                 // using the following line to edit/commit prefs
 
-                startActivity(new Intent(this, alarm.class));
+                Intent Alarm = new Intent(this, alarm.class);
+                Alarm.putExtra("id",-1);
+                startActivity(Alarm);
 
                 prefs.edit().putBoolean("firstrun", false).commit();
             }

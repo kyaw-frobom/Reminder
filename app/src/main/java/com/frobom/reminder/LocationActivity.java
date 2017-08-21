@@ -170,6 +170,10 @@ public class LocationActivity extends AppCompatActivity {
                 } catch (DatabaseException e) {
                     Log.e("Database Exception ", e.getMessage());
                 }
+
+
+                LocationActivity.this.stopService(new Intent(LocationActivity.this, ReminderAlarmManger.class));
+                LocationActivity.this.startService(new Intent(LocationActivity.this, ReminderAlarmManger.class));
             }
         });
 
@@ -227,6 +231,8 @@ public class LocationActivity extends AppCompatActivity {
                 txtaddress.setText(addressLocation);
 
                 Toast.makeText(this, "Address: " + latitude + "/" + longitude + "/" + addressLocation, Toast.LENGTH_SHORT).show();
+                Log.e("lat",latitude);
+                Log.e("Long",longitude);
                 // ask for geolocation data
                 Geocoder gcd = new Geocoder(this, Locale.getDefault());
                 List<Address> addresses = null;
@@ -331,5 +337,22 @@ public class LocationActivity extends AppCompatActivity {
          //.....
      }
  */
+
+
+    @Override
+    protected void onPause()
+    {
+        super.onPause();
+        stopService(new Intent(this, ReminderAlarmManger.class));
+        startService(new Intent(this, ReminderAlarmManger.class));
+    }
+
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
+        stopService(new Intent(this, ReminderAlarmManger.class));
+        startService(new Intent(this, ReminderAlarmManger.class));
+    }
 
 }
