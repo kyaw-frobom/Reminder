@@ -60,7 +60,10 @@ public class alarm extends AppCompatActivity implements MediaPlayer.OnPreparedLi
         location_Trigger = -1;
 
         Bundle id = getIntent().getExtras();
-        idgot = id.getInt("id");
+        if(id != null)
+        {
+            idgot = id.getInt("id");
+        }
 
         Log.e("id got : ", String.valueOf(idgot));
 
@@ -193,7 +196,7 @@ public class alarm extends AppCompatActivity implements MediaPlayer.OnPreparedLi
                         Clock.setText(time);
                         Content.setText(description);
 
-                        flipy.setDisplayedChild(1);
+                        flipy.setDisplayedChild(0);
                         break;
                     }
                 }
