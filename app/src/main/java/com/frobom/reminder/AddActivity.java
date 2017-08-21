@@ -58,7 +58,7 @@ public class AddActivity extends AppCompatActivity implements DatePickerDialog.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
         //for back button
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 
         //initialize itemList1 to update data
         itemList.add(0, new Item("Date", ""));

@@ -160,7 +160,7 @@ public class DatabaseAccessAdapter {
             //cursor.moveToFirst();
             for (cursor.moveToLast(); !cursor.isBeforeFirst(); cursor.moveToPrevious()) {
                 Attributes atti = cursorToAttribute(cursor);
-                if( atti.getAlarmDate().equals(TodayDate))
+                if( atti.getAlarmDate().equals(TodayDate) && atti.isEnabled().equals("true"))
                     attributeList.add(atti);
                 //cursor.moveToNext();
             }
@@ -190,7 +190,7 @@ public class DatabaseAccessAdapter {
 
             for (cursor.moveToLast(); !cursor.isBeforeFirst(); cursor.moveToPrevious()) {
                 Attributes atti = cursorToAttribute(cursor);
-                if (atti.getAlarmDate().equals(TomorrowDate))
+                if (atti.getAlarmDate().equals(TomorrowDate) && atti.isEnabled().equals("true"))
                     attributeList.add(atti);
             }
             // make sure to close the cursor
@@ -224,7 +224,7 @@ public class DatabaseAccessAdapter {
                 int test_day = Integer.parseInt(day1[0]);
 
                 if( !atti.getAlarmDate().equals(TodayDate) && !atti.getAlarmDate().equals(TomorrowDate)
-                        && test_day > day) {
+                        && test_day > day && atti.isEnabled().equals("true")) {
                     Log.e("first ", atti.getAlarmDate());
                     attributeList.add(atti);
                 }

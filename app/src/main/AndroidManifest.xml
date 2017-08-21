@@ -52,10 +52,8 @@
         <activity
             android:name=".AddActivity"
             android:label="@string/title_activity_add"
-            android:parentActivityName=".MainActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.frobom.reminder.MainActivity" />
+           >
+
         </activity>
         <activity
             android:name=".EditActivity"
@@ -103,11 +101,9 @@
 
         <activity
             android:name=".LocationActivity"
-            android:label="Location"
-            android:parentActivityName=".MainActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.frobom.reminder.MainActivity" />
+            android:label="New"
+          >
+
         </activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.

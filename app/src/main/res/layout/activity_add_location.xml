@@ -82,8 +82,8 @@
 
         <Button
             android:id="@+id/searchLocation"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:background="@drawable/search"
             android:clickable="true" />
 
