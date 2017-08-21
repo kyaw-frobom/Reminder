@@ -137,7 +137,7 @@ public class LocationEditActivity extends AppCompatActivity {
                     //third option:: urlAddress = "geo:<" + myLatitude + ">,<" + myLongitude +">?q=<" + latitude + ">,<" + longitude +">(this is my currently location)"
                     Intent maps = new Intent(Intent.ACTION_VIEW, Uri.parse(urlAddress));
                     startActivity(maps);*/
-                PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+                 PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
 
                 try {
                     //builder.setLatLngBounds();

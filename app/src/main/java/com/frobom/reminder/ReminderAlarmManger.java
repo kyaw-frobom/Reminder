@@ -244,7 +244,6 @@ public class ReminderAlarmManger extends Service {
             Intent intent = new Intent(this, AlarmReceiver.class);
             alarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
 
-
             calendar.setTimeInMillis(System.currentTimeMillis());
             calendar.set(Calendar.DAY_OF_YEAR, calendar.get(Calendar.DAY_OF_YEAR));
             calendar.set(Calendar.DATE, calendar.get(Calendar.DATE));
