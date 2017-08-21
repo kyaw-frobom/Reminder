@@ -14,7 +14,10 @@ import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
@@ -82,6 +85,7 @@ public class AddActivity extends AppCompatActivity implements DatePickerDialog.O
         itemsListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
 
             public void onItemClick(AdapterView<?>adapter,View v, int position,long id){
+
                 Intent intent;
                 Calendar now = Calendar.getInstance();
 
@@ -229,14 +233,22 @@ public class AddActivity extends AppCompatActivity implements DatePickerDialog.O
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        Window window = this.getWindow();
+        window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL);
+
         // TODO Auto-generated method stub
-        Log.e ("Build version " , " "+Build.VERSION.SDK_INT);
-        String PathHolder1="";
-        uri = data.getData();
+
         switch(requestCode){
 
             case 7:
-
+                if( data == null){
+                    break;
+                }
+                Log.e ("Build version " , " "+Build.VERSION.SDK_INT);
+                String PathHolder1="";
+                uri = data.getData();
                 if(resultCode == RESULT_OK){
 
                     try {
@@ -381,7 +393,15 @@ public class AddActivity extends AppCompatActivity implements DatePickerDialog.O
         cursor.moveToFirst();
         return cursor.getString(column_index);
     }
+    public boolean onTouchEvent(MotionEvent event)
+    {
 
+        if(event.getAction() == MotionEvent.ACTION_OUTSIDE){
+            System.out.println("TOuch outside the dialog ******************** ");
+            this.recreate();
+        }
+        return false;
+    }
 }
 
 

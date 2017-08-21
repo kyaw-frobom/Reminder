@@ -13,7 +13,9 @@ import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -190,6 +192,10 @@ public class LocationActivity extends AppCompatActivity {
     }
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
+
+        Window window = this.getWindow();
+        window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL);
         switch (requestCode) {
 
             case 7:
@@ -356,5 +362,14 @@ public class LocationActivity extends AppCompatActivity {
         stopService(new Intent(this, ReminderAlarmManger.class));
         startService(new Intent(this, ReminderAlarmManger.class));
     }
+    public boolean onTouchEvent(MotionEvent event)
+    {
 
+        if(event.getAction() == MotionEvent.ACTION_OUTSIDE){
+            System.out.println("TOuch outside the dialog ******************** ");
+            this.recreate();
+           // this.dismiss();
+        }
+        return false;
+    }
 }

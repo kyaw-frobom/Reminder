@@ -149,6 +149,7 @@ public class DatabaseAccessAdapter {
             int year = c.get(Calendar.YEAR);
 
             if( day < 10)  today = "0"+day;
+            else today = ""+day;
             String TodayDate = today + "/0" + month + "/" + year;
             Log.e("TodayDate ", ""+TodayDate);
 
@@ -178,6 +179,7 @@ public class DatabaseAccessAdapter {
             int year = c.get(Calendar.YEAR) ;
 
             if( day < 10)  tmrw = "0"+day;
+            else tmrw = ""+day;
             String TomorrowDate = tmrw + "/0" + month + "/" + year;
             Log.e("Tomorrow Date ", "" + TomorrowDate);
 
@@ -205,7 +207,9 @@ public class DatabaseAccessAdapter {
             int year = c.get(Calendar.YEAR);
 
             if( day < 10)  td = "0" + day;
+            else td = "" + day;
             if( (day + 1) < 10) tmr = "0" + (day+1);
+            else tmr = "" + day;
 
             String TodayDate = td + "/0" + month + "/" + year;
             String TomorrowDate = tmr + "/0" + month + "/" + year;
