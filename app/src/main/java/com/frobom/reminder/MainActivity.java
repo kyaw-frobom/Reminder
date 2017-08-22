@@ -117,12 +117,12 @@ public class MainActivity extends AppCompatActivity{
         tabHost.addTab(tab3);
         tabHost.addTab(tab4);
 
-        for(int i=0;i<tabHost.getTabWidget().getChildCount();i++)
+      /*  for(int i=0;i<tabHost.getTabWidget().getChildCount();i++)
         {
             TextView tv = (TextView) tabHost.getTabWidget().getChildAt(i).findViewById(android.R.id.title);
             //tv.setTextColor(Color.BLUE);
             tv.setTextSize(9);
-        }
+        }*/
         datasource = new DatabaseAccessAdapter(this);
         datasource.open();
         datasourceLoc = new DatabaseAccessAdapter4Loc(this);
