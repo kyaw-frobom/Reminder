@@ -182,6 +182,8 @@ public class LocationEditActivity extends AppCompatActivity {
                 } catch (DatabaseException e) {
                     Log.e("Database Exception ", e.getMessage());
                 }
+                stopService(new Intent(LocationEditActivity.this, ReminderAlarmManger.class));
+                startService(new Intent(LocationEditActivity.this, ReminderAlarmManger.class));
             }
         });
 
@@ -192,6 +194,8 @@ public class LocationEditActivity extends AppCompatActivity {
                 refresh.putExtra("location_Update", locAtt);
                 refresh.putExtra("calling_activity", ActivityConstants.EDIT_ACTIVITY_2);
                 startActivity(refresh);
+                stopService(new Intent(LocationEditActivity.this, ReminderAlarmManger.class));
+                startService(new Intent(LocationEditActivity.this, ReminderAlarmManger.class));
                 finish();
             }
         });
@@ -258,6 +262,23 @@ public class LocationEditActivity extends AppCompatActivity {
                 }
             }
         }
+    }
+
+
+    @Override
+    protected void onPause()
+    {
+        super.onPause();
+        stopService(new Intent(this, ReminderAlarmManger.class));
+        startService(new Intent(this, ReminderAlarmManger.class));
+    }
+
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
+        stopService(new Intent(this, ReminderAlarmManger.class));
+        startService(new Intent(this, ReminderAlarmManger.class));
     }
 
     }
