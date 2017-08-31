@@ -21,6 +21,7 @@ public class HelpActivity extends AppCompatActivity {
         TabHost.TabSpec tab1 = tabHost.newTabSpec("TODAY");
         TabHost.TabSpec tab2 = tabHost.newTabSpec("TOMORROW");
         TabHost.TabSpec tab3 = tabHost.newTabSpec("UPCOMING");
+        TabHost.TabSpec tab4 = tabHost.newTabSpec("LOCATION");
 
         tab1.setIndicator("TODAY");
         tab1.setContent(R.id.tab1);
@@ -31,8 +32,12 @@ public class HelpActivity extends AppCompatActivity {
         tab3.setIndicator("UPCOMING");
         tab3.setContent(R.id.tab3);
 
+        tab4.setIndicator("LOCATION");
+        tab4.setContent(R.id.tab4);
+
         tabHost.addTab(tab1);
         tabHost.addTab(tab2);
         tabHost.addTab(tab3);
+        tabHost.addTab(tab4);
     }
 }

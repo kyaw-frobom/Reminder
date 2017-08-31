@@ -208,8 +208,8 @@ public class DatabaseAccessAdapter {
 
             if( day < 10)  td = "0" + day;
             else td = "" + day;
-            if( (day + 1) < 10) tmr = "0" + (day+1);
-            else tmr = "" + day;
+            if( (day + 1) < 10) tmr = "0" + (day + 1);
+            else tmr = "" + (day + 1);
 
             String TodayDate = td + "/0" + month + "/" + year;
             String TomorrowDate = tmr + "/0" + month + "/" + year;

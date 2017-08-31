@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity{
     public SharedPreferences prefs = null;
     private AlertDialog.Builder myDialog;
     private String tab1 = "TODAY", tab2 = "TOMORROW", tab3 = "UPCOMING", tab4 = "LOCATION";
-    private String[] array = new String[]{"Time based","Location based"};
+    private String[] array = new String[]{"Time Alarm ","Location Alarm"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 myDialog = new AlertDialog.Builder(MainActivity.this)
-                        .setTitle("Select Alarm method !")
+                        .setTitle("Choose Alarm Type !")
                         .setItems(array , new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which)

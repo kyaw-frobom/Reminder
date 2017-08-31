@@ -58,4 +58,14 @@
         <item name="android:itemBackground">@android:color/white</item>
     </style>
 
+    <style name="MyTabLayoutTextAppearanceLarge" parent="TextAppearance.AppCompat.Widget.ActionBar.Title.Inverse">
+        <item name="android:textSize">16sp</item>
+    </style>
+    <style name="MyTabLayoutTextAppearanceXlarge" parent="TextAppearance.AppCompat.Widget.ActionBar.Title.Inverse">
+        <item name="android:textSize">20sp</item>
+    </style>
+    <style name="MyTabLayoutTextAppearanceSmall" parent="TextAppearance.AppCompat.Widget.ActionBar.Title.Inverse">
+        <item name="android:textSize">9sp</item>
+        <item name="android:textColor">@color/dark_background</item>
+    </style>
 </resources>

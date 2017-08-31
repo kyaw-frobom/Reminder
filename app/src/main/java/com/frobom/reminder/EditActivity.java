@@ -256,12 +256,23 @@ public class EditActivity extends AppCompatActivity implements DatePickerDialog.
     @Override
     public void onTimeSet(TimePickerDialog view, int hourOfDay, int minute, int second) {
 
-        int hour = hourOfDay % 12;
+        Calendar datetime = Calendar.getInstance();
+        Calendar c = Calendar.getInstance();
+        datetime.set(Calendar.HOUR_OF_DAY, hourOfDay);
+        datetime.set(Calendar.MINUTE, minute);
+        if(datetime.getTimeInMillis() > c.getTimeInMillis()){
+//            it's after current
+            int hour = hourOfDay % 12;
             time = String.format("%02d:%02d %s", hour == 0 ? 12 : hour, minute, hourOfDay < 12 ? "AM" : "PM");
 
-        //update itemList at the field of Time
-        itemList.set(1, new Item("Time", time));
-        itemsListView.setAdapter(new CustomListAdapter(this,itemList));
+            //update itemList at the field of Time
+            itemList.set(1, new Item("Time", time));
+            itemsListView.setAdapter(new CustomListAdapter(this,itemList));
+        }else{
+//            it's before current'
+            Toast.makeText(this, "Enter valid time!", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
 
